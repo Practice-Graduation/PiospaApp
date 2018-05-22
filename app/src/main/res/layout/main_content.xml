@@ -6,13 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-   <android.support.design.widget.CoordinatorLayout
+   <LinearLayout
+       android:orientation="vertical"
        android:layout_width="match_parent"
        android:layout_height="match_parent">
        <FrameLayout
            android:id="@+id/content"
            android:layout_width="match_parent"
-           android:layout_height="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1"
            app:layout_behavior="@string/appbar_scrolling_view_behavior"
            app:layout_constraintTop_toTopOf="parent"
            app:layout_constraintBottom_toTopOf="@id/navigation">
@@ -34,6 +36,6 @@
            app:itemIconTint="@color/nav_item_foreground"
            app:itemTextColor="@color/nav_item_foreground"
            app:menu="@menu/navigation"/>
-   </android.support.design.widget.CoordinatorLayout>
+   </LinearLayout>
     <!--android:background="?android:attr/windowBackground"-->
 </android.support.v4.widget.DrawerLayout>

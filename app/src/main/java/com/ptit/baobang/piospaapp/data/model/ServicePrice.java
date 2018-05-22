@@ -1,10 +1,14 @@
 
 package com.ptit.baobang.piospaapp.data.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ServicePrice {
+import java.io.Serializable;
+
+public class ServicePrice implements Serializable, Comparable<ServicePrice>{
 
     @SerializedName("servicePriceId")
     @Expose
@@ -139,4 +143,8 @@ public class ServicePrice {
         this.service = service;
     }
 
+    @Override
+    public int compareTo(@NonNull ServicePrice o) {
+        return this.servicePriceId == o.getServicePriceId() ? 0 : 1;
+    }
 }

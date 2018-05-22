@@ -11,4 +11,6 @@ public interface IBookingInfoView extends BaseView{
     void attachData(ServicePrice servicePrice, Date selectedDate, Room selectedRoom, BookingTimeFB selectedTime);
 
     void setAmount(String s);
+
+    void openFramentCart();
 }

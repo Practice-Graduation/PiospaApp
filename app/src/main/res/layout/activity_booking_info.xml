@@ -22,9 +22,12 @@
             <ImageView
                 android:id="@+id/img"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:scaleType="centerCrop"
+                android:layout_height="wrap_content"
                 android:src="@drawable/test"
+                android:scaleType="centerCrop"
+                android:maxHeight="300dp"
+                app:layout_constraintDimensionRatio="H,16:9"
+                android:adjustViewBounds="true"
                 app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar

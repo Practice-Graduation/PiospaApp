@@ -41,8 +41,9 @@ public interface APIService {
     Call<EndPoint<Service>> getServiceById(@Path("serviceId") int serviceId);
     @GET("service/price/{servicePriceId}")
     Call<EndPoint<ServicePrice>> getServicePriceById(@Path("servicePriceId") int servicePriceId);
-
-    //---------------SERVICE--------------------------
+    @GET("/service/packages/{packageId}")
+    Call<EndPoint<List<Service>>> getServiceByPackageId(@Path("packageId") int packageId);
+    //---------------ROOM--------------------------
     @GET("room")
     Call<EndPoint<List<Room>>> getAllRoom();
 

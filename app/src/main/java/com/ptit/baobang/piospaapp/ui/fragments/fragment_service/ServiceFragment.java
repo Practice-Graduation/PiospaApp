@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.ServiceGroup;
 import com.ptit.baobang.piospaapp.ui.activities.all_product.AllProductActivity;
@@ -26,6 +27,9 @@ import butterknife.ButterKnife;
 public class ServiceFragment extends BaseFragment implements IServiceView{
 
     private ServicePresenter mPresenter;
+
+    @BindView(R.id.shimmerLayout)
+    ShimmerFrameLayout shimmerFrameLayout;
 
     @BindView(R.id.rvServiceGroups)
     RecyclerView rvServiceGroups;
@@ -97,5 +101,28 @@ public class ServiceFragment extends BaseFragment implements IServiceView{
         mServiceGroups.clear();
         mServiceGroups.addAll(serviceGroups);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startShirrmentAnimation();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopShirrmentAnimation();
+    }
+
+    @Override
+    public void startShirrmentAnimation() {
+        shimmerFrameLayout.startShimmerAnimation();
+    }
+
+    @Override
+    public void stopShirrmentAnimation() {
+        shimmerFrameLayout.stopShimmerAnimation();
+        shimmerFrameLayout.setVisibility(View.GONE);
     }
 }

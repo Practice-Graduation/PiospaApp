@@ -1,5 +1,6 @@
 package com.ptit.baobang.piospaapp.ui.activities.booking_info;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
@@ -10,12 +11,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.ptit.baobang.piospaapp.MainActivity;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.Room;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.data.network.firebase.BookingTimeFB;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
@@ -66,7 +69,7 @@ public class BookingInfoActivity extends BaseActivity implements IBookingInfoVie
     @BindView(R.id.txtNote)
     EditText txtNote;
 
-    private int mServicePriceId;
+    private ServicePrice mServicePrice;
     private Date mSelectedDate;
     private Room mSelectedRoom;
     private BookingTimeFB mSelectedTime;
@@ -83,14 +86,25 @@ public class BookingInfoActivity extends BaseActivity implements IBookingInfoVie
 
     }
 
-    @OnClick({R.id.btnAdd, R.id.btnRemove})
+    @OnClick({R.id.btnAdd, R.id.btnRemove, R.id.btnComfirm, R.id.fbGoToCart})
     void onClick(View view){
         switch (view.getId()){
+            case R.id.fbGoToCart:
+                mPresenter.clickFloatButtonCart();
+                break;
             case R.id.btnAdd:
                 mPresenter.clickAdd(txtAmount.getText().toString());
                 break;
             case R.id.btnRemove:
                 mPresenter.clickRemove(txtAmount.getText().toString());
+                break;
+            case R.id.btnComfirm:
+                mPresenter.clickConfirm(mServicePrice, mSelectedDate, mSelectedRoom,
+                        mSelectedTime, txtAmount.getText().toString(),
+                        txtCustomerName.getText().toString(),
+                        txtPhone.getText().toString(),
+                        txtEmail.getText().toString(),
+                        txtNote.getText().toString());
                 break;
         }
     }
@@ -105,7 +119,7 @@ public class BookingInfoActivity extends BaseActivity implements IBookingInfoVie
 
     @Override
     public void attachData(ServicePrice servicePrice, Date selectedDate, Room selectedRoom, BookingTimeFB selectedTime) {
-        mServicePriceId = servicePrice.getServicePriceId();
+        mServicePrice = servicePrice;
         mSelectedDate = selectedDate;
         mSelectedRoom = selectedRoom;
         mSelectedTime = selectedTime;
@@ -116,11 +130,11 @@ public class BookingInfoActivity extends BaseActivity implements IBookingInfoVie
         if(servicePrice.getService() != null){
             image = servicePrice.getService().getImage();
             name = servicePrice.getService().getServiceName();
-            time = servicePrice.getService().getServiceTime().getTime() + "";
+//            time = servicePrice.getService().getServiceTime().getTime() + "";
         }else if(servicePrice.getServicePackage() != null){
             image = servicePrice.getServicePackage().getImage();
             name = servicePrice.getServicePackage().getServicePackageName();
-            time = mPresenter.sumTotalTimeOfServicePackage(servicePrice.getServicePackage());
+//            time = mPresenter.sumTotalTimeOfServicePackage(servicePrice.getServicePackage());
         }
 
         Glide.with(this).load(image)
@@ -140,7 +154,7 @@ public class BookingInfoActivity extends BaseActivity implements IBookingInfoVie
         Calendar calendar = Calendar.getInstance();
         Date temp = CommonUtils.getDateTimeHHMM(mSelectedDate, mSelectedTime.getTimeStart());
         calendar.setTime(temp);
-        calendar.add(Calendar.MINUTE, Integer.parseInt(servicePrice.getService().getServiceTime().getTime()));
+//        calendar.add(Calendar.MINUTE, Integer.parseInt(servicePrice.getService().getServiceTime().getTime()));
         s += DateTimeUtils.formatTime(calendar.getTime());
         txtTimeEnd.setText(s);
         txtAmount.setText("1");
@@ -153,6 +167,13 @@ public class BookingInfoActivity extends BaseActivity implements IBookingInfoVie
     @Override
     public void setAmount(String s) {
         txtAmount.setText(s);
+    }
+
+    @Override
+    public void openFramentCart() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(AppConstants.FRAGMENT, AppConstants.CART_INDEX);
+        startActivity(intent);
     }
 
     @Override

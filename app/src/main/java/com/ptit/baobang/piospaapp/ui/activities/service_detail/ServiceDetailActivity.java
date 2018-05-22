@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Service;
 import com.ptit.baobang.piospaapp.data.model.ServicePackage;
@@ -27,6 +28,8 @@ public class ServiceDetailActivity extends BaseActivity implements IServiceDetai
 
     ServiceDetailPresenter mPresenter;
 
+    @BindView(R.id.shimmerLayout)
+    ShimmerFrameLayout shimmerFrameLayout;
     @BindView(R.id.img)
     ImageView img;
     @BindView(R.id.txtName)
@@ -66,23 +69,26 @@ public class ServiceDetailActivity extends BaseActivity implements IServiceDetai
     @Override
     public void showServiceDetail(ServicePrice servicePrice) {
 
-        String image = "", name = "", price = "";
+        String image = "", name = "", price = "", info = "";
 
         if(servicePrice.getService() != null){
             Service service = servicePrice.getService();
             image = service.getImage();
             name = service.getServiceName();
             price = CommonUtils.formatToCurrency(servicePrice.getRetailPrice());
+            info = service.getDescription();
+            txtInfo.setText(info);
         }else if(servicePrice.getServicePackage() != null){
             ServicePackage servicePackage = servicePrice.getServicePackage();
             image = servicePackage.getImage();
             name = servicePackage.getServicePackageName();
             price = CommonUtils.formatToCurrency(servicePrice.getAllPrice());
+            mPresenter.loadServicePackageInfo(servicePackage.getServicePackageId());
         }
 
 
         txtName.setText(name);
-        txtPrice.setText(price);
+        txtPrice.setText(new StringBuilder("Giá: " + price));
         RequestOptions options = new RequestOptions().placeholder(R.drawable.paceholder).error(R.drawable.error);
         Glide.with(this).load(image)
                 .apply(options).into(img);
@@ -94,6 +100,40 @@ public class ServiceDetailActivity extends BaseActivity implements IServiceDetai
         intent.putExtra(AppConstants.SERVICE_PRICE_ID, servicePriceId);
         startActivity(intent);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopShimmerAnimation();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startShimmerAnimation();
+    }
+
+    @Override
+    public void setPackageInfo(String s) {
+        txtInfo.setText(s);
+    }
+
+    @Override
+    public void addServicePackageTime(String time) {
+        txtPrice.setText(txtPrice.getText().toString() + " - " + time + " phút");
+    }
+
+    @Override
+    public void startShimmerAnimation() {
+        shimmerFrameLayout.startShimmerAnimation();
+    }
+
+    @Override
+    public void stopShimmerAnimation() {
+        shimmerFrameLayout.stopShimmerAnimation();
+        shimmerFrameLayout.setVisibility(View.GONE);
+    }
+
 
     public void getData() {
         Bundle bundle = getIntent().getBundleExtra(AppConstants.SERVICE_PRICE_BUNDLE);

@@ -9,4 +9,5 @@
     <color name="green">#33CC00</color>
     <color name="light_primary">#5000AA8D</color>
     <color name="light_black">#80000000</color>
+    <color name="placeholder_bg">#dddddd</color>
 </resources>

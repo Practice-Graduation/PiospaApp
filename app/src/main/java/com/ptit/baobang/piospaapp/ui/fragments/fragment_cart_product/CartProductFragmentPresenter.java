@@ -1,8 +1,8 @@
-package com.ptit.baobang.piospaapp.ui.fragments.fragment_cart;
+package com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_product;
 
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
-import com.ptit.baobang.piospaapp.data.cart.CartItem;
+import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 
@@ -10,49 +10,46 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CartFragmentPresenter  extends BasePresenter implements ICartFragmentPresenter{
+public class CartProductFragmentPresenter extends BasePresenter implements ICartProductFragmentPresenter {
 
-    private ICartFragmentView mView;
+    private ICartProductFragmentView mView;
 
-    public CartFragmentPresenter(ICartFragmentView mICartFragmentView) {
+    public CartProductFragmentPresenter(ICartProductFragmentView mICartFragmentView) {
         this.mView = mICartFragmentView;
     }
 
     @Override
     public void loadData() {
-        List<CartItem> cartItems = getCartItems();
+        List<CartProductItem> cartItems = getCartItems();
         mView.showCartItemList(cartItems);
-        mView.updateUI();
     }
 
     @Override
-    public void addCartItem(CartItem cartItem) {
+    public void addCartItem(CartProductItem cartItem) {
         Cart cart = CartHelper.getCart();
         cart.add(cartItem.getProduct(), 1);
-        mView.updateUI();
         mView.showCartItemList(getCartItems());
     }
 
     @Override
-    public void removeCartItem(CartItem cartItem) {
+    public void removeCartItem(CartProductItem cartItem) {
         Cart cart = CartHelper.getCart();
         try {
             cart.remove(cartItem.getProduct(), 1);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mView.updateUI();
         mView.showCartItemList(getCartItems());
     }
 
-    public List<CartItem> getCartItems() {
+    public List<CartProductItem> getCartItems() {
 
-        List<CartItem> cartItems = new ArrayList<>();
+        List<CartProductItem> cartItems = new ArrayList<>();
         Cart cart = CartHelper.getCart();
-        Map<Product, Integer> itemMap = cart.getItemWithQuantity();
+        Map<Product, Integer> itemMap = cart.getItemWithQuantityProduct();
 
         for (Map.Entry<Product, Integer> entry : itemMap.entrySet()) {
-            CartItem cartItem = new CartItem();
+            CartProductItem cartItem = new CartProductItem();
             cartItem.setProduct((Product) entry.getKey());
             cartItem.setQuanlity(entry.getValue());
             cartItems.add(cartItem);

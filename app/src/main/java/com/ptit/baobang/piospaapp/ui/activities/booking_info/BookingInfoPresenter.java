@@ -2,6 +2,9 @@ package com.ptit.baobang.piospaapp.ui.activities.booking_info;
 
 import android.content.Intent;
 
+import com.ptit.baobang.piospaapp.data.cart.BookingItem;
+import com.ptit.baobang.piospaapp.data.cart.Cart;
+import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.model.Room;
 import com.ptit.baobang.piospaapp.data.model.ServicePackage;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
@@ -67,5 +70,31 @@ public class BookingInfoPresenter extends BasePresenter implements  IBookingInfo
     public String sumTotalTimeOfServicePackage(ServicePackage servicePackage) {
 //        List<Service> services = servicePackage.get
         return null;
+    }
+
+    @Override
+    public void clickConfirm(ServicePrice mServicePrice, Date mSelectedDate, Room mSelectedRoom, BookingTimeFB mSelectedTime, String amount, String customerName, String phone, String email, String note) {
+        if(customerName == null || customerName.length() == 0){
+            mView.showMessage("Vui lòng nhập vào họ và tên");
+            return;
+        }
+        if(phone == null || phone.length() == 0){
+            mView.showMessage("Vui lòng nhập vào số điện thoại liên hệ");
+            return;
+        }
+        if(email == null || email.length() == 0){
+            mView.showMessage("Vui lòng nhập vào địa chỉ email");
+            return;
+        }
+        int numberCustomer = Integer.parseInt(amount);
+        Cart cart = CartHelper.getCart();
+        BookingItem bookingItem = new BookingItem(mServicePrice, mSelectedDate, mSelectedRoom, mSelectedTime);
+        cart.add(bookingItem, numberCustomer);
+        mView.showMessage("Addedd");
+    }
+
+    @Override
+    public void clickFloatButtonCart() {
+        mView.openFramentCart();
     }
 }

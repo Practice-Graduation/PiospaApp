@@ -26,6 +26,7 @@ public class ProductDetailPresenter extends BasePresenter implements IProductDet
             public void onResponse(Call<EndPoint<Product>> call, Response<EndPoint<Product>> response) {
                 if(response.isSuccessful()){
                     Product product = response.body().getData();
+                    mView.stopShirrmentAnimation();
                     mView.showProductDetail(product);
                 }
             }

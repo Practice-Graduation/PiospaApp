@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,7 +16,6 @@ import android.view.MenuItem;
 
 import com.ptit.baobang.piospaapp.ui.activities.login.LoginActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
-import com.ptit.baobang.piospaapp.ui.customs.BottomNavigationViewBehavior;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart.CartFragment;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_product.ProductFragment;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_service.ServiceFragment;
@@ -67,8 +65,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void addControls( ) {
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mNavigation.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+//        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mNavigation.getLayoutParams();
+//        layoutParams.setBehavior(new BottomNavigationViewBehavior());
         CommonUtils.disableShiftMode(mNavigation);
         fragments = new Fragment[MAX_TAB];
         addToolBar();
@@ -115,13 +113,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.navigation_service:
                 if(fragments[TAB_SERVICE] == null){
-                    fragments[TAB_SERVICE] = new ServiceFragment();
+                    fragments[TAB_SERVICE] =  ServiceFragment.newInstance();
                 }
                 fragment = fragments[TAB_SERVICE];
                 break;
             case R.id.navigation_cart:
                 if(fragments[TAB_CART] == null){
-                    fragments[TAB_CART] = new CartFragment();
+                    fragments[TAB_CART] = new CartFragment().newInstance();
                 }
                 fragment = fragments[TAB_CART];
                 break;

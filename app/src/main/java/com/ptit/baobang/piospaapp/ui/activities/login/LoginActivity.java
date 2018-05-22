@@ -2,7 +2,10 @@ package com.ptit.baobang.piospaapp.ui.activities.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
 import com.ptit.baobang.piospaapp.MainActivity;
@@ -20,17 +23,25 @@ import butterknife.OnClick;
 public class LoginActivity extends BaseActivity implements ILoginView {
 
     private LoginPresenter mLoginPresenter;
+
+
+    @BindView(R.id.login_layout)
+    NestedScrollView nestedScrollView;
     @BindView(R.id.txtUsername)
     EditText txtUsername;
     @BindView(R.id.txtPassword)
     EditText txtPassword;
+
+    Animation slideDownAnimation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mUnbinder = ButterKnife.bind(this);
         mLoginPresenter = new LoginPresenter(this);
-
+        slideDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_down_animation);
+        nestedScrollView.startAnimation(slideDownAnimation);
     }
 
     @Override

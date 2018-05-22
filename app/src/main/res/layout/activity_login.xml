@@ -8,6 +8,7 @@
     tools:context=".ui.activities.login.LoginActivity">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/login_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

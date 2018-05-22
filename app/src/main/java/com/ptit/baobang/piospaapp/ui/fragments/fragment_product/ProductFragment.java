@@ -118,6 +118,18 @@ public class ProductFragment extends BaseFragment implements IProductFragmentVie
     @Override
     public void stopShimmerAnimation() {
         shimmerLayout.stopShimmerAnimation();
+        shimmerLayout.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        startShimmerAnimation();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopShimmerAnimation();
+    }
 }

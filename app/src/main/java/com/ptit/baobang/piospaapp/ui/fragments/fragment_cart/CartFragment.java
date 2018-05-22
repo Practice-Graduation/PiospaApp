@@ -1,8 +1,11 @@
 package com.ptit.baobang.piospaapp.ui.fragments.fragment_cart;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +14,10 @@ import android.widget.TextView;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
-import com.ptit.baobang.piospaapp.data.cart.CartItem;
-import com.ptit.baobang.piospaapp.ui.adapter.ShoppingCartAdapter;
+import com.ptit.baobang.piospaapp.ui.adapter.CartPagerApdater;
 import com.ptit.baobang.piospaapp.ui.base.BaseFragment;
+import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_product.CartProductFragment;
+import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_service.CartServiceFragment;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -22,24 +26,30 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CartFragment extends BaseFragment implements ICartFragmentView {
 
-    private CartFragmentPresenter mPresenter;
+public class CartFragment extends BaseFragment implements ICartView{
+
+    @BindView(R.id.sliding_tabs)
+    TabLayout mTabLayout;
+    @BindView(R.id.viewpager)
+    ViewPager mViewPager;
 
     @BindView(R.id.txtQuanlity)
     TextView txtQuanlity;
     @BindView(R.id.txtTotal)
     TextView txtTotal;
-    @BindView(R.id.rvCart)
-    RecyclerView rvCart;
-    ShoppingCartAdapter mAdapter;
-    List<CartItem> mCartItems;
 
+    private List<Fragment> mFragments;
     public CartFragment() {
         // Required empty public constructor
     }
 
-    public static CartFragment newInstance(String param1, String param2) {
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    public static CartFragment newInstance() {
         CartFragment fragment = new CartFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -49,14 +59,11 @@ public class CartFragment extends BaseFragment implements ICartFragmentView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         mUnBinder = ButterKnife.bind(this, view);
         addControls(view);
@@ -64,32 +71,43 @@ public class CartFragment extends BaseFragment implements ICartFragmentView {
     }
 
     private void addControls(View view) {
-        mPresenter = new CartFragmentPresenter(this);
-        mCartItems = new ArrayList<>();
-        mAdapter = new ShoppingCartAdapter(getContext(), mCartItems);
-        rvCart.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvCart.setAdapter(mAdapter);
-        mPresenter.loadData();
-        mAdapter.onSetAddClickListener(position -> {
-            mPresenter.addCartItem(mCartItems.get(position));
-        });
-        mAdapter.onSetRemoveClickListener(position -> {
-            mPresenter.removeCartItem(mCartItems.get(position));
-        });
+        updateUI();
+        mFragments = new ArrayList<>();
+        CartProductFragment cartProductFragment = CartProductFragment.newInstance();
+        cartProductFragment.setCartFragment(this);
+        CartServiceFragment cartServiceFragment = CartServiceFragment.newInstance();
+        cartServiceFragment.setCartFragment(this);
+        mFragments.add(cartProductFragment);
+        mFragments.add(cartServiceFragment);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        CartPagerApdater adapter = new CartPagerApdater(fragmentManager, getContext(), mFragments);
+        mViewPager.setAdapter(adapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.setTabsFromPagerAdapter(adapter);
     }
 
-    @Override
-    public void showCartItemList(List<CartItem> cartItems) {
-        mCartItems.clear();
-        mCartItems.addAll(cartItems);
-        mAdapter.notifyDataSetChanged();
+
+    public TextView getTxtAmount() {
+        return txtQuanlity;
+    }
+
+    public void setTxtAmount(TextView txtAmount) {
+        this.txtQuanlity = txtAmount;
+    }
+
+    public TextView getTxtTotal() {
+        return txtTotal;
+    }
+
+    public void setTxtTotal(TextView txtTotal) {
+        this.txtTotal = txtTotal;
     }
 
     @Override
     public void updateUI() {
         Cart cart = CartHelper.getCart();
-        txtQuanlity.setText(new StringBuilder("Số lượng " + cart.getTotalQuantity()));
-        txtTotal.setText(new StringBuilder("Tổng tiền " + CommonUtils.formatToCurrency(cart.getTotalPrice())));
+        txtQuanlity.setText(cart.getTotalQuantity() + "");
+        txtTotal.setText(CommonUtils.formatToCurrency(cart.getTotalPrice()));
     }
-
 }

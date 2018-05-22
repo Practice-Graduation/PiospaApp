@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ptit.baobang.piospaapp.MainActivity;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Product;
@@ -25,6 +26,10 @@ public class ProductDetailActivity extends BaseActivity implements IProductDetai
 
     ProductDetailPresenter mPresenter;
     private int productId = 0;
+
+    @BindView(R.id.shimmerLayout)
+    ShimmerFrameLayout shimmerFrameLayout;
+
     @BindView(R.id.img)
     ImageView img;
     @BindView(R.id.txtName)
@@ -45,6 +50,18 @@ public class ProductDetailActivity extends BaseActivity implements IProductDetai
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
         addControls();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startShirrmentAnimation();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopShirrmentAnimation();
     }
 
     private void addControls() {
@@ -91,6 +108,17 @@ public class ProductDetailActivity extends BaseActivity implements IProductDetai
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(AppConstants.FRAGMENT, AppConstants.CART_INDEX);
         startActivity(intent);
+    }
+
+    @Override
+    public void startShirrmentAnimation() {
+        shimmerFrameLayout.startShimmerAnimation();
+    }
+
+    @Override
+    public void stopShirrmentAnimation() {
+        shimmerFrameLayout.stopShimmerAnimation();
+        shimmerFrameLayout.setVisibility(View.GONE);
     }
 
     @Override

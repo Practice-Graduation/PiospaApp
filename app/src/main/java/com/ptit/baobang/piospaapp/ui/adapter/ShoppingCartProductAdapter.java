@@ -13,21 +13,21 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.cart.CartItem;
+import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.ui.listener.OnItemClickListener;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import java.util.List;
 
-public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapter.ShoppingCartHolder> {
+public class ShoppingCartProductAdapter extends RecyclerView.Adapter<ShoppingCartProductAdapter.ShoppingCartHolder> {
 
     private Context mContext;
-    private List<CartItem> mCartItems;
+    private List<CartProductItem> mCartItems;
 
     private OnItemClickListener mAddListener, mRemoveListener;
 
-    public ShoppingCartAdapter(Context mContext, List<CartItem> mCartItems) {
+    public ShoppingCartProductAdapter(Context mContext, List<CartProductItem> mCartItems) {
         this.mContext = mContext;
         this.mCartItems = mCartItems;
     }
@@ -68,7 +68,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             txtTotal = itemView.findViewById(R.id.txtTotal);
         }
 
-        void binView(CartItem cartItem) {
+        void binView(CartProductItem cartItem) {
             Product product = cartItem.getProduct();
             txtName.setText(product.getProductName());
             txtPrice.setText(new StringBuilder("Giá: " + CommonUtils.formatToCurrency(product.getPrice())));

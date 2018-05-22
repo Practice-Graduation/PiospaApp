@@ -2,16 +2,18 @@ package com.ptit.baobang.piospaapp.data.cart;
 
 import com.ptit.baobang.piospaapp.data.model.Product;
 
-public class CartItem {
+import java.math.BigDecimal;
+
+public class CartProductItem {
     private Product product;
     private int quanlity;
 
-    public CartItem(Product product, int quanlity) {
-        this.product = product;
-        this.quanlity = quanlity;
+    public CartProductItem() {
     }
 
-    public CartItem() {
+    public CartProductItem(Product product, int quanlity) {
+        this.product = product;
+        this.quanlity = quanlity;
     }
 
     public Product getProduct() {
@@ -29,7 +31,8 @@ public class CartItem {
     public void setQuanlity(int quanlity) {
         this.quanlity = quanlity;
     }
-    public int getTotalItem(){
-        return  quanlity * product.getPrice();
+
+    public BigDecimal getTotalItem(){
+        return BigDecimal.valueOf(quanlity * product.getPrice());
     }
 }

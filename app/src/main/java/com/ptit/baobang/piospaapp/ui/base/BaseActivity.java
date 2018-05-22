@@ -23,15 +23,12 @@ import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.NetworkUtils;
 
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public abstract class BaseActivity extends AppCompatActivity implements BaseView{
 
     private ProgressDialog mProgressDialog;
     protected Unbinder mUnbinder;
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

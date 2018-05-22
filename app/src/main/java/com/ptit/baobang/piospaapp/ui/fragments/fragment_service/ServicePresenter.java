@@ -25,21 +25,19 @@ public class ServicePresenter extends BasePresenter implements IServicePresenter
 
     @Override
     public void loadData() {
-        mView.showLoading();
         mApiService.getAllServiceGroup().enqueue(new Callback<EndPoint<List<ServiceGroup>>>() {
             @Override
             public void onResponse(Call<EndPoint<List<ServiceGroup>>> call, Response<EndPoint<List<ServiceGroup>>> response) {
                 if(response.isSuccessful()){
                     List<ServiceGroup> groups = response.body().getData();
                     mView.onUpdateRecycleView(groups);
-                    mView.hideLoading();
+                    mView.stopShirrmentAnimation();
                 }
             }
 
             @Override
             public void onFailure(Call<EndPoint<List<ServiceGroup>>> call, Throwable t) {
                 mView.showMessage(t.getMessage());
-                mView.hideLoading();
             }
         });
     }
