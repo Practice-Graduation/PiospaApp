@@ -4,20 +4,22 @@ package com.ptit.baobang.piospaapp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ServiceTime {
+import java.io.Serializable;
+
+public class ServiceTime implements Serializable {
 
     @SerializedName("serviceTimeId")
     @Expose
-    private Integer serviceTimeId;
+    private int serviceTimeId;
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
     @SerializedName("createdBy")
     @Expose
-    private Integer createdBy;
+    private int createdBy;
     @SerializedName("isActive")
     @Expose
-    private Integer isActive;
+    private int isActive;
     @SerializedName("time")
     @Expose
     private String time;
@@ -26,13 +28,13 @@ public class ServiceTime {
     private String updatedAt;
     @SerializedName("updatedBy")
     @Expose
-    private Integer updatedBy;
+    private int updatedBy;
 
-    public Integer getServiceTimeId() {
+    public int getServiceTimeId() {
         return serviceTimeId;
     }
 
-    public void setServiceTimeId(Integer serviceTimeId) {
+    public void setServiceTimeId(int serviceTimeId) {
         this.serviceTimeId = serviceTimeId;
     }
 
@@ -44,19 +46,19 @@ public class ServiceTime {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Integer getIsActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(Integer isActive) {
+    public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
 
@@ -76,11 +78,11 @@ public class ServiceTime {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getUpdatedBy() {
+    public int getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Integer updatedBy) {
+    public void setUpdatedBy(int updatedBy) {
         this.updatedBy = updatedBy;
     }
 

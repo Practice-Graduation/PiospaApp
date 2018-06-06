@@ -46,6 +46,7 @@ public class CartServiceFragmentPresenter extends BasePresenter implements ICart
     public List<CartServicePriceItem> getCartItems() {
         List<CartServicePriceItem> cartItems = new ArrayList<>();
         Cart cart = CartHelper.getCart();
+
         Map<BookingItem, Integer> itemMap = cart.getItemWithQuantityServices();
 
         for (Map.Entry<BookingItem, Integer> entry : itemMap.entrySet()) {

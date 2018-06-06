@@ -10,4 +10,7 @@
     <color name="light_primary">#5000AA8D</color>
     <color name="light_black">#80000000</color>
     <color name="placeholder_bg">#dddddd</color>
+    <color name="black">#000</color>
+    <color name="details_list_color">#f5f6f9</color>
+    <color name="background">#e9ecf1</color>
 </resources>

@@ -2,34 +2,45 @@ package com.ptit.baobang.piospaapp.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateTimeUtils {
-    static String DATE_PARTERN = "yyyy-MM-dd";
-    static String TIME_PARTERN = "HH:mm";
-    static String DATE_PARTERN_DDMMYY = "dd/MM/yyyy";
     private static SimpleDateFormat dateFormat = null;
     private static SimpleDateFormat dateFormatDDMMYY = null;
     private static SimpleDateFormat timeFormat = null;
+    private static Locale locale = new Locale("vi", "VN");
 
-    public static SimpleDateFormat getDateFormat() {
+    private static SimpleDateFormat getDateFormat() {
         if(dateFormat == null){
-            dateFormat = new SimpleDateFormat(DATE_PARTERN);
+            String DATE_PARTERN = "yyyy-MM-dd";
+            dateFormat = new SimpleDateFormat(DATE_PARTERN, locale);
         }
         return dateFormat;
     }
 
-    public static SimpleDateFormat getDateFormatDDMMYY() {
+    private static SimpleDateFormat getDateFormatDDMMYY() {
         if(dateFormatDDMMYY == null){
-            dateFormatDDMMYY = new SimpleDateFormat(DATE_PARTERN_DDMMYY);
+            String DATE_PARTERN_DDMMYY = "dd/MM/yyyy";
+            dateFormatDDMMYY = new SimpleDateFormat(DATE_PARTERN_DDMMYY, locale);
         }
         return dateFormatDDMMYY;
     }
 
-    public static SimpleDateFormat getTimeFormat() {
+    private static SimpleDateFormat getTimeFormat() {
         if(timeFormat == null){
-            timeFormat = new SimpleDateFormat(TIME_PARTERN);
+            String TIME_PARTERN = "HH:mm";
+            timeFormat = new SimpleDateFormat(TIME_PARTERN, locale);
         }
         return timeFormat;
+    }
+
+    public static Locale getLocale() {
+        return locale;
+    }
+
+    public static Date getDateFromString(String date){
+
+        return new Date(date);
     }
 
     public static String formatDate(Date date){

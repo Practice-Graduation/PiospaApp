@@ -3,104 +3,106 @@ package com.ptit.baobang.piospaapp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TimeEnd {
+import java.io.Serializable;
+
+public class TimeEnd implements Serializable {
     @SerializedName("date")
     @Expose
-    private Integer date;
+    private int date;
     @SerializedName("day")
     @Expose
-    private Integer day;
+    private int day;
     @SerializedName("hours")
     @Expose
-    private Integer hours;
+    private int hours;
     @SerializedName("minutes")
     @Expose
-    private Integer minutes;
+    private int minutes;
     @SerializedName("month")
     @Expose
-    private Integer month;
+    private int month;
     @SerializedName("seconds")
     @Expose
-    private Integer seconds;
+    private int seconds;
     @SerializedName("time")
     @Expose
-    private Integer time;
+    private int time;
     @SerializedName("timezoneOffset")
     @Expose
-    private Integer timezoneOffset;
+    private int timezoneOffset;
     @SerializedName("year")
     @Expose
-    private Integer year;
+    private int year;
 
-    public Integer getDate() {
+    public int getDate() {
         return date;
     }
 
-    public void setDate(Integer date) {
+    public void setDate(int date) {
         this.date = date;
     }
 
-    public Integer getDay() {
+    public int getDay() {
         return day;
     }
 
-    public void setDay(Integer day) {
+    public void setDay(int day) {
         this.day = day;
     }
 
-    public Integer getHours() {
+    public int getHours() {
         return hours;
     }
 
-    public void setHours(Integer hours) {
+    public void setHours(int hours) {
         this.hours = hours;
     }
 
-    public Integer getMinutes() {
+    public int getMinutes() {
         return minutes;
     }
 
-    public void setMinutes(Integer minutes) {
+    public void setMinutes(int minutes) {
         this.minutes = minutes;
     }
 
-    public Integer getMonth() {
+    public int getMonth() {
         return month;
     }
 
-    public void setMonth(Integer month) {
+    public void setMonth(int month) {
         this.month = month;
     }
 
-    public Integer getSeconds() {
+    public int getSeconds() {
         return seconds;
     }
 
-    public void setSeconds(Integer seconds) {
+    public void setSeconds(int seconds) {
         this.seconds = seconds;
     }
 
-    public Integer getTime() {
+    public int getTime() {
         return time;
     }
 
-    public void setTime(Integer time) {
+    public void setTime(int time) {
         this.time = time;
     }
 
-    public Integer getTimezoneOffset() {
+    public int getTimezoneOffset() {
         return timezoneOffset;
     }
 
-    public void setTimezoneOffset(Integer timezoneOffset) {
+    public void setTimezoneOffset(int timezoneOffset) {
         this.timezoneOffset = timezoneOffset;
     }
 
-    public Integer getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public void setYear(int year) {
         this.year = year;
     }
 }

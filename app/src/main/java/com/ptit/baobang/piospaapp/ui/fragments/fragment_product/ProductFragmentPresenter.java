@@ -42,7 +42,6 @@ public class ProductFragmentPresenter extends BasePresenter implements IProductF
             @Override
             public void onFailure(Call<EndPoint<List<ProductGroup>>> call, Throwable t) {
                 mView.showMessage(t.getMessage());
-                mView.stopShimmerAnimation();
             }
         });
 

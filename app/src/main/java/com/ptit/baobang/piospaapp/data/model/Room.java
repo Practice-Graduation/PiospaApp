@@ -10,19 +10,19 @@ public class Room implements Serializable{
 
     @SerializedName("roomId")
     @Expose
-    private Integer roomId;
+    private int roomId;
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
     @SerializedName("createdBy")
     @Expose
-    private Integer createdBy;
+    private int createdBy;
     @SerializedName("endTime")
     @Expose
     private String endTime;
     @SerializedName("isActive")
     @Expose
-    private Integer isActive;
+    private int isActive;
     @SerializedName("roomName")
     @Expose
     private String roomName;
@@ -34,13 +34,13 @@ public class Room implements Serializable{
     private String updateAt;
     @SerializedName("updatedBy")
     @Expose
-    private Integer updatedBy;
+    private int updatedBy;
 
-    public Integer getRoomId() {
+    public int getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Integer roomId) {
+    public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
 
@@ -52,11 +52,11 @@ public class Room implements Serializable{
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -68,11 +68,11 @@ public class Room implements Serializable{
         this.endTime = endTime;
     }
 
-    public Integer getIsActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(Integer isActive) {
+    public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
 
@@ -100,11 +100,11 @@ public class Room implements Serializable{
         this.updateAt = updateAt;
     }
 
-    public Integer getUpdatedBy() {
+    public int getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Integer updatedBy) {
+    public void setUpdatedBy(int updatedBy) {
         this.updatedBy = updatedBy;
     }
 

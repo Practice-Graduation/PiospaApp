@@ -4,20 +4,25 @@ package com.ptit.baobang.piospaapp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class OrderDeliveryType {
+import java.io.Serializable;
+
+public class OrderDeliveryType implements Serializable {
 
     @SerializedName("orderDeliveryTypeId")
     @Expose
-    private Integer orderDeliveryTypeId;
+    private int orderDeliveryTypeId;
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
     @SerializedName("createdBy")
     @Expose
-    private Integer createdBy;
+    private int createdBy;
     @SerializedName("isActive")
     @Expose
-    private Integer isActive;
+    private int isActive;
+    @SerializedName("price")
+    @Expose
+    private int price;
     @SerializedName("orderDeliveryTypeCode")
     @Expose
     private String orderDeliveryTypeCode;
@@ -29,13 +34,13 @@ public class OrderDeliveryType {
     private String updatedAt;
     @SerializedName("updatedBy")
     @Expose
-    private Integer updatedBy;
+    private int updatedBy;
 
-    public Integer getOrderDeliveryTypeId() {
+    public int getOrderDeliveryTypeId() {
         return orderDeliveryTypeId;
     }
 
-    public void setOrderDeliveryTypeId(Integer orderDeliveryTypeId) {
+    public void setOrderDeliveryTypeId(int orderDeliveryTypeId) {
         this.orderDeliveryTypeId = orderDeliveryTypeId;
     }
 
@@ -47,19 +52,19 @@ public class OrderDeliveryType {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Integer getIsActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(Integer isActive) {
+    public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
 
@@ -87,12 +92,19 @@ public class OrderDeliveryType {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getUpdatedBy() {
+    public int getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Integer updatedBy) {
+    public void setUpdatedBy(int updatedBy) {
         this.updatedBy = updatedBy;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 }

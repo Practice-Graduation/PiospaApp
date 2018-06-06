@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="@dimen/margin"
-    android:layout_marginLeft="@dimen/margin">
+    android:layout_marginLeft="@dimen/margin"
+    android:layout_marginStart="@dimen/margin">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,19 +21,18 @@
             android:padding="@dimen/padding"
             android:textAlignment="center"
             android:gravity="center"
-            android:text="07:30"
             android:drawablePadding="@dimen/padding"
             android:drawableLeft="@drawable/ic_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:drawableStart="@drawable/ic_time" />
 
         <TextView
             android:id="@+id/txtStatus"
-            android:text="Có thể đặt hẹn"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:gravity="center|left"
+            android:gravity="center|start"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/txtTime"
@@ -42,7 +42,7 @@
             android:id="@+id/btnBookApointment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đặt hẹn"
+            android:text="@string/booking"
             android:textColor="@color/white"
             android:layout_marginEnd="@dimen/margin"
             android:layout_marginStart="@dimen/margin"

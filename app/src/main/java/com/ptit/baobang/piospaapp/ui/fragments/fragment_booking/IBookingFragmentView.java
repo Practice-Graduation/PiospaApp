@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IBookingFragmentView extends BaseView{
     void updateRecycleViewRoom(List<Room> rooms);
-    void updateRecycleViewTime(List<BookingTimeFB>times);
+    void updateRecycleViewTime(List<String>times);
 
-    void openBookingInfoActivity(int mServicePriceSelected, Date mSelectedDate, Room mRoomSelected, BookingTimeFB mTimeSelected);
+    void openBookingInfoActivity(int mServicePriceSelected, Date mSelectedDate);
 }

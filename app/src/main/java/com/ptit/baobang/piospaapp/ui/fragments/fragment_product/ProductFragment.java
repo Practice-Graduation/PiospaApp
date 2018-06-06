@@ -25,14 +25,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ProductFragment extends BaseFragment implements IProductFragmentView{
+public class ProductFragment extends BaseFragment implements IProductFragmentView {
 
     private static final String TAG = "ProductFragment";
     private ProductFragmentPresenter mPresenter;
 
     @BindView(R.id.shimmerLayout)
     ShimmerFrameLayout shimmerLayout;
-//    @BindView(R.id.toolbar)
+    //    @BindView(R.id.toolbar)
 //    Toolbar toolbar;
     @BindView(R.id.rvProductGroups)
     RecyclerView rvProductGroups;
@@ -77,7 +77,7 @@ public class ProductFragment extends BaseFragment implements IProductFragmentVie
         mUnBinder = ButterKnife.bind(this, view);
 //        toolbar.setTitle(R.string.title_product);
 
-        mProductGroups =  new ArrayList<>();
+        mProductGroups = new ArrayList<>();
         mAdapter = new ProductGroupAdapter(getContext(), mProductGroups, mPresenter.getmApiService());
         mAdapter.setmIProductFragmentView(this);
         rvProductGroups.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -112,13 +112,16 @@ public class ProductFragment extends BaseFragment implements IProductFragmentVie
 
     @Override
     public void startShimmerAnimation() {
-        shimmerLayout.startShimmerAnimation();
+        if (shimmerLayout != null)
+            shimmerLayout.startShimmerAnimation();
     }
 
     @Override
     public void stopShimmerAnimation() {
-        shimmerLayout.stopShimmerAnimation();
-        shimmerLayout.setVisibility(View.GONE);
+        if (shimmerLayout != null) {
+            shimmerLayout.stopShimmerAnimation();
+            shimmerLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override

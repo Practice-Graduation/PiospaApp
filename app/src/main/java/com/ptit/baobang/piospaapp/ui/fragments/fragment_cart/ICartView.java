@@ -4,4 +4,8 @@ import com.ptit.baobang.piospaapp.ui.base.BaseView;
 
 public interface ICartView extends BaseView {
     void updateUI();
+
+    void openPaymentActivity();
+
+    void showEmptyCart();
 }

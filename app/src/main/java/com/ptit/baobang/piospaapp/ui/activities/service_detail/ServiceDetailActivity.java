@@ -15,7 +15,7 @@ import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Service;
 import com.ptit.baobang.piospaapp.data.model.ServicePackage;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
-import com.ptit.baobang.piospaapp.ui.activities.booking.BookingActivity;
+import com.ptit.baobang.piospaapp.ui.activities.booking_info.BookingInfoActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
@@ -71,14 +71,14 @@ public class ServiceDetailActivity extends BaseActivity implements IServiceDetai
 
         String image = "", name = "", price = "", info = "";
 
-        if(servicePrice.getService() != null){
+        if (servicePrice.getService() != null) {
             Service service = servicePrice.getService();
             image = service.getImage();
             name = service.getServiceName();
             price = CommonUtils.formatToCurrency(servicePrice.getRetailPrice());
             info = service.getDescription();
             txtInfo.setText(info);
-        }else if(servicePrice.getServicePackage() != null){
+        } else if (servicePrice.getServicePackage() != null) {
             ServicePackage servicePackage = servicePrice.getServicePackage();
             image = servicePackage.getImage();
             name = servicePackage.getServicePackageName();
@@ -96,7 +96,7 @@ public class ServiceDetailActivity extends BaseActivity implements IServiceDetai
 
     @Override
     public void openBookingActivity(int servicePriceId) {
-        Intent intent = new Intent(this, BookingActivity.class);
+        Intent intent = new Intent(this, BookingInfoActivity.class);
         intent.putExtra(AppConstants.SERVICE_PRICE_ID, servicePriceId);
         startActivity(intent);
     }
@@ -125,13 +125,18 @@ public class ServiceDetailActivity extends BaseActivity implements IServiceDetai
 
     @Override
     public void startShimmerAnimation() {
-        shimmerFrameLayout.startShimmerAnimation();
+        if (shimmerFrameLayout != null) {
+            shimmerFrameLayout.startShimmerAnimation();
+        }
     }
 
     @Override
     public void stopShimmerAnimation() {
-        shimmerFrameLayout.stopShimmerAnimation();
-        shimmerFrameLayout.setVisibility(View.GONE);
+        if (shimmerFrameLayout != null) {
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.GONE);
+        }
+
     }
 
 
@@ -139,6 +144,7 @@ public class ServiceDetailActivity extends BaseActivity implements IServiceDetai
         Bundle bundle = getIntent().getBundleExtra(AppConstants.SERVICE_PRICE_BUNDLE);
         servicePriceId = bundle.getInt(AppConstants.SERVICE_PRICE_ID);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

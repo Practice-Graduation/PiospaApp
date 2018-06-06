@@ -20,9 +20,9 @@ public class FirebaseUtils {
         return  getDatabase().getReference(BOOKING_TIME_REF);
     }
 
-    public static void addBookingTime(String key, String date, String roomId, BookingTimeFB bookingTimeFB){
+    public static void addBookingTime(String key, String date, BookingTimeFB bookingTimeFB){
         bookingTimeFB.setId(key);
-        getBookingTimeRef().child(date).child(roomId).child(key).setValue(bookingTimeFB);
+        getBookingTimeRef().child(date).child(key).setValue(bookingTimeFB);
     }
 
 }

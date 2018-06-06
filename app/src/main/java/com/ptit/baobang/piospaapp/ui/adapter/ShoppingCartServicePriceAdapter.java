@@ -18,7 +18,9 @@ import com.ptit.baobang.piospaapp.data.model.ServicePackage;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.ui.listener.OnItemClickListener;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
+import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
 
+import java.util.Date;
 import java.util.List;
 
 public class ShoppingCartServicePriceAdapter extends RecyclerView.Adapter<ShoppingCartServicePriceAdapter.ShoppingCartHolder> {
@@ -64,7 +66,6 @@ public class ShoppingCartServicePriceAdapter extends RecyclerView.Adapter<Shoppi
             txtName = itemView.findViewById(R.id.txtName);
             txtDate = itemView.findViewById(R.id.txtDate);
             txtTime = itemView.findViewById(R.id.txtTime);
-            txtRoom = itemView.findViewById(R.id.txtRoom);
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtQuanlity = itemView.findViewById(R.id.txtQuanlity);
             txtTotal = itemView.findViewById(R.id.txtTotal);
@@ -74,6 +75,7 @@ public class ShoppingCartServicePriceAdapter extends RecyclerView.Adapter<Shoppi
 
         public void bindView(CartServicePriceItem cartServicePriveItem) {
             ServicePrice servicePrice = cartServicePriveItem.getBookingItem().getServicePrice();
+            Date selectedDate =  cartServicePriveItem.getBookingItem().getSelectedDate();
             String name = "", image = "";
             if(servicePrice.getService() != null){
                 Service service = servicePrice.getService();
@@ -87,6 +89,8 @@ public class ShoppingCartServicePriceAdapter extends RecyclerView.Adapter<Shoppi
 
             txtName.setText(name);
             txtPrice.setText(new StringBuilder("Giá: " + CommonUtils.formatToCurrency(servicePrice.getAllPrice())));
+            txtDate.setText(new StringBuilder(DateTimeUtils.formatDateDDMMYYYY(selectedDate)));
+            txtTime.setText(new StringBuilder(DateTimeUtils.formatTime(selectedDate)));
             txtQuanlity.setText(new StringBuilder(cartServicePriveItem.getNumberCustomer() + ""));
             txtTotal.setText(CommonUtils.formatToCurrency(cartServicePriveItem.getTotalItem()));
             RequestOptions options = new RequestOptions().error(R.drawable.error).placeholder(R.drawable.paceholder);

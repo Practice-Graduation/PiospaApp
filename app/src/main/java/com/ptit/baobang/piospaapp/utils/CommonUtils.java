@@ -16,6 +16,7 @@ import com.ptit.baobang.piospaapp.R;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
@@ -73,23 +74,16 @@ public class CommonUtils {
     }
 
     public static Date getDateTime(Date date, String time){
-
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
         String []item = time.split(":");
-        Date temp =  new Date(date.toString());
-        temp.setHours(Integer.parseInt(item[0]));
-        temp.setMinutes(Integer.parseInt(item[1]));
-        temp.setSeconds(Integer.parseInt(item[2]));
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(item[0]));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(item[1]));
+        if(item.length > 2){
+            calendar.set(Calendar.SECOND, Integer.parseInt(item[2]));
+        }
 
-        return temp;
-    }
-
-    public static Date getDateTimeHHMM(Date date, String time){
-
-        String []item = time.split(":");
-        Date temp =  new Date(date.toString());
-        temp.setHours(Integer.parseInt(item[0]));
-        temp.setMinutes(Integer.parseInt(item[1]));
-        return temp;
+        return calendar.getTime();
     }
 
     public static boolean isEmailValid(String email) {

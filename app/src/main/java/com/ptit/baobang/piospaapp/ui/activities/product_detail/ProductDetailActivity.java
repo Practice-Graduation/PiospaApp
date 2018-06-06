@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.ptit.baobang.piospaapp.MainActivity;
+import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
@@ -112,13 +112,17 @@ public class ProductDetailActivity extends BaseActivity implements IProductDetai
 
     @Override
     public void startShirrmentAnimation() {
+        if(shimmerFrameLayout != null)
         shimmerFrameLayout.startShimmerAnimation();
     }
 
     @Override
     public void stopShirrmentAnimation() {
-        shimmerFrameLayout.stopShimmerAnimation();
-        shimmerFrameLayout.setVisibility(View.GONE);
+        if(shimmerFrameLayout != null){
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

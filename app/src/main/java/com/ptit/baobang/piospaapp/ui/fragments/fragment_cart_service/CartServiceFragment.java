@@ -1,13 +1,17 @@
 package com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_service;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.data.cart.Cart;
+import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
 import com.ptit.baobang.piospaapp.ui.adapter.ShoppingCartServicePriceAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseFragment;
@@ -25,7 +29,8 @@ public class CartServiceFragment extends BaseFragment implements ICartServiceFra
 
     private CartFragment cartFragment;
 
-
+    @BindView(R.id.layout_empty)
+    LinearLayout layoutEmpty;
     @BindView(R.id.rvServices)
     RecyclerView rvServices;
     ShoppingCartServicePriceAdapter mAdapter;
@@ -47,37 +52,54 @@ public class CartServiceFragment extends BaseFragment implements ICartServiceFra
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(mPresenter != null){
+            mPresenter.loadData();
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public void onResume() {
+        super.onResume();
+//        if(mPresenter != null){
+//            mPresenter.loadData();
+//        }
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart_service, container, false);
         mUnBinder = ButterKnife.bind(this, view);
-        addControls(view);
+        addControls();
+        addEvents();
         return view;
     }
 
-    private void addControls(View view) {
-        mPresenter = new CartServiceFragmentPresenter(this);
-        mItems = new ArrayList<>();
-        mAdapter = new ShoppingCartServicePriceAdapter(getContext(), mItems);
-        rvServices.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvServices.setAdapter(mAdapter);
-        mPresenter.loadData();
+    private void addEvents() {
         mAdapter.onSetAddClickListener(position -> {
             mPresenter.addCartItem(mItems.get(position));
             if(cartFragment != null){
                 cartFragment.updateUI();
+                showCartEmpty();
             }
         });
         mAdapter.onSetRemoveClickListener(position -> {
             mPresenter.removeCartItem(mItems.get(position));
             if(cartFragment != null){
                 cartFragment.updateUI();
+                showCartEmpty();
             }
         });
+    }
+
+    private void addControls() {
+        mPresenter = new CartServiceFragmentPresenter(this);
+        mItems = new ArrayList<>();
+        mAdapter = new ShoppingCartServicePriceAdapter(getContext(), mItems);
+        rvServices.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvServices.setAdapter(mAdapter);
+        mPresenter.loadData();
     }
 
     @Override
@@ -85,6 +107,20 @@ public class CartServiceFragment extends BaseFragment implements ICartServiceFra
         mItems.clear();
         mItems.addAll(cartItems);
         mAdapter.notifyDataSetChanged();
+        showCartEmpty();
+    }
+
+    @Override
+    public void showCartEmpty() {
+
+        Cart cart = CartHelper.getCart();
+        if(cart.getServicePrices().size() == 0){
+            layoutEmpty.setVisibility(View.VISIBLE);
+            rvServices.setVisibility(View.GONE);
+        }else{
+            layoutEmpty.setVisibility(View.GONE);
+            rvServices.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setCartFragment(CartFragment cartFragment) {

@@ -4,11 +4,13 @@ package com.ptit.baobang.piospaapp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable {
 
     @SerializedName("orderId")
     @Expose
-    private Integer orderId;
+    private int orderId;
     @SerializedName("address")
     @Expose
     private String address;
@@ -18,12 +20,18 @@ public class Order {
     @SerializedName("code")
     @Expose
     private String code;
+    @SerializedName("fullName")
+    @Expose
+    private String fullName;
+    @SerializedName("phone")
+    @Expose
+    private String phone;
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
     @SerializedName("createdBy")
     @Expose
-    private Integer createdBy;
+    private int createdBy;
     @SerializedName("dateDelivery")
     @Expose
     private String dateDelivery;
@@ -32,10 +40,10 @@ public class Order {
     private String deliveryCode;
     @SerializedName("deliveryCost")
     @Expose
-    private Integer deliveryCost;
+    private int deliveryCost;
     @SerializedName("discount")
     @Expose
-    private Integer discount;
+    private int discount;
     @SerializedName("email")
     @Expose
     private String email;
@@ -44,25 +52,25 @@ public class Order {
     private String note;
     @SerializedName("staffId")
     @Expose
-    private Integer staffId;
+    private int staffId;
     @SerializedName("subTotal")
     @Expose
-    private Integer subTotal;
+    private int subTotal;
     @SerializedName("taxId")
     @Expose
-    private Integer taxId;
+    private int taxId;
     @SerializedName("total")
     @Expose
-    private Integer total;
+    private int total;
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
     @SerializedName("updatedBy")
     @Expose
-    private Integer updatedBy;
+    private int updatedBy;
     @SerializedName("voucherId")
     @Expose
-    private Integer voucherId;
+    private int voucherId;
     @SerializedName("customerSource")
     @Expose
     private CustomerSource customerSource;
@@ -71,7 +79,7 @@ public class Order {
     private Customer customer;
     @SerializedName("orderDeliveryStatus")
     @Expose
-    private Object orderDeliveryStatus;
+    private OrderDeliveryStatus orderDeliveryStatus;
     @SerializedName("orderDeliveryType")
     @Expose
     private OrderDeliveryType orderDeliveryType;
@@ -80,16 +88,16 @@ public class Order {
     private OrderPaymentType orderPaymentType;
     @SerializedName("orderReasonCancel")
     @Expose
-    private Object orderReasonCancel;
+    private OrderReasonCancel orderReasonCancel;
     @SerializedName("orderStatus")
     @Expose
-    private Object orderStatus;
+    private OrderStatus orderStatus;
 
-    public Integer getOrderId() {
+    public int getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Integer orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
@@ -125,11 +133,11 @@ public class Order {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -149,19 +157,19 @@ public class Order {
         this.deliveryCode = deliveryCode;
     }
 
-    public Integer getDeliveryCost() {
+    public int getDeliveryCost() {
         return deliveryCost;
     }
 
-    public void setDeliveryCost(Integer deliveryCost) {
+    public void setDeliveryCost(int deliveryCost) {
         this.deliveryCost = deliveryCost;
     }
 
-    public Integer getDiscount() {
+    public int getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Integer discount) {
+    public void setDiscount(int discount) {
         this.discount = discount;
     }
 
@@ -181,35 +189,35 @@ public class Order {
         this.note = note;
     }
 
-    public Integer getStaffId() {
+    public int getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(Integer staffId) {
+    public void setStaffId(int staffId) {
         this.staffId = staffId;
     }
 
-    public Integer getSubTotal() {
+    public int getSubTotal() {
         return subTotal;
     }
 
-    public void setSubTotal(Integer subTotal) {
+    public void setSubTotal(int subTotal) {
         this.subTotal = subTotal;
     }
 
-    public Integer getTaxId() {
+    public int getTaxId() {
         return taxId;
     }
 
-    public void setTaxId(Integer taxId) {
+    public void setTaxId(int taxId) {
         this.taxId = taxId;
     }
 
-    public Integer getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 
@@ -221,19 +229,19 @@ public class Order {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getUpdatedBy() {
+    public int getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Integer updatedBy) {
+    public void setUpdatedBy(int updatedBy) {
         this.updatedBy = updatedBy;
     }
 
-    public Integer getVoucherId() {
+    public int getVoucherId() {
         return voucherId;
     }
 
-    public void setVoucherId(Integer voucherId) {
+    public void setVoucherId(int voucherId) {
         this.voucherId = voucherId;
     }
 
@@ -253,11 +261,11 @@ public class Order {
         this.customer = customer;
     }
 
-    public Object getOrderDeliveryStatus() {
+    public OrderDeliveryStatus getOrderDeliveryStatus() {
         return orderDeliveryStatus;
     }
 
-    public void setOrderDeliveryStatus(Object orderDeliveryStatus) {
+    public void setOrderDeliveryStatus(OrderDeliveryStatus orderDeliveryStatus) {
         this.orderDeliveryStatus = orderDeliveryStatus;
     }
 
@@ -277,20 +285,35 @@ public class Order {
         this.orderPaymentType = orderPaymentType;
     }
 
-    public Object getOrderReasonCancel() {
+    public OrderReasonCancel getOrderReasonCancel() {
         return orderReasonCancel;
     }
 
-    public void setOrderReasonCancel(Object orderReasonCancel) {
+    public void setOrderReasonCancel(OrderReasonCancel orderReasonCancel) {
         this.orderReasonCancel = orderReasonCancel;
     }
 
-    public Object getOrderStatus() {
+    public OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(Object orderStatus) {
+    public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

@@ -4,11 +4,13 @@ package com.ptit.baobang.piospaapp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Booking {
+import java.io.Serializable;
+
+public class Booking implements Serializable {
 
     @SerializedName("bookingId")
     @Expose
-    private Integer bookingId;
+    private int bookingId;
     @SerializedName("code")
     @Expose
     private String code;
@@ -17,22 +19,22 @@ public class Booking {
     private String createdAt;
     @SerializedName("createdBy")
     @Expose
-    private Integer createdBy;
+    private int createdBy;
     @SerializedName("date")
     @Expose
     private String date;
     @SerializedName("discount")
     @Expose
-    private Integer discount;
+    private int discount;
     @SerializedName("number")
     @Expose
-    private Integer number;
+    private int number;
     @SerializedName("price")
     @Expose
-    private Integer price;
+    private int price;
     @SerializedName("taxId")
     @Expose
-    private Integer taxId;
+    private int taxId;
     @SerializedName("timeEnd")
     @Expose
     private String timeEnd;
@@ -41,16 +43,16 @@ public class Booking {
     private String timeStart;
     @SerializedName("total")
     @Expose
-    private Integer total;
+    private int total;
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
     @SerializedName("updatedBy")
     @Expose
-    private Integer updatedBy;
+    private int updatedBy;
     @SerializedName("voucherId")
     @Expose
-    private Integer voucherId;
+    private int voucherId;
     @SerializedName("customer")
     @Expose
     private Customer customer;
@@ -58,11 +60,11 @@ public class Booking {
     @Expose
     private Order order;
 
-    public Integer getBookingId() {
+    public int getBookingId() {
         return bookingId;
     }
 
-    public void setBookingId(Integer bookingId) {
+    public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
     }
 
@@ -82,11 +84,11 @@ public class Booking {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -98,35 +100,35 @@ public class Booking {
         this.date = date;
     }
 
-    public Integer getDiscount() {
+    public int getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Integer discount) {
+    public void setDiscount(int discount) {
         this.discount = discount;
     }
 
-    public Integer getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
-    public Integer getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public Integer getTaxId() {
+    public int getTaxId() {
         return taxId;
     }
 
-    public void setTaxId(Integer taxId) {
+    public void setTaxId(int taxId) {
         this.taxId = taxId;
     }
 
@@ -146,11 +148,11 @@ public class Booking {
         this.timeStart = timeStart;
     }
 
-    public Integer getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 
@@ -162,19 +164,19 @@ public class Booking {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getUpdatedBy() {
+    public int getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Integer updatedBy) {
+    public void setUpdatedBy(int updatedBy) {
         this.updatedBy = updatedBy;
     }
 
-    public Integer getVoucherId() {
+    public int getVoucherId() {
         return voucherId;
     }
 
-    public void setVoucherId(Integer voucherId) {
+    public void setVoucherId(int voucherId) {
         this.voucherId = voucherId;
     }
 

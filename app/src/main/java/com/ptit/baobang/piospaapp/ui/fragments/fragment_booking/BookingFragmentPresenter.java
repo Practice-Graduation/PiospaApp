@@ -52,7 +52,6 @@ public class BookingFragmentPresenter extends BasePresenter implements IBookingF
 
         BookingDetailRequest request = new BookingDetailRequest();
         request.setDate(DateTimeUtils.formatDate(selectedDate));
-        request.setRoomId(room.getRoomId());
 
         mApiService.getBookingDetailOnDayOfRoom(request).enqueue(new Callback<EndPoint<List<BookingDetail>>>() {
             @Override
@@ -79,7 +78,7 @@ public class BookingFragmentPresenter extends BasePresenter implements IBookingF
 
     @Override
     public void clickBookingButton(int mServicePriceSelected, Date mSelectedDate, Room mRoomSelected, BookingTimeFB mTimeSelected) {
-        mView.openBookingInfoActivity(mServicePriceSelected, mSelectedDate, mRoomSelected, mTimeSelected);
+//        mView.openBookingInfoActivity(mServicePriceSelected, mSelectedDate, mRoomSelected, mTimeSelected);
     }
 
     private void createBookingTimes(List<BookingDetail> details, Room room, Date selectedDate) {
@@ -109,7 +108,7 @@ public class BookingFragmentPresenter extends BasePresenter implements IBookingF
                    bookingTimeFB.setTimeEnd(DateTimeUtils.formatTime(calendar.getTime()));
                    bookingTimeFB.setBooking(true);
                    times.add(bookingTimeFB);
-                   FirebaseUtils.addBookingTime(index++ +"",DateTimeUtils.formatDate(selectedDate), room.getRoomId() + "", bookingTimeFB);
+                   FirebaseUtils.addBookingTime(index++ +"",DateTimeUtils.formatDate(selectedDate), bookingTimeFB);
                    details.remove(0);
                    continue;
                }
@@ -121,8 +120,8 @@ public class BookingFragmentPresenter extends BasePresenter implements IBookingF
             calendar.add(Calendar.MINUTE, 30);
             bookingTimeFB.setTimeEnd(DateTimeUtils.formatTime(calendar.getTime()));
             times.add(bookingTimeFB);
-            FirebaseUtils.addBookingTime(index++ +"",DateTimeUtils.formatDate(selectedDate), room.getRoomId() + "", bookingTimeFB);
+            FirebaseUtils.addBookingTime(index++ +"",DateTimeUtils.formatDate(selectedDate), bookingTimeFB);
         }
-        mView.updateRecycleViewTime(times);
+//        mView.updateRecycleViewTime(times);
     }
 }

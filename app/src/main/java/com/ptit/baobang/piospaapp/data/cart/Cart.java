@@ -1,5 +1,7 @@
 package com.ptit.baobang.piospaapp.data.cart;
 
+import android.util.Log;
+
 import com.ptit.baobang.piospaapp.data.model.Product;
 
 import java.io.Serializable;
@@ -61,8 +63,11 @@ public class Cart implements Serializable{
         BookingItem key = containsBookingItem(bookingItem);
         if (key != null) {
             cartServiceItems.put(key, cartServiceItems.get(key) + quantity);
+            Log.e("CART", key.getServicePrice().getServicePriceId() + "-" + (cartServiceItems.get(key) + quantity));
         } else {
             cartServiceItems.put(bookingItem, quantity);
+            Log.e("CART", bookingItem.getServicePrice().getServicePriceId() + "-" + quantity);
+
         }
 
         totalPrice = totalPrice.add(BigDecimal.valueOf(quantity).multiply(BigDecimal.valueOf(bookingItem.getServicePrice().getAllPrice())));
@@ -264,13 +269,13 @@ public class Cart implements Serializable{
      * @return A map from product to its quantity in this shopping cart
      */
     public Map<Product, Integer> getItemWithQuantityProduct() {
-        Map<Product, Integer> cartItemMap = new HashMap<Product, Integer>();
+        Map<Product, Integer> cartItemMap = new HashMap<>();
         cartItemMap.putAll(this.cartItemMaps);
         return cartItemMap;
     }
 
     public Map<BookingItem, Integer> getItemWithQuantityServices() {
-        Map<BookingItem, Integer> cartItemMap = new HashMap<BookingItem, Integer>();
+        Map<BookingItem, Integer> cartItemMap = new HashMap<>();
         cartItemMap.putAll(this.cartServiceItems);
         return cartItemMap;
     }

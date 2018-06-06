@@ -4,11 +4,13 @@ package com.ptit.baobang.piospaapp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Customer {
+import java.io.Serializable;
+
+public class Customer implements Serializable {
 
     @SerializedName("customerId")
     @Expose
-    private Integer customerId;
+    private int customerId;
     @SerializedName("account")
     @Expose
     private String account;
@@ -29,19 +31,19 @@ public class Customer {
     private String createdAt;
     @SerializedName("createdBy")
     @Expose
-    private Integer createdBy;
+    private int createdBy;
     @SerializedName("cusomerReferId")
     @Expose
-    private Integer cusomerReferId;
+    private int cusomerReferId;
     @SerializedName("customerAvatar")
     @Expose
     private String customerAvatar;
     @SerializedName("dateLastLogin")
     @Expose
     private String dateLastLogin;
-    @SerializedName("districtId")
+    @SerializedName("district")
     @Expose
-    private Integer districtId;
+    private District district;
     @SerializedName("email")
     @Expose
     private String email;
@@ -50,7 +52,7 @@ public class Customer {
     private String facebook;
     @SerializedName("facebookId")
     @Expose
-    private Integer facebookId;
+    private int facebookId;
     @SerializedName("fullname")
     @Expose
     private String fullname;
@@ -59,10 +61,10 @@ public class Customer {
     private String gender;
     @SerializedName("isActive")
     @Expose
-    private Integer isActive;
+    private int isActive;
     @SerializedName("isMember")
     @Expose
-    private Integer isMember;
+    private int isMember;
     @SerializedName("memberCode")
     @Expose
     private String memberCode;
@@ -74,31 +76,34 @@ public class Customer {
     private String phone;
     @SerializedName("point")
     @Expose
-    private Integer point;
+    private int point;
     @SerializedName("pointUsed")
     @Expose
-    private Integer pointUsed;
-    @SerializedName("provincesId")
+    private int pointUsed;
+    @SerializedName("province")
     @Expose
-    private Integer provincesId;
+    private Province province;
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
     @SerializedName("updatedBy")
     @Expose
-    private Integer updatedBy;
-    @SerializedName("wardId")
+    private int updatedBy;
+    @SerializedName("ward")
     @Expose
-    private Integer wardId;
+    private Ward ward;
     @SerializedName("zalo")
     @Expose
     private String zalo;
+    @SerializedName("customerSource")
+    @Expose
+    private int customerSource;
 
-    public Integer getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Integer customerId) {
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
@@ -150,19 +155,19 @@ public class Customer {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Integer getCusomerReferId() {
+    public int getCusomerReferId() {
         return cusomerReferId;
     }
 
-    public void setCusomerReferId(Integer cusomerReferId) {
+    public void setCusomerReferId(int cusomerReferId) {
         this.cusomerReferId = cusomerReferId;
     }
 
@@ -182,12 +187,12 @@ public class Customer {
         this.dateLastLogin = dateLastLogin;
     }
 
-    public Integer getDistrictId() {
-        return districtId;
+    public District getDistrict() {
+        return district;
     }
 
-    public void setDistrictId(Integer districtId) {
-        this.districtId = districtId;
+    public void setDistrict(District district) {
+        this.district = district;
     }
 
     public String getEmail() {
@@ -206,11 +211,11 @@ public class Customer {
         this.facebook = facebook;
     }
 
-    public Integer getFacebookId() {
+    public int getFacebookId() {
         return facebookId;
     }
 
-    public void setFacebookId(Integer facebookId) {
+    public void setFacebookId(int facebookId) {
         this.facebookId = facebookId;
     }
 
@@ -230,19 +235,19 @@ public class Customer {
         this.gender = gender;
     }
 
-    public Integer getIsActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(Integer isActive) {
+    public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
 
-    public Integer getIsMember() {
+    public int getIsMember() {
         return isMember;
     }
 
-    public void setIsMember(Integer isMember) {
+    public void setIsMember(int isMember) {
         this.isMember = isMember;
     }
 
@@ -270,28 +275,28 @@ public class Customer {
         this.phone = phone;
     }
 
-    public Integer getPoint() {
+    public int getPoint() {
         return point;
     }
 
-    public void setPoint(Integer point) {
+    public void setPoint(int point) {
         this.point = point;
     }
 
-    public Integer getPointUsed() {
+    public int getPointUsed() {
         return pointUsed;
     }
 
-    public void setPointUsed(Integer pointUsed) {
+    public void setPointUsed(int pointUsed) {
         this.pointUsed = pointUsed;
     }
 
-    public Integer getProvincesId() {
-        return provincesId;
+    public Province getProvince() {
+        return province;
     }
 
-    public void setProvincesId(Integer provincesId) {
-        this.provincesId = provincesId;
+    public void setProvince(Province province) {
+        this.province = province;
     }
 
     public String getUpdatedAt() {
@@ -302,20 +307,20 @@ public class Customer {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getUpdatedBy() {
+    public int getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Integer updatedBy) {
+    public void setUpdatedBy(int updatedBy) {
         this.updatedBy = updatedBy;
     }
 
-    public Integer getWardId() {
-        return wardId;
+    public Ward getWard() {
+        return ward;
     }
 
-    public void setWardId(Integer wardId) {
-        this.wardId = wardId;
+    public void setWard(Ward ward) {
+        this.ward = ward;
     }
 
     public String getZalo() {
@@ -326,4 +331,17 @@ public class Customer {
         this.zalo = zalo;
     }
 
+    public int getCustomerSource() {
+        return customerSource;
+    }
+
+    public void setCustomerSource(int customerSource) {
+        this.customerSource = customerSource;
+    }
+
+    public String getFullAddress(){
+        return address + ", " + ward.getType() + " " + ward.getName()
+                + ","+ district.getType() + " " + district.getName()
+                + ", "+ province.getType() + " " + province.getName();
+    }
 }

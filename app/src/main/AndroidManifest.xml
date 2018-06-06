@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.login.LoginActivity"
@@ -34,12 +34,30 @@
             android:name=".ui.activities.service_detail.ServiceDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.booking.BookingActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".ui.dialogs.booking_time.BookingTimeActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog.Alert" />
         <activity
             android:name=".ui.activities.register.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activities.booking_info.BookingInfoActivity"
+        <activity
+            android:name=".ui.activities.booking_info.BookingInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.activities.payment.PaymentActivity" />
+        <activity
+            android:name=".ui.dialogs.province.ProvinceActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog.Alert" />
+        <activity
+            android:name=".ui.dialogs.district.DistrictActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog.Alert" />
+        <activity
+            android:name=".ui.dialogs.ward.WardActivity"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog.Alert" />
+        <activity
+            android:name=".ui.activities.profile.ProdfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.activities.order.OrderActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.activities.order_detail.OrderDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

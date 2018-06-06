@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.activities.payment.step_payment_type.PaymentTypeActivity">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvStep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.shuhart.stepview.StepView
+            android:id="@+id/stepView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            app:sv_steps="@array/arr_step"
+            app:sv_stepsNumber="3"
+            app:sv_animationDuration="500"
+            app:sv_animationType="All"
+            app:sv_doneCircleColor="@color/colorPrimary"
+            app:sv_doneCircleRadius="12dp"
+            app:sv_doneStepLineColor="@color/colorPrimary"
+            app:sv_doneStepMarkColor="@color/yellow"
+            app:sv_doneTextColor="@color/colorPrimary"
+            app:sv_nextStepLineColor="@color/gray"
+            app:sv_nextTextColor="@color/gray"
+            app:sv_selectedCircleColor="@color/white"
+            app:sv_selectedCircleRadius="12dp"
+            app:sv_selectedStepNumberColor="@color/colorPrimary"
+            app:sv_selectedTextColor="@color/colorPrimary"
+            app:sv_stepLineWidth="1dp"
+            app:sv_stepNumberTextSize="12sp"
+            app:sv_stepPadding="0dp"
+            app:sv_stepViewStyle="@style/StepView" />
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/content"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvStep">
+       <android.support.constraint.ConstraintLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <android.support.v7.widget.CardView
+               android:id="@+id/cvDeliveryType"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="@dimen/margin"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toTopOf="parent">
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:textSize="@dimen/subheading_size"
+                   android:paddingTop="@dimen/padding"
+                   android:paddingBottom="@dimen/padding"
+                   android:drawableEnd="@drawable/ic_arrow_right_dark"
+                   android:drawableRight="@drawable/ic_arrow_right_dark"
+                   android:gravity="center|start"
+                   android:text="@string/delivery_type" />
+           </android.support.v7.widget.CardView>
+
+           <android.support.v7.widget.RecyclerView
+               android:id="@+id/rvDeliveryType"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               app:layout_constraintTop_toBottomOf="@+id/cvDeliveryType">
+
+           </android.support.v7.widget.RecyclerView>
+
+           <android.support.v7.widget.CardView
+               android:id="@+id/cvPaymentType"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="@dimen/margin"
+               app:layout_constraintTop_toBottomOf="@+id/rvDeliveryType">
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:textSize="@dimen/subheading_size"
+                   android:paddingTop="@dimen/padding"
+                   android:paddingBottom="@dimen/padding"
+                   android:drawableEnd="@drawable/ic_arrow_right_dark"
+                   android:drawableRight="@drawable/ic_arrow_right_dark"
+                   android:gravity="center|start"
+                   android:text="@string/payment_type" />
+           </android.support.v7.widget.CardView>
+
+           <android.support.v7.widget.RecyclerView
+               android:id="@+id/rvPaymentType"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               app:layout_constraintTop_toBottomOf="@+id/cvPaymentType">
+
+           </android.support.v7.widget.RecyclerView>
+       </android.support.constraint.ConstraintLayout>
+   </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btnComfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/comfirm"
+        android:textColor="@color/white"
+        android:layout_marginEnd="@dimen/margin"
+        android:layout_marginStart="@dimen/margin"
+        android:background="@drawable/button_background__none_radius"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

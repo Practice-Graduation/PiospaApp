@@ -12,28 +12,28 @@ public class ServicePrice implements Serializable, Comparable<ServicePrice>{
 
     @SerializedName("servicePriceId")
     @Expose
-    private Integer servicePriceId;
+    private int servicePriceId;
     @SerializedName("allPrice")
     @Expose
-    private Integer allPrice;
+    private int allPrice;
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
     @SerializedName("createdBy")
     @Expose
-    private Integer createdBy;
+    private int createdBy;
     @SerializedName("isActive")
     @Expose
-    private Integer isActive;
+    private int isActive;
     @SerializedName("retailPrice")
     @Expose
-    private Integer retailPrice;
+    private int retailPrice;
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
     @SerializedName("updatedBy")
     @Expose
-    private Integer updatedBy;
+    private int updatedBy;
     @SerializedName("serviceGroup")
     @Expose
     private ServiceGroup serviceGroup;
@@ -47,19 +47,19 @@ public class ServicePrice implements Serializable, Comparable<ServicePrice>{
     @Expose
     private Service service;
 
-    public Integer getServicePriceId() {
+    public int getServicePriceId() {
         return servicePriceId;
     }
 
-    public void setServicePriceId(Integer servicePriceId) {
+    public void setServicePriceId(int servicePriceId) {
         this.servicePriceId = servicePriceId;
     }
 
-    public Integer getAllPrice() {
+    public int getAllPrice() {
         return allPrice;
     }
 
-    public void setAllPrice(Integer allPrice) {
+    public void setAllPrice(int allPrice) {
         this.allPrice = allPrice;
     }
 
@@ -71,27 +71,27 @@ public class ServicePrice implements Serializable, Comparable<ServicePrice>{
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Integer getIsActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(Integer isActive) {
+    public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
 
-    public Integer getRetailPrice() {
+    public int getRetailPrice() {
         return retailPrice;
     }
 
-    public void setRetailPrice(Integer retailPrice) {
+    public void setRetailPrice(int retailPrice) {
         this.retailPrice = retailPrice;
     }
 
@@ -103,11 +103,11 @@ public class ServicePrice implements Serializable, Comparable<ServicePrice>{
         this.updatedAt = updatedAt;
     }
 
-    public Integer getUpdatedBy() {
+    public int getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Integer updatedBy) {
+    public void setUpdatedBy(int updatedBy) {
         this.updatedBy = updatedBy;
     }
 
@@ -147,4 +147,5 @@ public class ServicePrice implements Serializable, Comparable<ServicePrice>{
     public int compareTo(@NonNull ServicePrice o) {
         return this.servicePriceId == o.getServicePriceId() ? 0 : 1;
     }
+
 }

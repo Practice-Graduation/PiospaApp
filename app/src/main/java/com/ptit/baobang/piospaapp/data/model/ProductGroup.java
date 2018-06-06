@@ -3,7 +3,9 @@ package com.ptit.baobang.piospaapp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProductGroup {
+import java.io.Serializable;
+
+public class ProductGroup implements Serializable {
 
     @SerializedName("productGroupId")
     @Expose

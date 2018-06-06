@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/paceholder"
+        app:layout_constraintWidth_percent="0.25"
+        android:padding="@dimen/padding"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/product_image" />
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/body_text_size"
+        android:text="Dich vu b"
+        app:layout_constraintBottom_toTopOf="@+id/txtDate"
+        app:layout_constraintStart_toEndOf="@+id/img"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/body_text_size"
+        android:text="Ngay hen: 2/5/1996"
+        app:layout_constraintBottom_toTopOf="@+id/txtQuanlity"
+        app:layout_constraintEnd_toStartOf="@+id/txtTime"
+        app:layout_constraintStart_toEndOf="@+id/img"
+        app:layout_constraintTop_toBottomOf="@+id/txtName" />
+
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:gravity="end"
+        android:text="Gio hen: 7:30"
+        android:textAlignment="textEnd"
+        android:textSize="@dimen/body_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtDate"
+        app:layout_constraintTop_toTopOf="@id/txtDate"/>
+
+
+    <TextView
+        android:id="@+id/txtQuanlity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/body_text_size"
+        android:minWidth="30dp"
+        android:text="So khach: 10"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/txtDate"
+        app:layout_constraintStart_toStartOf="@id/txtName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/txtPrice"/>
+
+    <TextView
+        android:id="@+id/txtPrice"
+        android:layout_width="0dp"
+        android:layout_height="18dp"
+        android:textSize="@dimen/body_text_size"
+        android:textStyle="bold"
+        android:gravity="end"
+        android:layout_marginEnd="@dimen/margin"
+        android:text="Gia: 10000d"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtQuanlity"
+        app:layout_constraintTop_toBottomOf="@+id/txtTime"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="@dimen/margin" />
+
+
+</android.support.constraint.ConstraintLayout>
+

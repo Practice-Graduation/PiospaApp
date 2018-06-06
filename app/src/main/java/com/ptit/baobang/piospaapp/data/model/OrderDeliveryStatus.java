@@ -3,7 +3,9 @@ package com.ptit.baobang.piospaapp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class OrderDeliveryStatus {
+import java.io.Serializable;
+
+public class OrderDeliveryStatus implements Serializable {
 
 
     @SerializedName("createdAt")
@@ -11,19 +13,19 @@ public class OrderDeliveryStatus {
     private String createdAt;
     @SerializedName("createdBy")
     @Expose
-    private Integer createdBy;
+    private int createdBy;
     @SerializedName("isActive")
     @Expose
-    private Integer isActive;
+    private int isActive;
     @SerializedName("isDelete")
     @Expose
-    private Integer isDelete;
+    private int isDelete;
     @SerializedName("orderDeliveryStatusDescription")
     @Expose
     private String orderDeliveryStatusDescription;
     @SerializedName("orderDeliveryStatusId")
     @Expose
-    private Integer orderDeliveryStatusId;
+    private int orderDeliveryStatusId;
     @SerializedName("orderDeliveryStatusName")
     @Expose
     private String orderDeliveryStatusName;
@@ -32,7 +34,7 @@ public class OrderDeliveryStatus {
     private String updatedAt;
     @SerializedName("updatedBy")
     @Expose
-    private Integer updatedBy;
+    private int updatedBy;
 
     public String getCreatedAt() {
         return createdAt;
@@ -42,27 +44,27 @@ public class OrderDeliveryStatus {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Integer getIsActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(Integer isActive) {
+    public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
 
-    public Integer getIsDelete() {
+    public int getIsDelete() {
         return isDelete;
     }
 
-    public void setIsDelete(Integer isDelete) {
+    public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
     }
 
@@ -74,11 +76,11 @@ public class OrderDeliveryStatus {
         this.orderDeliveryStatusDescription = orderDeliveryStatusDescription;
     }
 
-    public Integer getOrderDeliveryStatusId() {
+    public int getOrderDeliveryStatusId() {
         return orderDeliveryStatusId;
     }
 
-    public void setOrderDeliveryStatusId(Integer orderDeliveryStatusId) {
+    public void setOrderDeliveryStatusId(int orderDeliveryStatusId) {
         this.orderDeliveryStatusId = orderDeliveryStatusId;
     }
 
@@ -98,11 +100,11 @@ public class OrderDeliveryStatus {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getUpdatedBy() {
+    public int getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Integer updatedBy) {
+    public void setUpdatedBy(int updatedBy) {
         this.updatedBy = updatedBy;
     }
 

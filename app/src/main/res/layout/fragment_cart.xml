@@ -5,82 +5,109 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/background"
     tools:context=".ui.fragments.fragment_cart_product.CartProductFragment">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/sliding_tabs"
+    <LinearLayout
+        android:id="@+id/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_20"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:src="@drawable/empty_cart"/>
+        <TextView
+            android:layout_gravity="center"
+            android:layout_weight="0.3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giỏ hàng rỗng"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:tabBackground="@color/colorPrimary"
-        app:tabIndicatorColor="@color/yellow"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/yellow"
-        app:tabTextColor="@color/white"  />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/rvCart"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="1">-->
-
-    <!--</android.support.v7.widget.RecyclerView>-->
-    <android.support.v7.widget.CardView
-        android:id="@+id/viewCheckOut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.constraint.ConstraintLayout
+        android:orientation="vertical">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sliding_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/padding"
-            android:paddingBottom="@dimen/padding"
-            android:background="@color/colorPrimary">
-            <ImageView
-                android:id="@+id/imgCart"
-                android:src="@drawable/ic_shopping_cart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginLeft="@dimen/margin"/>
-            <TextView
-                android:id="@+id/txtQuanlity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="Số lượng: 3"
-                android:layout_marginLeft="@dimen/margin"
-                app:layout_constraintStart_toEndOf="@id/imgCart"/>
-            <TextView
-                android:id="@+id/txtTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tổng tiền: 3,000,000đ"
-                android:textColor="@color/white"
-                android:layout_marginLeft="@dimen/margin"
-                app:layout_constraintTop_toBottomOf="@id/txtQuanlity"
-                app:layout_constraintStart_toEndOf="@id/imgCart"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Check out"
-                android:textColor="@color/white"
-                android:textStyle="bold|italic"
-                app:layout_constraintTop_toTopOf="@id/txtQuanlity"
-                app:layout_constraintBottom_toBottomOf="@id/txtTotal"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:paddingRight="@dimen/padding"/>
-        </android.support.constraint.ConstraintLayout>
+            android:background="@color/colorPrimary"
+            app:tabBackground="@color/colorPrimary"
+            app:tabIndicatorColor="@color/yellow"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"
+            app:tabSelectedTextColor="@color/yellow"
+            app:tabTextColor="@color/white"  />
 
-    </android.support.v7.widget.CardView>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
+        <android.support.v7.widget.CardView
+            android:id="@+id/viewCheckOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding"
+                android:paddingBottom="@dimen/padding"
+                android:background="@color/colorAccent">
+                <ImageView
+                    android:id="@+id/imgCart"
+                    android:src="@drawable/ic_shopping_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginLeft="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:contentDescription="@string/title_cart" />
+                <TextView
+                    android:id="@+id/txtQuanlity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="@dimen/margin"
+                    app:layout_constraintStart_toEndOf="@id/imgCart"
+                    android:layout_marginStart="@dimen/margin" />
+                <TextView
+                    android:id="@+id/txtTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="@dimen/margin"
+                    app:layout_constraintTop_toBottomOf="@id/txtQuanlity"
+                    app:layout_constraintStart_toEndOf="@id/imgCart"
+                    android:layout_marginStart="@dimen/margin" />
+                <TextView
+                    android:id="@+id/txtPayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/check_out"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textStyle="bold|italic"
+                    app:layout_constraintTop_toTopOf="@id/txtQuanlity"
+                    app:layout_constraintBottom_toBottomOf="@id/txtTotal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingRight="@dimen/padding"
+                    android:paddingStart="@dimen/padding"
+                    android:paddingEnd="@dimen/padding" />
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
 
 </LinearLayout>

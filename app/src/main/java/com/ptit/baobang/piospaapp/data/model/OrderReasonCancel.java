@@ -3,23 +3,25 @@ package com.ptit.baobang.piospaapp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class OrderReasonCancel {
+import java.io.Serializable;
+
+public class OrderReasonCancel implements Serializable {
 
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
     @SerializedName("createdBy")
     @Expose
-    private Integer createdBy;
+    private int createdBy;
     @SerializedName("isActive")
     @Expose
-    private Integer isActive;
+    private int isActive;
     @SerializedName("orderReasonCancelDescripton")
     @Expose
     private String orderReasonCancelDescripton;
     @SerializedName("orderReasonCancelId")
     @Expose
-    private Integer orderReasonCancelId;
+    private int orderReasonCancelId;
     @SerializedName("orderReasonCancelName")
     @Expose
     private String orderReasonCancelName;
@@ -28,7 +30,7 @@ public class OrderReasonCancel {
     private String updatedAt;
     @SerializedName("updatedBy")
     @Expose
-    private Integer updatedBy;
+    private int updatedBy;
 
     public String getCreatedAt() {
         return createdAt;
@@ -38,19 +40,19 @@ public class OrderReasonCancel {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Integer getIsActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(Integer isActive) {
+    public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
 
@@ -62,11 +64,11 @@ public class OrderReasonCancel {
         this.orderReasonCancelDescripton = orderReasonCancelDescripton;
     }
 
-    public Integer getOrderReasonCancelId() {
+    public int getOrderReasonCancelId() {
         return orderReasonCancelId;
     }
 
-    public void setOrderReasonCancelId(Integer orderReasonCancelId) {
+    public void setOrderReasonCancelId(int orderReasonCancelId) {
         this.orderReasonCancelId = orderReasonCancelId;
     }
 
@@ -86,11 +88,11 @@ public class OrderReasonCancel {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getUpdatedBy() {
+    public int getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Integer updatedBy) {
+    public void setUpdatedBy(int updatedBy) {
         this.updatedBy = updatedBy;
     }
 }

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ICartProductFragmentView extends BaseView{
     void showCartItemList(List<CartProductItem> cartItems);
+    void showEmptyCart();
 }

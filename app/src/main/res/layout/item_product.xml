@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin"
-    android:layout_marginLeft="@dimen/margin">
+    android:layout_marginLeft="@dimen/margin"
+    android:layout_marginStart="@dimen/margin">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,15 +21,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/txtName"/>
+            app:layout_constraintBottom_toTopOf="@id/txtName"
+            android:contentDescription="@string/product_image" />
 
         <TextView
             android:id="@+id/txtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/padding"
             android:paddingLeft="@dimen/padding"
             android:paddingStart="@dimen/padding"
-            android:text="Name"
             android:maxLines="3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,8 +43,8 @@
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/padding"
             android:paddingRight="@dimen/padding"
+            android:paddingStart="@dimen/padding"
             android:layout_marginBottom="@dimen/margin"
-            android:text="@string/action_settings"
             android:textAlignment="textEnd"
             android:layout_gravity="end"
             app:layout_constraintEnd_toEndOf="parent"

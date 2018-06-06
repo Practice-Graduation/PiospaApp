@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ServiceFragment extends BaseFragment implements IServiceView{
+public class ServiceFragment extends BaseFragment implements IServiceView {
 
     private ServicePresenter mPresenter;
 
@@ -47,6 +47,7 @@ public class ServiceFragment extends BaseFragment implements IServiceView{
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class ServiceFragment extends BaseFragment implements IServiceView{
         mUnBinder = ButterKnife.bind(this, view);
         mPresenter = new ServicePresenter(this);
 
-        mServiceGroups =  new ArrayList<>();
+        mServiceGroups = new ArrayList<>();
         mAdapter = new ServiceGroupAdapter(getContext(), mServiceGroups, mPresenter.getmApiService());
         mAdapter.setServiceView(this);
         rvServiceGroups.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -117,12 +118,16 @@ public class ServiceFragment extends BaseFragment implements IServiceView{
 
     @Override
     public void startShirrmentAnimation() {
-        shimmerFrameLayout.startShimmerAnimation();
+        if (shimmerFrameLayout != null)
+            shimmerFrameLayout.startShimmerAnimation();
     }
 
     @Override
     public void stopShirrmentAnimation() {
-        shimmerFrameLayout.stopShimmerAnimation();
-        shimmerFrameLayout.setVisibility(View.GONE);
+        if(shimmerFrameLayout != null){
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.GONE);
+        }
+
     }
 }

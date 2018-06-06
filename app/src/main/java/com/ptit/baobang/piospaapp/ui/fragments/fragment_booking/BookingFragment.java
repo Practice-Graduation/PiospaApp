@@ -36,7 +36,7 @@ public class BookingFragment extends BaseFragment implements IBookingFragmentVie
     @BindView(R.id.rvTimes)
     RecyclerView rvTimes;
     private List<Room> mRooms;
-    private List<BookingTimeFB> mTimes;
+    private List<String> mTimes;
     private RoomAdapter mRoomAdapter;
     private TimeAdapter mTimeAdapter;
     private int mServicePriceSelected = 0;
@@ -86,7 +86,7 @@ public class BookingFragment extends BaseFragment implements IBookingFragmentVie
         mTimeAdapter.setmListener(new OnItemClickListener() {
             @Override
             public void onItemSelected(int position) {
-                mTimeSelected = mTimes.get(position);
+//                mTimeSelected = mTimes.get(position);
                 mPresenter.clickBookingButton(mServicePriceSelected, mSelectedDate, mRoomSelected, mTimeSelected);
             }
         });
@@ -116,14 +116,14 @@ public class BookingFragment extends BaseFragment implements IBookingFragmentVie
     }
 
     @Override
-    public void updateRecycleViewTime(List<BookingTimeFB> times) {
+    public void updateRecycleViewTime(List<String> times) {
         mTimes.clear();
         mTimes.addAll(times);
         mTimeAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void openBookingInfoActivity(int mServicePriceSelected, Date mSelectedDate, Room mRoomSelected, BookingTimeFB mTimeSelected) {
+    public void openBookingInfoActivity(int mServicePriceSelected, Date mSelectedDate) {
         Intent intent = new Intent(getBaseContext(), BookingInfoActivity.class);
         intent.putExtra(AppConstants.SERVICE_PRICE_ID, mServicePriceSelected);
         intent.putExtra(AppConstants.DATE_SELECTED, mSelectedDate);

@@ -3,22 +3,27 @@ package com.ptit.baobang.piospaapp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ServicePackage {
+import java.io.Serializable;
+
+public class ServicePackage implements Serializable {
     @SerializedName("servicePackageId")
     @Expose
-    private Integer servicePackageId;
+    private int servicePackageId;
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
     @SerializedName("createdBy")
     @Expose
-    private Integer createdBy;
+    private int createdBy;
     @SerializedName("image")
     @Expose
     private String image;
+    @SerializedName("time")
+    @Expose
+    private int time;
     @SerializedName("isActive")
     @Expose
-    private Integer isActive;
+    private int isActive;
     @SerializedName("servicePackageName")
     @Expose
     private String servicePackageName;
@@ -33,8 +38,14 @@ public class ServicePackage {
         return servicePackageId;
     }
 
-    public void setServicePackageId(int servicePackageId) {
-        this.servicePackageId = servicePackageId;
+
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public String getCreatedAt() {
@@ -45,11 +56,11 @@ public class ServicePackage {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -61,11 +72,11 @@ public class ServicePackage {
         this.image = image;
     }
 
-    public Integer getIsActive() {
+    public int getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(Integer isActive) {
+    public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
 
@@ -85,11 +96,11 @@ public class ServicePackage {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getUpdatedBy() {
+    public int getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Integer updatedBy) {
+    public void setUpdatedBy(int updatedBy) {
         this.updatedBy = updatedBy;
     }
 }
