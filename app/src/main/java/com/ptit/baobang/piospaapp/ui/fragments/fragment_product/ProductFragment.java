@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.data.model.ProductGroup;
 import com.ptit.baobang.piospaapp.ui.activities.all_product.AllProductActivity;
 import com.ptit.baobang.piospaapp.ui.activities.product_detail.ProductDetailActivity;
@@ -25,19 +25,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ProductFragment extends BaseFragment implements IProductFragmentView {
+public class ProductFragment extends BaseFragment<ProductFragmentPresenter> implements IProductFragmentView {
 
     private static final String TAG = "ProductFragment";
-    private ProductFragmentPresenter mPresenter;
 
-    @BindView(R.id.shimmerLayout)
-    ShimmerFrameLayout shimmerLayout;
-    //    @BindView(R.id.toolbar)
-//    Toolbar toolbar;
     @BindView(R.id.rvProductGroups)
     RecyclerView rvProductGroups;
     private List<ProductGroup> mProductGroups;
-    private ProductGroupAdapter mAdapter;
+    private ProductGroupAdapter<ProductFragmentPresenter> mAdapter;
 
     public ProductFragment() {
         // Required empty public constructor
@@ -67,7 +62,11 @@ public class ProductFragment extends BaseFragment implements IProductFragmentVie
     }
 
     private void addEvents() {
-        mAdapter.setOnItemClickListerner(position -> mPresenter.onClickMore(mProductGroups.get(position)));
+        mAdapter.setOnSelectMore(position -> mPresenter.onClickMore(mProductGroups.get(position)));
+
+        mAdapter.setItemSelected(product -> {
+            mPresenter.clickItem(product);
+        });
     }
 
     private void addControls(View view) {
@@ -78,8 +77,8 @@ public class ProductFragment extends BaseFragment implements IProductFragmentVie
 //        toolbar.setTitle(R.string.title_product);
 
         mProductGroups = new ArrayList<>();
-        mAdapter = new ProductGroupAdapter(getContext(), mProductGroups, mPresenter.getmApiService());
-        mAdapter.setmIProductFragmentView(this);
+        mAdapter = new ProductGroupAdapter<>(getContext(), mProductGroups,
+               mPresenter, mPresenter.getmApiService());
         rvProductGroups.setLayoutManager(new LinearLayoutManager(getContext()));
         rvProductGroups.setAdapter(mAdapter);
         mPresenter.loadData();
@@ -95,11 +94,11 @@ public class ProductFragment extends BaseFragment implements IProductFragmentVie
     }
 
     @Override
-    public void openProductDetailActivity(int productId) {
+    public void openProductDetailActivity(Product product) {
         Intent intent = new Intent(getContext(), ProductDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt(AppConstants.PRODUCT_ID, productId);
-        intent.putExtra(AppConstants.PRODUCT_BUNDLE, bundle);
+        bundle.putSerializable(AppConstants.PRODUCT_ID, product);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
@@ -111,28 +110,12 @@ public class ProductFragment extends BaseFragment implements IProductFragmentVie
     }
 
     @Override
-    public void startShimmerAnimation() {
-        if (shimmerLayout != null)
-            shimmerLayout.startShimmerAnimation();
-    }
-
-    @Override
-    public void stopShimmerAnimation() {
-        if (shimmerLayout != null) {
-            shimmerLayout.stopShimmerAnimation();
-            shimmerLayout.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        startShimmerAnimation();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        stopShimmerAnimation();
     }
 }

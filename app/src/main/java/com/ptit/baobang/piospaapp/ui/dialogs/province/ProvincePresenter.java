@@ -10,6 +10,8 @@ import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,21 +26,24 @@ public class ProvincePresenter extends BasePresenter implements IProvincePresent
 
     @Override
     public void loadData() {
-        mApiService.getAllProvince().enqueue(new Callback<EndPoint<List<Province>>>() {
-            @Override
-            public void onResponse(@NonNull Call<EndPoint<List<Province>>> call, @NonNull Response<EndPoint<List<Province>>> response) {
-                if(response.isSuccessful()){
-                    List<Province> provinces = response.body().getData();
-                    mView.updateRecyleView(provinces);
-                    mView.stopShimmerAnimation();
-                }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<EndPoint<List<Province>>> call, @NonNull Throwable t) {
+        getCompositeDisposable().add(
+                mApiService.getAllProvince()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
 
-            }
-        });
+    private void handleError(Throwable throwable) {
+
+    }
+
+    private void handleResponse(EndPoint<List<Province>> listEndPoint) {
+        List<Province> provinces = listEndPoint.getData();
+        mView.updateRecyleView(provinces);
+        mView.stopShimmerAnimation();
     }
 
     @Override

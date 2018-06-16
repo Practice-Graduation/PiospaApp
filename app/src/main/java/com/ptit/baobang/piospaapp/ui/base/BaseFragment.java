@@ -1,33 +1,29 @@
 package com.ptit.baobang.piospaapp.ui.base;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.NetworkUtils;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import java.util.Objects;
 
-public abstract class BaseFragment extends Fragment implements BaseView {
+import butterknife.Unbinder;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements BaseView {
     protected Unbinder mUnBinder;
-    private ProgressDialog mProgressDialog;
+    private SweetAlertDialog mSweetAlertDialog;
+    protected P mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,13 +34,12 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        return view;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         hideKeyboardOutside(view);
     }
@@ -60,60 +55,69 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     @Override
-    public void showLoading() {
-        hideLoading();
-        mProgressDialog = CommonUtils.showLoadingDialog(this.getContext());
+    public void showLoading(String message) {
+        if(!Objects.requireNonNull(getActivity()).isFinishing()) {
+            if (mSweetAlertDialog == null || !mSweetAlertDialog.isShowing()) {
+                mSweetAlertDialog = new SweetAlertDialog(getBaseContext(), SweetAlertDialog.PROGRESS_TYPE);
+                mSweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                mSweetAlertDialog.setTitleText(message);
+                mSweetAlertDialog.setCancelable(false);
+                mSweetAlertDialog.show();
+            } else {
+                mSweetAlertDialog.setTitleText(message);
+            }
+        }
+    }
+
+    @Override
+    public void hideLoading(String message, boolean isSuccess) {
+        if(!Objects.requireNonNull(getActivity()).isFinishing()) {
+            if (mSweetAlertDialog.isShowing()) {
+                mSweetAlertDialog.setCanceledOnTouchOutside(true);
+                mSweetAlertDialog.setTitleText(message);
+                mSweetAlertDialog.setConfirmText("OK");
+                if (isSuccess) {
+                    mSweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                } else {
+                    mSweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                }
+            }
+        }
     }
 
     @Override
     public void hideLoading() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.cancel();
+        if(!Objects.requireNonNull(getActivity()).isFinishing()) {
+            if (mSweetAlertDialog.isShowing()) {
+                mSweetAlertDialog.dismissWithAnimation();
+            }
         }
     }
 
     @Override
-    public void onError(String message) {
-        if (message != null) {
-            showSnackBar(message);
-        } else {
-            showSnackBar(getString(R.string.some_error));
-        }
-    }
-
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(getView().findViewById(android.R.id.content),
-                message, Snackbar.LENGTH_SHORT);
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView
-                .findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-        snackbar.show();
-    }
-
-
-    @Override
-    public void onError(@StringRes int resId) {
-        onError(getString(resId));
+    public void showMessage(String title, int message, int messageType) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(),messageType);
+        sweetAlertDialog.setTitleText(title);
+        sweetAlertDialog.setContentText(getString(message));
+        sweetAlertDialog.setConfirmText("OK");
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
     }
 
     @Override
-    public void showMessage(String message) {
-        if (message != null) {
-            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getContext(), getString(R.string.some_error), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void showMessage(@StringRes int resId) {
-        showMessage(getString(resId));
+    public void showMessage(String title, String message, int messageType) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(),messageType);
+        sweetAlertDialog.setTitleText(title);
+        sweetAlertDialog.setContentText(message);
+        sweetAlertDialog.setConfirmText("OK");
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
     }
 
     @Override
     public boolean isNetworkConnected() {
-        return NetworkUtils.isNetworkConnected(getContext());
+
+        return NetworkUtils.isNetworkConnected(getBaseContext());
     }
 
     @Override
@@ -123,11 +127,11 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     @Override
     public void hideKeyboard() {
-        View view = getActivity().getCurrentFocus();
+        View view = Objects.requireNonNull(getActivity()).getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager)
-                    getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
+            Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
@@ -138,6 +142,14 @@ public abstract class BaseFragment extends Fragment implements BaseView {
             mUnBinder.unbind();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(mPresenter != null){
+            mPresenter.unSubscribeRequests();
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

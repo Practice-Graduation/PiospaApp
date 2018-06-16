@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ServicePrice implements Serializable, Comparable<ServicePrice>{
+public class ServicePrice implements Serializable, Comparable<ServicePrice> {
 
     @SerializedName("servicePriceId")
     @Expose
@@ -148,4 +148,14 @@ public class ServicePrice implements Serializable, Comparable<ServicePrice>{
         return this.servicePriceId == o.getServicePriceId() ? 0 : 1;
     }
 
+    @Override
+    public String toString() {
+        if (servicePackage != null) {
+            return servicePackage.getServicePackageName();
+        }
+        if (service != null) {
+            return service.getServiceName();
+        }
+        return "";
+    }
 }

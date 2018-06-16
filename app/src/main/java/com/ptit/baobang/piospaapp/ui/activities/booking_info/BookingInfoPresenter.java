@@ -1,21 +1,18 @@
 package com.ptit.baobang.piospaapp.ui.activities.booking_info;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 
 import com.ptit.baobang.piospaapp.data.cart.BookingItem;
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
-import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.util.Date;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class BookingInfoPresenter extends BasePresenter implements  IBookingInfoPresenter {
 
@@ -26,24 +23,12 @@ public class BookingInfoPresenter extends BasePresenter implements  IBookingInfo
     }
 
     @Override
-    public void loadDate(Intent intent) {
-        int servicePriceId = intent.getIntExtra(AppConstants.SERVICE_PRICE_ID, 0);
-        mApiService.getServicePriceById(servicePriceId).enqueue(new Callback<EndPoint<ServicePrice>>() {
-            @Override
-            public void onResponse(@NonNull Call<EndPoint<ServicePrice>> call, @NonNull Response<EndPoint<ServicePrice>> response) {
-                if(response.isSuccessful()){
-                    if(response.body().getStatusCode() == 200){
-                        ServicePrice servicePrice = response.body().getData();
-                        mView.attachData(servicePrice);
-                    }
-                }
-            }
+    public void loadDataFromBunble(Intent intent) {
 
-            @Override
-            public void onFailure(@NonNull Call<EndPoint<ServicePrice>> call, @NonNull Throwable t) {
+        Bundle bundle = intent.getExtras();
+        ServicePrice servicePrice = (ServicePrice) bundle.getSerializable(AppConstants.SERVICE_PRICE_ID);
+        mView.attachData(servicePrice);
 
-            }
-        });
     }
 
     @Override
@@ -67,7 +52,7 @@ public class BookingInfoPresenter extends BasePresenter implements  IBookingInfo
         Cart cart = CartHelper.getCart();
         BookingItem bookingItem = new BookingItem(mServicePrice, mSelectedDate);
         cart.add(bookingItem, numberCustomer);
-        mView.showMessage("Addedd");
+        mView.showMessage("Thông báo", "Thêm "+mServicePrice+" vào giỏ hàng", SweetAlertDialog.SUCCESS_TYPE);
     }
 
     @Override
@@ -83,7 +68,7 @@ public class BookingInfoPresenter extends BasePresenter implements  IBookingInfo
     @Override
     public void clickSelectTime(Date date) {
         if(date == null){
-            mView.showMessage("Vui lòng chọn ngày đặt hẹn");
+            mView.showMessage("Thông báo", "Vui lòng chọn ngày đặt hẹn", SweetAlertDialog.WARNING_TYPE);
             return;
         }
         mView.openTimePicker(date);

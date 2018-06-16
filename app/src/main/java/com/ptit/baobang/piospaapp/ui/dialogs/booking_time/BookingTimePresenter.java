@@ -1,7 +1,7 @@
 package com.ptit.baobang.piospaapp.ui.dialogs.booking_time;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 
 import com.ptit.baobang.piospaapp.data.model.BookingDetail;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
@@ -17,40 +17,45 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class BookingTimePresenter extends BasePresenter implements IBookingTimePresenter {
     private IBookingTimeView mView;
+
+    private ServicePrice servicePrice;
+    private Date date;
 
     public BookingTimePresenter(IBookingTimeView mView) {
         this.mView = mView;
     }
     @Override
     public void loadData(ServicePrice servicePrice, Date date) {
-
+        this.servicePrice = servicePrice;
+        this.date = date;
+        mView.showLoading("Tải dữ liệu");
         BookingDetailRequest request = new BookingDetailRequest();
-        request.setDate(DateTimeUtils.formatDate(date));
+        request.setDate(DateTimeUtils.formatDate(date, DateTimeUtils.DATE_PATTERN));
+        getCompositeDisposable().add(
+                mApiService.getBookingDetailOnDayOfRoom(request)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
 
-        mApiService.getBookingDetailOnDayOfRoom(request).enqueue(new Callback<EndPoint<List<BookingDetail>>>() {
-            @Override
-            public void onResponse(@NonNull Call<EndPoint<List<BookingDetail>>> call, @NonNull Response<EndPoint<List<BookingDetail>>> response) {
-                if(response.isSuccessful()){
-                    List<BookingDetail> details = response.body().getData();
-                    if(details == null){
-                        details = new ArrayList<>();
-                    }
-                    createBookingTimes(details,servicePrice , date);
-                    mView.stopShimmerAnimation();
-                }
-            }
+    private void handleError(Throwable throwable) {
+        mView.hideLoading(throwable.getMessage(), false);
+    }
 
-            @Override
-            public void onFailure(Call<EndPoint<List<BookingDetail>>> call, Throwable t) {
-
-            }
-        });
+    private void handleResponse(EndPoint<List<BookingDetail>> listEndPoint) {
+        List<BookingDetail> details = listEndPoint.getData();
+        if(details == null){
+            details = new ArrayList<>();
+        }
+        createBookingTimes(details,servicePrice , date);
+        mView.hideLoading();
     }
 
     private void createBookingTimes(List<BookingDetail> details, ServicePrice servicePrice, Date selectedDate) {
@@ -86,13 +91,13 @@ public class BookingTimePresenter extends BasePresenter implements IBookingTimeP
                         detail.getTimeStart());
                 if(calendar.getTime().getTime() >= timeBookingStart.getTime()){
                     String timeDurian = detail.getServicePrice().getService().getServiceTime().getTime();
-                    times.add(DateTimeUtils.formatTime(calendar.getTime()));
+                    times.add(DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.TIME_PATTERN));
                     calendar.add(Calendar.MINUTE, Integer.parseInt(timeDurian));
                     details.remove(0);
                     continue;
                 }
             }
-            times.add(DateTimeUtils.formatTime(calendar.getTime()));
+            times.add(DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.TIME_PATTERN));
             calendar.add(Calendar.MINUTE, 30);
         }
         mView.updateRecycleViewTime(times);
@@ -117,7 +122,8 @@ public class BookingTimePresenter extends BasePresenter implements IBookingTimeP
 
     @Override
     public ServicePrice getServicePriceFromIntent(Intent intent) {
-        return (ServicePrice) intent.getSerializableExtra(AppConstants.SERVICE_PRICE_ID);
+        Bundle bundle = intent.getExtras();
+        return (ServicePrice) (bundle != null ? bundle.getSerializable(AppConstants.SERVICE_PRICE_ID) : null);
     }
 
     @Override

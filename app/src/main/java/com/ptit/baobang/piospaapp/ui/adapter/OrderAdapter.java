@@ -3,7 +3,6 @@ package com.ptit.baobang.piospaapp.ui.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.BookingDetail;
 import com.ptit.baobang.piospaapp.data.model.Order;
@@ -25,26 +25,32 @@ import com.ptit.baobang.piospaapp.data.network.api.APIService;
 import com.ptit.baobang.piospaapp.data.network.api.ApiUtils;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderResponse;
+import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
+import com.ptit.baobang.piospaapp.ui.listener.OnItemClickListener;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
+public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
 
     private Context context;
     private List<Order> mItems;
-
+    private OnItemClickListener mListen;
     private APIService mApiService;
+    private P mPresenter;
 
-    public OrderAdapter(Context context, List<Order> mItems) {
+    public OrderAdapter(Context context, List<Order> mItems, P mPresenter) {
         this.context = context;
         this.mItems = mItems;
-
+        this.mPresenter = mPresenter;
         mApiService = ApiUtils.getAPIService();
+    }
+
+    public void setItemClickListen(OnItemClickListener mListen) {
+        this.mListen = mListen;
     }
 
     @NonNull
@@ -58,8 +64,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrderAdapter.ViewHolder holder, int position) {
         holder.bindView(mItems.get(position));
+        holder.itemView.setOnClickListener(v->{
+            if(mListen != null){
+                mListen.onItemSelected(position);
+            }
+        });
     }
 
     @Override
@@ -72,6 +83,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         ImageView img;
         TextView txtName, txtDate, txtTime, txtQuanlity, txtPrice, txtMore, txtTotal;
         LinearLayout layoutMore;
+        ShimmerFrameLayout shimmerFrameLayout;
+
+        Order order;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -84,33 +98,29 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             txtMore = itemView.findViewById(R.id.txtMore);
             txtTotal = itemView.findViewById(R.id.txtTotal);
             layoutMore = itemView.findViewById(R.id.layoutMore);
+            shimmerFrameLayout = itemView.findViewById(R.id.shimmerLayout);
+            layoutMore.setVisibility(View.GONE);
         }
 
         void bindView(Order order) {
+            this.order = order;
+            mPresenter.getCompositeDisposable().add(
+                    mApiService.getProductAndBookingDetail(order.getOrderId())
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .unsubscribeOn(Schedulers.io())
+                    .subscribe(this::handleResponse, this::handleError)
+            );
+        }
 
-            mApiService.getProductAndBookingDetail(order.getOrderId()).enqueue(new Callback<EndPoint<OrderResponse>>() {
-                @Override
-                public void onResponse(Call<EndPoint<OrderResponse>> call, Response<EndPoint<OrderResponse>> response) {
-                    if (response.isSuccessful()) {
-                        if (response.body().getStatusCode() == 200) {
-                            List<OrderProduct> orderProducts = response.body().getData().getOrderProducts();
-                            List<BookingDetail> bookingDetails = response.body().getData().getBookingDetails();
-                            bindData(order, orderProducts, bookingDetails);
-                        }else {
-                            Log.e("TAG", response.body().getMessage());
-                        }
-                    }else{
-                        Log.e("TAG", "response not Successful");
-                    }
-                }
+        private void handleError(Throwable throwable) {
 
-                @Override
-                public void onFailure(Call<EndPoint<OrderResponse>> call, Throwable t) {
+        }
 
-                }
-            });
-
-
+        private void handleResponse(EndPoint<OrderResponse> orderResponseEndPoint) {
+            List<OrderProduct> orderProducts = orderResponseEndPoint.getData().getOrderProducts();
+            List<BookingDetail> bookingDetails = orderResponseEndPoint.getData().getBookingDetails();
+            bindData(order, orderProducts, bookingDetails);
         }
 
         private void bindData(Order order, List<OrderProduct> orderProducts, List<BookingDetail> bookingDetails) {
@@ -166,6 +176,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
             RequestOptions options = new RequestOptions().error(R.drawable.error).placeholder(R.drawable.paceholder);
             Glide.with(context).load(imgStr).apply(options).into(img);
+            if(shimmerFrameLayout != null){
+                shimmerFrameLayout.stopShimmerAnimation();
+                shimmerFrameLayout.setVisibility(View.GONE);
+            }
         }
     }
 }

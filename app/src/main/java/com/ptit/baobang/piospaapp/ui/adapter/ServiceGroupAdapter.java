@@ -14,27 +14,27 @@ import com.ptit.baobang.piospaapp.data.model.ServiceGroup;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.data.network.api.APIService;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
-import com.ptit.baobang.piospaapp.ui.fragments.fragment_service.IServiceView;
+import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.ui.listener.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-public class ServiceGroupAdapter extends RecyclerView.Adapter<ServiceGroupAdapter.ServiceGroupHolder> {
+public class ServiceGroupAdapter<P extends BasePresenter> extends RecyclerView.Adapter<ServiceGroupAdapter.ServiceGroupHolder> {
     private static final String TAG = "ProductGroupAdapter";
     private Context mContext;
     private List<ServiceGroup> mServiceGroups;
     private APIService mApiService;
-    private IServiceView mView;
+    private P mPresenter;
 
-    public ServiceGroupAdapter(Context mContext, List<ServiceGroup> mServiceGroups, APIService mApiService) {
+    public ServiceGroupAdapter(Context mContext, List<ServiceGroup> mServiceGroups, P mPresenter, APIService mApiService) {
         this.mContext = mContext;
         this.mServiceGroups = mServiceGroups;
         this.mApiService = mApiService;
+        this.mPresenter = mPresenter;
     }
 
     @NonNull
@@ -47,7 +47,7 @@ public class ServiceGroupAdapter extends RecyclerView.Adapter<ServiceGroupAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ServiceGroupHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ServiceGroupAdapter.ServiceGroupHolder holder, int position) {
         holder.binView(mServiceGroups.get(position));
     }
 
@@ -55,61 +55,73 @@ public class ServiceGroupAdapter extends RecyclerView.Adapter<ServiceGroupAdapte
     public int getItemCount() {
         return mServiceGroups.size();
     }
-    public class ServiceGroupHolder extends RecyclerView.ViewHolder {
+
+    class ServiceGroupHolder extends RecyclerView.ViewHolder {
 
         TextView txtGroupName;
         TextView txtMore;
         RecyclerView rvGroupProduct;
+        List<ServicePrice> servicePrices;
+        ServiceAdapter adapter;
 
         ServiceGroupHolder(View itemView) {
             super(itemView);
             txtGroupName = itemView.findViewById(R.id.txtGroupName);
             rvGroupProduct = itemView.findViewById(R.id.rvProducts);
             txtMore = itemView.findViewById(R.id.txtMore);
+            servicePrices = new ArrayList<>();
+            adapter = new ServiceAdapter(mContext, servicePrices);
+            rvGroupProduct.setLayoutManager(new LinearLayoutManager(mContext,
+                    LinearLayoutManager.HORIZONTAL, false));
+            rvGroupProduct.setAdapter(adapter);
         }
 
         void binView(ServiceGroup serviceGroup) {
             txtGroupName.setText(serviceGroup.getServiceGroupName());
-            List<ServicePrice> servicePrices = new ArrayList<>();
-            ServiceAdapter adapter = new ServiceAdapter(mContext, servicePrices);
-            rvGroupProduct.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-            rvGroupProduct.setAdapter(adapter);
-            mApiService.getServicePriceByGroupId(serviceGroup.getServiceGroupId()).enqueue(new Callback<EndPoint<List<ServicePrice>>>() {
-                @Override
-                public void onResponse(Call<EndPoint<List<ServicePrice>>> call, Response<EndPoint<List<ServicePrice>>> response) {
-                    if (response.isSuccessful()) {
-                        servicePrices.clear();
-                        List<ServicePrice> list = response.body().getData();
-                        servicePrices.addAll(list);
-                        adapter.notifyDataSetChanged();
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<EndPoint<List<ServicePrice>>> call, Throwable t) {
 
-                }
-            });
+            mPresenter.getCompositeDisposable().add(
+                    mApiService.getServicePriceByGroupId(serviceGroup.getServiceGroupId())
+                            .subscribeOn(Schedulers.computation())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .unsubscribeOn(Schedulers.io())
+                            .subscribe(this::hanleRespone, this::handleError)
+            );
+
             adapter.setOnClickListener(position -> {
-                if(mView != null){
-                    mView.openServiceDetailActivity(servicePrices.get(position).getServicePriceId());
-                }
+                mItemSelected.itemSelected(servicePrices.get(position));
             });
             txtMore.setOnClickListener(v -> {
-                if(mListener != null){
-                    mListener.onItemSelected(getAdapterPosition());
+                if (mMoreListener != null) {
+                    mMoreListener.onItemSelected(getAdapterPosition());
                 }
             });
         }
+
+        private void handleError(Throwable throwable) {
+
+        }
+
+        private void hanleRespone(EndPoint<List<ServicePrice>> listEndPoint) {
+            servicePrices.clear();
+            List<ServicePrice> list = listEndPoint.getData();
+            servicePrices.addAll(list);
+            adapter.notifyDataSetChanged();
+        }
     }
 
-    public void setServiceView(IServiceView mView) {
-        this.mView = mView;
+    private OnItemClickListener mMoreListener;
+    private OnSelectedItem mItemSelected;
+
+    public void setOnItemClickMoreListerner(OnItemClickListener callBack) {
+        this.mMoreListener = callBack;
     }
 
-    private OnItemClickListener mListener;
+    public void setmItemSelected(OnSelectedItem mItemSelected) {
+        this.mItemSelected = mItemSelected;
+    }
 
-    public void setOnItemClickListerner(OnItemClickListener callBack){
-        this.mListener = callBack;
+    public interface OnSelectedItem {
+        void itemSelected(ServicePrice servicePrice);
     }
 }

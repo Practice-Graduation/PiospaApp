@@ -12,20 +12,18 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Product;
+import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProductDetailActivity extends BaseActivity implements IProductDetailView{
+public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> implements IProductDetailView{
 
-    ProductDetailPresenter mPresenter;
-    private int productId = 0;
+    private Product product;
 
     @BindView(R.id.shimmerLayout)
     ShimmerFrameLayout shimmerFrameLayout;
@@ -65,14 +63,14 @@ public class ProductDetailActivity extends BaseActivity implements IProductDetai
     }
 
     private void addControls() {
-        mUnbinder = ButterKnife.bind(this);
         mPresenter = new ProductDetailPresenter(this);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setTitle("Sản Phẩm");
-        mPresenter.loadData(getProductFromBundle());
+        product = mPresenter.getProductFromBundle(getIntent());
+        mPresenter.loadData(product);
 
     }
 
@@ -80,18 +78,12 @@ public class ProductDetailActivity extends BaseActivity implements IProductDetai
     void onClick(View view){
         switch (view.getId()){
             case R.id.btnAddCart:
-                mPresenter.onClickAddCart(productId);
+                mPresenter.onClickAddCart(product);
                 break;
             case R.id.fbGoToCart:
                 mPresenter.onClickGoToCart();
                 break;
         }
-    }
-
-    public int getProductFromBundle() {
-        Bundle bundle = getIntent().getBundleExtra(AppConstants.PRODUCT_BUNDLE);
-        productId = bundle.getInt(AppConstants.PRODUCT_ID);
-        return productId;
     }
 
     @Override

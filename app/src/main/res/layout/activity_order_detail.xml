@@ -6,309 +6,373 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context=".ui.activities.order_detail.OrderDetailActivity">
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/comfirm"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_collapseMode="pin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/white">
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/comfirm"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-
-        <android.support.constraint.ConstraintLayout
+        <net.cachapa.expandablelayout.ExpandableLayout
+            android:id="@+id/expandable_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:el_duration="2000"
+            app:el_expanded="false"
+            app:el_parallax="0">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvAddressComfirm"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small">
+                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginStart="@dimen/margin_small">
 
-                <android.support.constraint.ConstraintLayout
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cvOrderStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin"
-                    android:layout_marginEnd="@dimen/margin"
-                    android:layout_marginStart="@dimen/margin">
+                    android:layout_marginTop="@dimen/margin_small">
 
-                    <TextView
-                        android:id="@+id/titleAddress"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin"
-                        android:text="Địa chỉ nhận hàng"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/subheading_size"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_margin="@dimen/margin"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtFullName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin"
-                        android:text="Nguyễn Bảo Bằng        01672099835"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/titleAddress" />
+                        <TextView
+                            android:id="@+id/txtOrderId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#fff" />
 
-                    <TextView
-                        android:id="@+id/txtAddressComfirm"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="19A, 244, Man Thiện"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtFullName" />
+                        <TextView
+                            android:id="@+id/txtCreatedAt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin"
+                            android:textColor="#fff" />
 
-                    <TextView
-                        android:id="@+id/txtWardComfirm"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Phường Tăng Nhơn Phú A"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtAddressComfirm" />
+                        <TextView
+                            android:id="@+id/txtStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin"
+                            android:textColor="#fff" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/txtDistrictComfirm"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Quận 9"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtWardComfirm" />
+                </android.support.v7.widget.CardView>
 
-                    <TextView
-                        android:id="@+id/txtProvinceComfirm"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="TP. Hồ Chí Minh"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtDistrictComfirm" />
-
-
-                </android.support.constraint.ConstraintLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvProduct"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small"
-                app:layout_constraintTop_toBottomOf="@+id/cvAddressComfirm">
-
-                <android.support.constraint.ConstraintLayout
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cvAddressComfirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin">
+                    android:layout_marginTop="@dimen/margin_small">
 
-                    <TextView
-                        android:id="@+id/titleProduct"
+                    <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Sản phẩm đã đặt"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/subheading_size"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginBottom="@dimen/margin"
+                        android:layout_marginEnd="@dimen/margin"
+                        android:layout_marginStart="@dimen/margin">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvProducts"
-                        android:layout_width="match_parent"
-                        android:layout_height="183dp"
-                        app:layout_constraintTop_toBottomOf="@+id/titleProduct">
+                        <TextView
+                            android:id="@+id/titleAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin"
+                            android:text="Địa chỉ nhận hàng"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/subheading_size"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    </android.support.v7.widget.RecyclerView>
+                        <TextView
+                            android:id="@+id/txtFullName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titleAddress" />
 
-                    <TextView
-                        android:id="@+id/titleServices"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Dịch vụ đã đặt"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/subheading_size"
-                        app:layout_constraintTop_toBottomOf="@+id/rvProducts" />
+                        <TextView
+                            android:id="@+id/txtAddressComfirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txtFullName" />
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvServices"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/titleServices">
+                        <TextView
+                            android:id="@+id/txtWardComfirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txtAddressComfirm" />
 
-                    </android.support.v7.widget.RecyclerView>
+                        <TextView
+                            android:id="@+id/txtDistrictComfirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txtWardComfirm" />
 
-                </android.support.constraint.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/txtProvinceComfirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txtDistrictComfirm" />
 
-            </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvDeliveyType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small"
-                app:layout_constraintTop_toBottomOf="@+id/cvProduct">
+                    </android.support.constraint.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cvProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin">
+                    android:layout_marginTop="@dimen/margin_small">
 
-                    <TextView
-                        android:id="@+id/titleDeliveryType"
+                    <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Hình thức Giao hàng"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/subheading_size"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_margin="@dimen/margin">
 
-                    <TextView
-                        android:id="@+id/txtDeliveryType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Giao hành nhanh"
-                        app:layout_constraintTop_toBottomOf="@+id/titleDeliveryType" />
+                        <LinearLayout
+                            android:id="@+id/layout_product"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                </android.support.constraint.ConstraintLayout>
+                            <TextView
+                                android:id="@+id/titleProduct"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Sản phẩm đã đặt"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/subheading_size" />
 
-            </android.support.v7.widget.CardView>
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/rvProducts"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvPaymentTypeComfirm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small"
-                app:layout_constraintTop_toBottomOf="@+id/cvDeliveyType">
+                            </android.support.v7.widget.RecyclerView>
+                        </LinearLayout>
 
-                <android.support.constraint.ConstraintLayout
+                        <LinearLayout
+                            android:id="@+id/layout_service"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintTop_toBottomOf="@+id/layout_product">
+
+                            <TextView
+                                android:id="@+id/titleServices"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Dịch vụ đã đặt"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/subheading_size" />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/rvServices"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toBottomOf="@+id/titleServices">
+
+                            </android.support.v7.widget.RecyclerView>
+                        </LinearLayout>
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cvDeliveyType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin">
+                    android:layout_marginTop="@dimen/margin_small">
 
-                    <TextView
-                        android:id="@+id/titlePaymentType"
+                    <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Hình thức thanh toán"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/subheading_size"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_margin="@dimen/margin">
 
-                    <TextView
-                        android:id="@+id/txtPaymentType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Giao hàng khi nhận"
-                        app:layout_constraintTop_toBottomOf="@+id/titlePaymentType" />
+                        <TextView
+                            android:id="@+id/titleDeliveryType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Hình thức Giao hàng"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/subheading_size"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/txtPaymentTypeDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="(Thanh toán sau khi sử dụng dịch vụ)"
-                        android:textSize="@dimen/caption_text_size"
-                        app:layout_constraintTop_toBottomOf="@+id/txtPaymentType" />
+                        <TextView
+                            android:id="@+id/txtDeliveryType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Giao hành nhanh"
+                            app:layout_constraintTop_toBottomOf="@+id/titleDeliveryType" />
 
-                </android.support.constraint.ConstraintLayout>
+                    </android.support.constraint.ConstraintLayout>
 
-            </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_payment_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small"
-                app:layout_constraintTop_toBottomOf="@id/cvPaymentTypeComfirm">
-
-                <android.support.constraint.ConstraintLayout
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cvPaymentTypeComfirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding">
-                    <TextView
-                        android:id="@+id/lbPaymentInfo"
+                    android:layout_marginTop="@dimen/margin_small">
+
+                    <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/payment_info"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/subheading_size"/>
+                        android:layout_margin="@dimen/margin">
 
-                    <TextView
-                        android:id="@+id/lbTotal"
-                        android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/titlePaymentType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Hình thức thanh toán"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/subheading_size"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/txtPaymentType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/titlePaymentType" />
+
+                        <TextView
+                            android:id="@+id/txtPaymentTypeDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/caption_text_size"
+                            app:layout_constraintTop_toBottomOf="@+id/txtPaymentType" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_payment_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_small">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/total"
-                        android:paddingTop="@dimen/padding"
-                        android:paddingBottom="@dimen/padding"
-                        app:layout_constraintTop_toBottomOf="@id/lbPaymentInfo"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/txtTotal"/>
+                        android:padding="@dimen/padding">
 
-                    <TextView
-                        android:id="@+id/txtTotal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/total"
-                        android:gravity="end"
-                        android:paddingTop="@dimen/padding"
-                        android:paddingBottom="@dimen/padding"
-                        app:layout_constraintTop_toBottomOf="@id/lbPaymentInfo"
-                        app:layout_constraintStart_toEndOf="@id/lbTotal"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        <TextView
+                            android:id="@+id/lbPaymentInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/payment_info"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/subheading_size" />
 
-                    <TextView
-                        android:id="@+id/lbShip"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ship"
-                        android:paddingTop="@dimen/padding"
-                        android:paddingBottom="@dimen/padding"
-                        app:layout_constraintTop_toBottomOf="@id/lbTotal"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/txtShip"/>
+                        <TextView
+                            android:id="@+id/lbTotal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/padding"
+                            android:paddingTop="@dimen/padding"
+                            android:text="@string/total"
+                            app:layout_constraintEnd_toStartOf="@id/txtTotal"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/lbPaymentInfo" />
 
-                    <TextView
-                        android:id="@+id/txtShip"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ship"
-                        android:gravity="end"
-                        android:paddingTop="@dimen/padding"
-                        android:paddingBottom="@dimen/padding"
-                        app:layout_constraintTop_toBottomOf="@id/txtTotal"
-                        app:layout_constraintStart_toEndOf="@id/lbShip"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        <TextView
+                            android:id="@+id/txtTotal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:paddingBottom="@dimen/padding"
+                            android:paddingTop="@dimen/padding"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/lbTotal"
+                            app:layout_constraintTop_toBottomOf="@id/lbPaymentInfo" />
 
-                    <TextView
-                        android:id="@+id/lbPayment"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Thành tiền"
-                        android:paddingTop="@dimen/padding"
-                        android:paddingBottom="@dimen/padding"
-                        app:layout_constraintTop_toBottomOf="@id/lbShip"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/txtPayment"/>
+                        <TextView
+                            android:id="@+id/lbShip"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/padding"
+                            android:paddingTop="@dimen/padding"
+                            android:text="@string/ship"
+                            app:layout_constraintEnd_toStartOf="@id/txtShip"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/lbTotal" />
 
-                    <TextView
-                        android:id="@+id/txtPayment"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ship"
-                        android:gravity="end"
-                        android:paddingTop="@dimen/padding"
-                        android:paddingBottom="@dimen/padding"
-                        app:layout_constraintTop_toBottomOf="@id/txtShip"
-                        app:layout_constraintStart_toEndOf="@id/lbPayment"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        <TextView
+                            android:id="@+id/txtShip"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:paddingBottom="@dimen/padding"
+                            android:paddingTop="@dimen/padding"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/lbShip"
+                            app:layout_constraintTop_toBottomOf="@id/txtTotal" />
 
-                </android.support.constraint.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/lbPayment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/padding"
+                            android:paddingTop="@dimen/padding"
+                            android:text="Thành tiền"
+                            app:layout_constraintEnd_toStartOf="@id/txtPayment"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/lbShip" />
 
-            </android.support.v7.widget.CardView>
+                        <TextView
+                            android:id="@+id/txtPayment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:paddingBottom="@dimen/padding"
+                            android:paddingTop="@dimen/padding"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/lbPayment"
+                            app:layout_constraintTop_toBottomOf="@id/txtShip" />
 
-        </android.support.constraint.ConstraintLayout>
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
 
 
     </android.support.v4.widget.NestedScrollView>

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import com.ptit.baobang.piospaapp.data.model.OrderDeliveryType;
 import com.ptit.baobang.piospaapp.data.model.OrderPaymentType;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.data.model.Ward;
+import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.DeliveryTypeAdapter;
 import com.ptit.baobang.piospaapp.ui.adapter.PaymentTypeAdapter;
 import com.ptit.baobang.piospaapp.ui.adapter.ProductCartComfirmAdapter;
@@ -33,15 +36,15 @@ import com.shuhart.stepview.StepView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PaymentActivity extends BaseActivity implements IPaymentView {
+public class PaymentActivity extends BaseActivity<PaymentPresenter> implements IPaymentView {
 
-    private PaymentPresenter mPresenter;
-
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.stepView)
     StepView stepView;
@@ -178,7 +181,9 @@ public class PaymentActivity extends BaseActivity implements IPaymentView {
     }
 
     private void addControls() {
-        ButterKnife.bind(this);
+
+        setSupportToolbar();
+
         mPresenter = new PaymentPresenter(this, this);
         nsvPaymentType.setVisibility(View.GONE);
         nsvComfirm.setVisibility(View.GONE);
@@ -213,6 +218,30 @@ public class PaymentActivity extends BaseActivity implements IPaymentView {
         mPresenter.attachDataForInput(getBaseContext());
         mPresenter.loadDeliveryType();
         mPresenter.loadPaymentType();
+    }
+
+    private void setSupportToolbar() {
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitle("Đặt Hàng");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                bacToCart();
+        }
+        return (super.onOptionsItemSelected(item));
+    }
+
+    private void bacToCart() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(AppConstants.FRAGMENT, AppConstants.CART_INDEX);
+        startActivity(intent);
+        finish();
     }
 
     @Override

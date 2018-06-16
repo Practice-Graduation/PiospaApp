@@ -15,10 +15,7 @@ import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProdfileActivity extends BaseActivity implements IProfileView {
-
-    private ProfilePresenter mPresenter;
-
+public class ProdfileActivity extends BaseActivity<ProfilePresenter> implements IProfileView {
 
     @BindView(R.id.imgAvatarBackground)
     ImageView imgAvatarBackground;
@@ -67,7 +64,6 @@ public class ProdfileActivity extends BaseActivity implements IProfileView {
     }
 
     private void addControls() {
-        mUnbinder = ButterKnife.bind(this);
         mPresenter = new ProfilePresenter(this);
     }
 

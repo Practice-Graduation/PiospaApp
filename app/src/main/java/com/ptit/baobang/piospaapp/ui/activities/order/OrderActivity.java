@@ -14,16 +14,16 @@ import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_order.not_payment.ListOrderFragment;
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class OrderActivity extends BaseActivity implements IOrderView {
+public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrderView {
 
-    private OrderPresenter mPresenter;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
 
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
@@ -43,13 +43,13 @@ public class OrderActivity extends BaseActivity implements IOrderView {
     }
 
     private void addControls() {
-        mUnbinder = ButterKnife.bind(this);
         mPresenter = new OrderPresenter(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("Đơn Hàng");
+        mTabOrder.setTabGravity(TabLayout.GRAVITY_FILL);
         mPresenter.loadData(getBaseContext());
     }
 
@@ -76,5 +76,15 @@ public class OrderActivity extends BaseActivity implements IOrderView {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabOrder));
         mTabOrder.setupWithViewPager(mViewPager);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

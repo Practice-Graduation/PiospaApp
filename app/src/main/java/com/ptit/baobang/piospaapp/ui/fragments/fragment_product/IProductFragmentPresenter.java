@@ -6,4 +6,6 @@ import com.ptit.baobang.piospaapp.data.model.ProductGroup;
 public interface IProductFragmentPresenter {
     void onClickMore(ProductGroup productGroup);
     void loadData();
+
+    void clickItem(Product product);
 }

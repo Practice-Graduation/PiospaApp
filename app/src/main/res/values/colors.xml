@@ -13,4 +13,8 @@
     <color name="black">#000</color>
     <color name="details_list_color">#f5f6f9</color>
     <color name="background">#e9ecf1</color>
+
+    <color name="light_red">#90FF0000</color>
+    <color name="light_green">#9000FF00</color>
+    <color name="light_blue">#900000FF</color>
 </resources>

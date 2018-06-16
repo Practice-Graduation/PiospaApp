@@ -6,11 +6,10 @@ import android.view.View;
 
 public interface BaseView {
     void hideLoading();
-    void showLoading();
-    void onError(String message);
-    void onError(@StringRes int message);
-    void showMessage(String message);
-    void showMessage(@StringRes int message);
+    void hideLoading(String message, boolean isSuccess);
+    void showLoading(String message);
+    void showMessage(String title, @StringRes int message, int messageType);
+    void showMessage(String title, String message, int messageType);
     boolean isNetworkConnected();
     void hideKeyboard();
     void hideKeyboardOutside(View view);

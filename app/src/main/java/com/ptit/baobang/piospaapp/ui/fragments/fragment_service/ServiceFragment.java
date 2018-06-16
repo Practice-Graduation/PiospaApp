@@ -2,15 +2,16 @@ package com.ptit.baobang.piospaapp.ui.fragments.fragment_service;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.ServiceGroup;
+import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.ui.activities.all_product.AllProductActivity;
 import com.ptit.baobang.piospaapp.ui.activities.service_detail.ServiceDetailActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.ServiceGroupAdapter;
@@ -24,17 +25,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ServiceFragment extends BaseFragment implements IServiceView {
-
-    private ServicePresenter mPresenter;
-
-    @BindView(R.id.shimmerLayout)
-    ShimmerFrameLayout shimmerFrameLayout;
+public class ServiceFragment extends BaseFragment<ServicePresenter> implements IServiceView {
 
     @BindView(R.id.rvServiceGroups)
     RecyclerView rvServiceGroups;
     private List<ServiceGroup> mServiceGroups;
-    private ServiceGroupAdapter mAdapter;
+    private ServiceGroupAdapter<ServicePresenter> mAdapter;
 
     public ServiceFragment() {
         // Required empty public constructor
@@ -49,7 +45,7 @@ public class ServiceFragment extends BaseFragment implements IServiceView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         LayoutInflater layoutInflater = LayoutInflater.from(container.getContext());
@@ -60,9 +56,18 @@ public class ServiceFragment extends BaseFragment implements IServiceView {
     }
 
     private void addEvents() {
-        mAdapter.setOnItemClickListerner(new OnItemClickListener() {
+        mAdapter.setmItemSelected(new ServiceGroupAdapter.OnSelectedItem() {
+            @Override
+            public void itemSelected(ServicePrice servicePrice) {
+                mPresenter.clickItem(servicePrice);
+
+            }
+        });
+
+        mAdapter.setOnItemClickMoreListerner(new OnItemClickListener() {
             @Override
             public void onItemSelected(int position) {
+
             }
         });
     }
@@ -72,8 +77,7 @@ public class ServiceFragment extends BaseFragment implements IServiceView {
         mPresenter = new ServicePresenter(this);
 
         mServiceGroups = new ArrayList<>();
-        mAdapter = new ServiceGroupAdapter(getContext(), mServiceGroups, mPresenter.getmApiService());
-        mAdapter.setServiceView(this);
+        mAdapter = new ServiceGroupAdapter<>(getContext(), mServiceGroups, mPresenter, mPresenter.getmApiService());
         rvServiceGroups.setLayoutManager(new LinearLayoutManager(getContext()));
         rvServiceGroups.setAdapter(mAdapter);
         mPresenter.loadData();
@@ -89,11 +93,11 @@ public class ServiceFragment extends BaseFragment implements IServiceView {
     }
 
     @Override
-    public void openServiceDetailActivity(int serviceId) {
+    public void openServiceDetailActivity(ServicePrice servicePrice) {
         Intent intent = new Intent(getContext(), ServiceDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt(AppConstants.SERVICE_PRICE_ID, serviceId);
-        intent.putExtra(AppConstants.SERVICE_PRICE_BUNDLE, bundle);
+        bundle.putSerializable(AppConstants.SERVICE_PRICE_ID, servicePrice);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
@@ -107,27 +111,12 @@ public class ServiceFragment extends BaseFragment implements IServiceView {
     @Override
     public void onResume() {
         super.onResume();
-        startShirrmentAnimation();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        stopShirrmentAnimation();
     }
 
-    @Override
-    public void startShirrmentAnimation() {
-        if (shimmerFrameLayout != null)
-            shimmerFrameLayout.startShimmerAnimation();
-    }
 
-    @Override
-    public void stopShirrmentAnimation() {
-        if(shimmerFrameLayout != null){
-            shimmerFrameLayout.stopShimmerAnimation();
-            shimmerFrameLayout.setVisibility(View.GONE);
-        }
-
-    }
 }

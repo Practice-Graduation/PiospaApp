@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Service;
 import com.ptit.baobang.piospaapp.data.model.ServicePackage;
@@ -21,15 +20,10 @@ import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ServiceDetailActivity extends BaseActivity implements IServiceDetailView {
+public class ServiceDetailActivity extends BaseActivity<ServiceDetailPresenter> implements IServiceDetailView {
 
-    ServiceDetailPresenter mPresenter;
-
-    @BindView(R.id.shimmerLayout)
-    ShimmerFrameLayout shimmerFrameLayout;
     @BindView(R.id.img)
     ImageView img;
     @BindView(R.id.txtName)
@@ -42,28 +36,27 @@ public class ServiceDetailActivity extends BaseActivity implements IServiceDetai
     Button btnBooking;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    private int servicePriceId;
+    private ServicePrice mServicePrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_detail);
-        getData();
         addControls();
     }
 
     @OnClick(R.id.btnBooking)
     void onClick(View view) {
-        mPresenter.onClickAddBooking(servicePriceId);
+        mPresenter.onClickAddBooking(mServicePrice);
     }
 
     private void addControls() {
         mPresenter = new ServiceDetailPresenter(this);
-        mUnbinder = ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mPresenter.loadData(servicePriceId);
+        mServicePrice = mPresenter.getDataFromBundle(getIntent());
+        mPresenter.loadData(mServicePrice);
     }
 
     @Override
@@ -95,22 +88,22 @@ public class ServiceDetailActivity extends BaseActivity implements IServiceDetai
     }
 
     @Override
-    public void openBookingActivity(int servicePriceId) {
+    public void openBookingActivity(ServicePrice servicePrice) {
         Intent intent = new Intent(this, BookingInfoActivity.class);
-        intent.putExtra(AppConstants.SERVICE_PRICE_ID, servicePriceId);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(AppConstants.SERVICE_PRICE_ID, servicePrice);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        stopShimmerAnimation();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        startShimmerAnimation();
     }
 
     @Override
@@ -123,27 +116,8 @@ public class ServiceDetailActivity extends BaseActivity implements IServiceDetai
         txtPrice.setText(txtPrice.getText().toString() + " - " + time + " phút");
     }
 
-    @Override
-    public void startShimmerAnimation() {
-        if (shimmerFrameLayout != null) {
-            shimmerFrameLayout.startShimmerAnimation();
-        }
-    }
-
-    @Override
-    public void stopShimmerAnimation() {
-        if (shimmerFrameLayout != null) {
-            shimmerFrameLayout.stopShimmerAnimation();
-            shimmerFrameLayout.setVisibility(View.GONE);
-        }
-
-    }
 
 
-    public void getData() {
-        Bundle bundle = getIntent().getBundleExtra(AppConstants.SERVICE_PRICE_BUNDLE);
-        servicePriceId = bundle.getInt(AppConstants.SERVICE_PRICE_ID);
-    }
 
     @Override
     public boolean onSupportNavigateUp() {

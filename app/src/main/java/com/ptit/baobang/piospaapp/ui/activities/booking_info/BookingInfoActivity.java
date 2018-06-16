@@ -14,9 +14,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
-import com.ptit.baobang.piospaapp.ui.dialogs.booking_time.BookingTimeActivity;
 import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
+import com.ptit.baobang.piospaapp.ui.dialogs.booking_time.BookingTimeActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
@@ -27,12 +27,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BookingInfoActivity extends BaseActivity implements IBookingInfoView{
-
-    private BookingInfoPresenter mPresenter;
+public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> implements IBookingInfoView{
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -98,11 +95,10 @@ public class BookingInfoActivity extends BaseActivity implements IBookingInfoVie
     }
 
     private void addControls() {
-        ButterKnife.bind(this);
         mPresenter = new BookingInfoPresenter(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mPresenter.loadDate(getIntent());
+        mPresenter.loadDataFromBunble(getIntent());
     }
 
     @Override
@@ -129,22 +125,7 @@ public class BookingInfoActivity extends BaseActivity implements IBookingInfoVie
         txtServiceName.setText(name);
         String s = getString(R.string.price) + CommonUtils.formatToCurrency(servicePrice.getRetailPrice()) + " - " + time + " phút";
         txtPriceAndTime.setText(s);
-//        s = "Ngày: " + DateTimeUtils.formatDateDDMMYYYY(mSelectedDate);
-//        txtDate.setText(s);
-//        s = "Từ: " + mSelectedTime.getTimeStart();
-//        txtTimeStart.setText(s);
-//        s = "Đến: " ;
-////        Calendar calendar = Calendar.getInstance();
-////        Date temp = CommonUtils.getDateTimeHHMM(mSelectedDate, mSelectedTime.getTimeStart());
-////        calendar.setTime(temp);
-//////        calendar.add(Calendar.MINUTE, Integer.parseInt(servicePrice.getService().getServiceTime().getTime()));
-////        s += DateTimeUtils.formatTime(calendar.getTime());
-//////        txtTimeEnd.setText(s);
         txtAmount.setText("1");
-//        Customer customer = SharedPreferenceUtils.getUser(this);
-//        txtCustomerName.setText(customer.getFullname());
-//        txtPhone.setText(customer.getPhone());
-//        txtEmail.setText(customer.getEmail());
     }
 
     @Override
@@ -162,7 +143,6 @@ public class BookingInfoActivity extends BaseActivity implements IBookingInfoVie
     @Override
     public void openDatePicker() {
         final Calendar calendar = Calendar.getInstance();
-
         if (!txtDate.getText().toString().trim().isEmpty()) {
 
             SimpleDateFormat sdf = new SimpleDateFormat(AppConstants.DATE_FORMAT, Locale.ENGLISH);
@@ -174,6 +154,9 @@ public class BookingInfoActivity extends BaseActivity implements IBookingInfoVie
                 e.printStackTrace();
             }
         }
+
+        Calendar calendar1 = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
@@ -187,6 +170,7 @@ public class BookingInfoActivity extends BaseActivity implements IBookingInfoVie
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DATE));
+        datePickerDialog.getDatePicker().setMinDate(calendar1.getTime().getTime());
         datePickerDialog.show();
     }
 

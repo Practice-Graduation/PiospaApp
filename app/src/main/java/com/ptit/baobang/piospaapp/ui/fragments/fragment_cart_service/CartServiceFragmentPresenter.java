@@ -13,9 +13,8 @@ import java.util.Map;
 public class CartServiceFragmentPresenter extends BasePresenter implements ICartServiceFragmentPresenter {
 
     private ICartServiceFragmentView mView;
-    private List<CartServicePriceItem> cartItems;
 
-    public CartServiceFragmentPresenter(ICartServiceFragmentView mView) {
+    CartServiceFragmentPresenter(ICartServiceFragmentView mView) {
         this.mView = mView;
     }
 
@@ -43,7 +42,7 @@ public class CartServiceFragmentPresenter extends BasePresenter implements ICart
         mView.showCartItemList(getCartItems());
     }
 
-    public List<CartServicePriceItem> getCartItems() {
+    private List<CartServicePriceItem> getCartItems() {
         List<CartServicePriceItem> cartItems = new ArrayList<>();
         Cart cart = CartHelper.getCart();
 

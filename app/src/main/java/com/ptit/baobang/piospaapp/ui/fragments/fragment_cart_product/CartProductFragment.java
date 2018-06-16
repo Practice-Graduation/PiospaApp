@@ -1,6 +1,7 @@
 package com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_product;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,9 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CartProductFragment extends BaseFragment implements ICartProductFragmentView {
-
-    private CartProductFragmentPresenter mPresenter;
+public class CartProductFragment extends BaseFragment<CartProductFragmentPresenter> implements ICartProductFragmentView {
 
     @BindView(R.id.layout_empty)
     LinearLayout layoutEmpty;
@@ -64,12 +63,12 @@ public class CartProductFragment extends BaseFragment implements ICartProductFra
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart_product, container, false);
         mUnBinder = ButterKnife.bind(this, view);
-        addControls(view);
+        addControls();
         addEvents();
         return view;
     }
@@ -91,7 +90,7 @@ public class CartProductFragment extends BaseFragment implements ICartProductFra
         });
     }
 
-    private void addControls(View view) {
+    private void addControls() {
         mPresenter = new CartProductFragmentPresenter(this);
         mItems = new ArrayList<>();
         mAdapter = new ShoppingCartProductAdapter(getContext(), mItems);

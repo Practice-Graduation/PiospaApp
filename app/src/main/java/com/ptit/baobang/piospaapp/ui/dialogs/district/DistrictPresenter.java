@@ -11,6 +11,8 @@ import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,21 +27,24 @@ public class DistrictPresenter extends BasePresenter implements IDistrictPresent
 
     @Override
     public void loadData(Province province) {
-        mApiService.getDistrictByProvinceId(province.getProvinceid()).enqueue(new Callback<EndPoint<List<District>>>() {
-            @Override
-            public void onResponse(@NonNull Call<EndPoint<List<District>>> call, @NonNull Response<EndPoint<List<District>>> response) {
-                if(response.isSuccessful()){
-                    List<District> districts = response.body().getData();
-                    mView.updateRecyleView(districts);
-                    mView.stopShimmerAnimation();
-                }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<EndPoint<List<District>>> call, @NonNull Throwable t) {
+        getCompositeDisposable().add(
+                mApiService.getDistrictByProvinceId(province.getProvinceid())
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
 
-            }
-        });
+    private void handleError(Throwable throwable) {
+
+    }
+
+    private void handleResponse(EndPoint<List<District>> listEndPoint) {
+        List<District> districts = listEndPoint.getData();
+        mView.updateRecyleView(districts);
+        mView.stopShimmerAnimation();
     }
 
     @Override

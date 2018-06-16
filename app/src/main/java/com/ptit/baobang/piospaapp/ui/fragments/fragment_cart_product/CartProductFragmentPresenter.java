@@ -14,7 +14,7 @@ public class CartProductFragmentPresenter extends BasePresenter implements ICart
 
     private ICartProductFragmentView mView;
 
-    public CartProductFragmentPresenter(ICartProductFragmentView mICartFragmentView) {
+    CartProductFragmentPresenter(ICartProductFragmentView mICartFragmentView) {
         this.mView = mICartFragmentView;
     }
 
@@ -42,7 +42,7 @@ public class CartProductFragmentPresenter extends BasePresenter implements ICart
         mView.showCartItemList(getCartItems());
     }
 
-    public List<CartProductItem> getCartItems() {
+    private List<CartProductItem> getCartItems() {
 
         List<CartProductItem> cartItems = new ArrayList<>();
         Cart cart = CartHelper.getCart();
@@ -50,7 +50,7 @@ public class CartProductFragmentPresenter extends BasePresenter implements ICart
 
         for (Map.Entry<Product, Integer> entry : itemMap.entrySet()) {
             CartProductItem cartItem = new CartProductItem();
-            cartItem.setProduct((Product) entry.getKey());
+            cartItem.setProduct(entry.getKey());
             cartItem.setQuanlity(entry.getValue());
             cartItems.add(cartItem);
         }

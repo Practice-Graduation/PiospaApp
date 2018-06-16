@@ -4,6 +4,9 @@ import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,23 +27,23 @@ public class RegisterPresenter extends BasePresenter implements IRegisterPresent
     @Override
     public void clickRegister(String fullName, String email, String password, String retypePassword) {
         if(fullName.trim().length() == 0){
-            mView.showMessage("Nhập vào họ và tên");
+            mView.showMessage("Thông báo", "Nhập vào họ và tên", SweetAlertDialog.WARNING_TYPE);
             return;
         }
         if(email.trim().length() == 0){
-            mView.showMessage("Nhập vào tên đăng nhập");
+            mView.showMessage("Thông báo","Nhập vào tên đăng nhập", SweetAlertDialog.WARNING_TYPE);
             return;
         }
         if(password.trim().length() == 0){
-            mView.showMessage("Nhập vào mật khẩu");
+            mView.showMessage("Thông báo","Nhập vào mật khẩu", SweetAlertDialog.WARNING_TYPE);
             return;
         }
         if(retypePassword.trim().length() == 0){
-            mView.showMessage("Nhập vào xác nhận mật khẩu");
+            mView.showMessage("Thông báo","Nhập vào xác nhận mật khẩu", SweetAlertDialog.WARNING_TYPE);
             return;
         }
         if(!password.trim().equalsIgnoreCase(retypePassword.trim())){
-            mView.showMessage("Mật không nhập không trùng nhau");
+            mView.showMessage("Thông báo","Mật không nhập không trùng nhau", SweetAlertDialog.WARNING_TYPE);
             return;
         }
         Customer customer = new Customer();
@@ -48,26 +51,29 @@ public class RegisterPresenter extends BasePresenter implements IRegisterPresent
         customer.setPassword(password);
         customer.setFullname(fullName);
 
-        mView.showLoading();
-        mApiService.register(customer).enqueue(new Callback<EndPoint<Customer>>() {
-            @Override
-            public void onResponse(Call<EndPoint<Customer>> call, Response<EndPoint<Customer>> response) {
-                if(response.isSuccessful()){
-                    if(response.body().getStatusCode() == 200){
-                        mView.hideLoading();
-                        mView.backToLoginActiviry(email, password);
-                    }else{
-                        mView.hideLoading();
-                        mView.showMessage(response.body().getMessage());
-                    }
-                }
-            }
+        mView.showLoading("Đăng kí");
 
-            @Override
-            public void onFailure(Call<EndPoint<Customer>> call, Throwable t) {
-                mView.hideLoading();
-                mView.showMessage(t.getMessage());
-            }
-        });
+        getCompositeDisposable().add(
+                mApiService.register(customer)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError)
+        );
+    }
+
+    private void handleError(Throwable throwable) {
+        mView.hideLoading(throwable.getMessage(), false);
+    }
+
+    private void handleResponse(EndPoint<Customer> customerEndPoint) {
+        if(customerEndPoint.getStatusCode() == 200){
+            mView.hideLoading();
+            mView.backToLoginActiviry(
+                    customerEndPoint.getData().getAccount(),
+                    customerEndPoint.getData().getPassword());
+        }else{
+            mView.hideLoading(customerEndPoint.getMessage(), false);
+        }
     }
 }

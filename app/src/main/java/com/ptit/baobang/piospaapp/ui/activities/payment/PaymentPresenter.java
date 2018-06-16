@@ -1,9 +1,9 @@
 package com.ptit.baobang.piospaapp.ui.activities.payment;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.ptit.baobang.piospaapp.data.cart.BookingItem;
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
@@ -25,15 +25,16 @@ import com.ptit.baobang.piospaapp.data.network.model_request.CartItemService;
 import com.ptit.baobang.piospaapp.data.network.model_request.CartShopping;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderBodyRequest;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
+import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class PaymentPresenter extends BasePresenter implements IPaymentPresenter {
 
@@ -55,13 +56,13 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
                                 OrderPaymentType mPaymentType) {
         switch (currentStep) {
             case 0:
-                if(!checkDeliveryInfoInput(name, phone, mProvince,
+                if (!checkDeliveryInfoInput(name, phone, mProvince,
                         mDistrict, mWard, address)) {
-                  return;
+                    return;
                 }
                 break;
             case 1:
-                if(!checkPaymentInput(mDeliveryType, mPaymentType)) {
+                if (!checkPaymentInput(mDeliveryType, mPaymentType)) {
                     return;
                 }
                 break;
@@ -107,67 +108,68 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         OrderBodyRequest orderBodyRequest = new OrderBodyRequest();
         orderBodyRequest.setOrder(order);
         orderBodyRequest.setCartShopping(cartShopping);
+        Gson gson = new Gson();
+        Log.e("JSON", gson.toJson(orderBodyRequest));
+        mView.showLoading("Tạo hóa đơn");
+        getCompositeDisposable().add(
+                mApiService.createOrder(orderBodyRequest)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError));
+    }
 
-        mApiService.createOrder(orderBodyRequest).enqueue(new Callback<EndPoint<Order>>() {
-            @Override
-            public void onResponse(Call<EndPoint<Order>> call, Response<EndPoint<Order>> response) {
-                if(response.isSuccessful()){
-                    if(response.body().getStatusCode() == 200){
-                        mView.doneStep();
-                        mView.showMessage("Đặt hàng thành công");
-                    }else{
-                        mView.showMessage("Đặt hàng thất bại");
-                        Log.e(TAG, response.body().getMessage());
-                    }
-                }
-            }
+    private void handleError(Throwable throwable) {
+        mView.hideLoading(throwable.getMessage(), false);
+    }
 
-            @Override
-            public void onFailure(Call<EndPoint<Order>> call, Throwable t) {
-                mView.showMessage("Kiểm tra lại kết nối");
-                Log.e(TAG, t.getMessage());
-            }
-        });
-
-
+    private void handleResponse(EndPoint<Order> orderEndPoint) {
+        if (orderEndPoint.getStatusCode() == 200) {
+            mView.doneStep();
+            mView.hideLoading();
+            mView.showMessage("Thông báo", "Đặt hàng thành công", SweetAlertDialog.SUCCESS_TYPE);
+        } else {
+            mView.hideLoading("Đặt hàng thất bại", false);
+            Log.e("Loi", orderEndPoint.getMessage());
+        }
     }
 
     private boolean checkPaymentInput(OrderDeliveryType mDeliveryType,
                                       OrderPaymentType mPaymentType) {
-        if(mDeliveryType == null){
-            mView.showMessage("Vui lòng chọn hình thức giao hàng");
-            return  false;
+        if (mDeliveryType == null) {
+            mView.showMessage("Thông báo", "Vui lòng chọn hình thức giao hàng", SweetAlertDialog.WARNING_TYPE);
+            return false;
         }
-        if(mPaymentType == null){
-            mView.showMessage("Vui lòng chọn hình thức thanh toán");
-            return  false;
+        if (mPaymentType == null) {
+            mView.showMessage("Thông báo", "Vui lòng chọn hình thức thanh toán", SweetAlertDialog.WARNING_TYPE);
+            return false;
         }
         return true;
     }
 
     private boolean checkDeliveryInfoInput(String name, String phone, Province mProvince, District mDistrict, Ward mWard, String address) {
         if (name == null || name.isEmpty()) {
-            mView.showMessage("Vui lòng nhập vào họ và tên");
+            mView.showMessage("Thông báo", "Vui lòng nhập vào họ và tên", SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (phone == null || phone.isEmpty()) {
-            mView.showMessage("Vui lòng nhập vào số điện thoại");
+            mView.showMessage("Thông báo", "Vui lòng nhập vào số điện thoại", SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (mProvince == null) {
-            mView.showMessage("Vui lòng chọn tỉnh/thành phố");
+            mView.showMessage("Thông báo", "Vui lòng chọn tỉnh/thành phố", SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (mDistrict == null) {
-            mView.showMessage("Vui lòng chọn quận/huyện");
+            mView.showMessage("Thông báo", "Vui lòng chọn quận/huyện", SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (mWard == null) {
-            mView.showMessage("Vui lòng chọn phường/xã");
+            mView.showMessage("Thông báo", "Vui lòng chọn phường/xã", SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (address == null || address.isEmpty()) {
-            mView.showMessage("Vui lòng nhập địa chỉ cụ thể");
+            mView.showMessage("Thông báo", "Vui lòng nhập địa chỉ cụ thể", SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         return true;
@@ -190,40 +192,39 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
 
     @Override
     public void loadDeliveryType() {
-        mApiService.getAllOrderDeliveryType().enqueue(new Callback<EndPoint<List<OrderDeliveryType>>>() {
-            @Override
-            public void onResponse(@NonNull Call<EndPoint<List<OrderDeliveryType>>> call,
-                                   @NonNull Response<EndPoint<List<OrderDeliveryType>>> response) {
-                if (response.isSuccessful()) {
-                    List<OrderDeliveryType> deliveryTypes = response.body().getData();
-                    mView.updateRVOrderDeliveryType(deliveryTypes);
-                }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<EndPoint<List<OrderDeliveryType>>> call, @NonNull Throwable t) {
+        getCompositeDisposable().add(
+                mApiService.getAllOrderDeliveryType()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(this::handleDeliveryTypeResponse, this::noneHandleError)
+        );
+    }
 
-            }
-        });
+    private void noneHandleError(Throwable throwable) {
+
+    }
+
+    private void handleDeliveryTypeResponse(EndPoint<List<OrderDeliveryType>> listEndPoint) {
+        List<OrderDeliveryType> deliveryTypes = listEndPoint.getData();
+        mView.updateRVOrderDeliveryType(deliveryTypes);
     }
 
     @Override
     public void loadPaymentType() {
-        mApiService.getAllOrderPaymentType().enqueue(new Callback<EndPoint<List<OrderPaymentType>>>() {
-            @Override
-            public void onResponse(@NonNull Call<EndPoint<List<OrderPaymentType>>> call,
-                                   @NonNull Response<EndPoint<List<OrderPaymentType>>> response) {
-                if (response.isSuccessful()) {
-                    List<OrderPaymentType> deliveryTypes = response.body().getData();
-                    mView.updateRVOrderPaymentType(deliveryTypes);
-                }
-            }
+        getCompositeDisposable().add(
+                mApiService.getAllOrderPaymentType()
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io())
+                        .subscribe(this::handleOrderPaymentTypeResponse, this::noneHandleError)
+        );
+    }
 
-            @Override
-            public void onFailure(@NonNull Call<EndPoint<List<OrderPaymentType>>> call, @NonNull Throwable t) {
-
-            }
-        });
+    private void handleOrderPaymentTypeResponse(EndPoint<List<OrderPaymentType>> listEndPoint) {
+        List<OrderPaymentType> deliveryTypes = listEndPoint.getData();
+        mView.updateRVOrderPaymentType(deliveryTypes);
     }
 
     @Override
@@ -233,7 +234,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
                            OrderPaymentType mPaymentType) {
         mView.showData(name, phone, mProvince.getName(), mDistrict.getName(),
                 mWard.getName(), address, mDeliveryType.getOrderDeliveryTypeName(),
-               mPaymentType.getOrderPaymentTypeName(), mPaymentType.getOrderPaymentTypeDescription());
+                mPaymentType.getOrderPaymentTypeName(), mPaymentType.getOrderPaymentTypeDescription());
     }
 
     @Override
@@ -273,7 +274,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
 
         for (Map.Entry<BookingItem, Integer> entry : itemMap.entrySet()) {
             CartServicePriceItem cartItem = new CartServicePriceItem();
-            cartItem.setBookingItem( entry.getKey());
+            cartItem.setBookingItem(entry.getKey());
             cartItem.setNumberCustomer(entry.getValue());
             cartItems.add(cartItem);
         }
@@ -303,7 +304,8 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         for (Map.Entry<BookingItem, Integer> entry : itemMap.entrySet()) {
             CartItemService cartItem = new CartItemService();
             cartItem.setProductId(entry.getKey().getServicePrice().getServicePriceId());
-            cartItem.setDateBooking(entry.getKey().getSelectedDate().toString());
+           //
+            cartItem.setDateBooking(DateTimeUtils.formatDate(entry.getKey().getSelectedDate(), DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ));
             cartItem.setNumber(entry.getValue());
             cartItems.add(cartItem);
         }

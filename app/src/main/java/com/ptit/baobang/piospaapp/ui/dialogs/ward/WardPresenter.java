@@ -1,7 +1,6 @@
 package com.ptit.baobang.piospaapp.ui.dialogs.ward;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Ward;
@@ -11,9 +10,8 @@ import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class WardPresenter extends BasePresenter implements IWardPresenter {
 
@@ -25,21 +23,25 @@ public class WardPresenter extends BasePresenter implements IWardPresenter {
 
     @Override
     public void loadData(District district) {
-        mApiService.getWardtByDistrictId(district.getDistrictid()).enqueue(new Callback<EndPoint<List<Ward>>>() {
-            @Override
-            public void onResponse(@NonNull Call<EndPoint<List<Ward>>> call, Response<EndPoint<List<Ward>>> response) {
-                if (response.isSuccessful()) {
-                    List<Ward> wards = response.body().getData();
-                    mView.updateRecyleView(wards);
-                    mView.stopShimmerAnimation();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<EndPoint<List<Ward>>> call, Throwable t) {
 
-            }
-        });
+        getCompositeDisposable().add(
+                mApiService.getWardtByDistrictId(district.getDistrictid())
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(this::handleRespone, this::handleError)
+        );
+    }
+
+    private void handleError(Throwable throwable) {
+
+    }
+
+    private void handleRespone(EndPoint<List<Ward>> listEndPoint) {
+        List<Ward> wards = listEndPoint.getData();
+        mView.updateRecyleView(wards);
+        mView.stopShimmerAnimation();
     }
 
     @Override

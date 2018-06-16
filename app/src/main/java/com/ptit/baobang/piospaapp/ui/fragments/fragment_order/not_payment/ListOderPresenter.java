@@ -1,7 +1,6 @@
 package com.ptit.baobang.piospaapp.ui.fragments.fragment_order.not_payment;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.Order;
@@ -13,15 +12,15 @@ import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class ListOderPresenter extends BasePresenter implements IListOrdePresenter {
 
-    IListOrderView mView;
+    private IListOrderView mView;
 
-    public ListOderPresenter(IListOrderView mView) {
+    ListOderPresenter(IListOrderView mView) {
         this.mView = mView;
     }
 
@@ -29,24 +28,26 @@ public class ListOderPresenter extends BasePresenter implements IListOrdePresent
     public void loadOrder(Context baseContext, OrderStatus orderStatus) {
         Customer customer = SharedPreferenceUtils.getUser(baseContext);
         OrderCustomerBody orderCustomerBody = new OrderCustomerBody(orderStatus.getOrderStatusId(), customer.getCustomerId());
-        Log.e("DATA", orderStatus.getOrderStatusId() + "-" + customer.getCustomerId());
-        mApiService.getOrderByStatus(orderCustomerBody).enqueue(new Callback<EndPoint<List<Order>>>() {
-            @Override
-            public void onResponse(Call<EndPoint<List<Order>>> call, Response<EndPoint<List<Order>>> response) {
-                if(response.isSuccessful()){
-                    Log.e("LIST ORDER", response.body().getMessage());
-                    List<Order> orders = response.body().getData();
-                    Log.e("LIST  SIZE", response.body().getData().size() + "");
-                    mView.updateRecycleView(orders);
-                }else{
-                    Log.e("LIST ORDER", "NOT SUCCESS");
-                }
-            }
 
-            @Override
-            public void onFailure(Call<EndPoint<List<Order>>> call, Throwable t) {
+        getCompositeDisposable().add(
+                mApiService.getOrderByStatus(orderCustomerBody)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io())
+                        .subscribe(this::handleResponse, this::handleError));
+    }
 
-            }
-        });
+    private void handleError(Throwable throwable) {
+        mView.showMessage("Thông báo", throwable.getMessage(), SweetAlertDialog.ERROR_TYPE);
+    }
+
+    private void handleResponse(EndPoint<List<Order>> listEndPoint) {
+        List<Order> orders = listEndPoint.getData();
+        mView.updateRecycleView(orders);
+    }
+
+    @Override
+    public void selectedItem(Order order) {
+        mView.openOrderDetail(order);
     }
 }

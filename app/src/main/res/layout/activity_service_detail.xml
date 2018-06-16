@@ -48,15 +48,6 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-
-        android:id="@+id/shimmerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
-        <include layout="@layout/product_placeholder_item"/>
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/view_pager"
         android:layout_width="match_parent"

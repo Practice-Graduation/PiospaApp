@@ -3,6 +3,8 @@ package com.ptit.baobang.piospaapp.ui.fragments.fragment_cart;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -27,7 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class CartFragment extends BaseFragment implements ICartView{
+public class CartFragment extends BaseFragment<CartPresenter> implements ICartView{
 
     @BindView(R.id.sliding_tabs)
     TabLayout mTabLayout;
@@ -44,8 +46,6 @@ public class CartFragment extends BaseFragment implements ICartView{
     @BindView(R.id.content)
     LinearLayout layoutContent;
 
-
-    private CartPresenter mPresenter;
     public CartFragment() {
         // Required empty public constructor
     }
@@ -69,7 +69,7 @@ public class CartFragment extends BaseFragment implements ICartView{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         mUnBinder = ButterKnife.bind(this, view);
@@ -79,8 +79,15 @@ public class CartFragment extends BaseFragment implements ICartView{
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        addControls();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+        addControls();
     }
 
     @OnClick(R.id.txtPayment)

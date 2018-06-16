@@ -5,10 +5,10 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,22 +17,32 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.NetworkUtils;
 
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public abstract class BaseActivity extends AppCompatActivity implements BaseView{
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements BaseView {
 
     private ProgressDialog mProgressDialog;
     protected Unbinder mUnbinder;
+    private SweetAlertDialog mSweetAlertDialog;
+    protected T mPresenter;
+    private boolean isFirstInit;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        mUnbinder = ButterKnife.bind(this);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -54,15 +64,42 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     @Override
-    public void showLoading() {
-        hideLoading();
-        mProgressDialog = CommonUtils.showLoadingDialog(this);
+    public void showLoading(String message) {
+        if (!isFinishing()) {
+            if (mSweetAlertDialog == null || !mSweetAlertDialog.isShowing()) {
+                mSweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+                mSweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                mSweetAlertDialog.setTitleText(message);
+                mSweetAlertDialog.setCancelable(false);
+                mSweetAlertDialog.show();
+            } else {
+                mSweetAlertDialog.setTitleText(message);
+            }
+        }
+    }
+
+    @Override
+    public void hideLoading(String message, boolean isSuccess) {
+        if (!isFinishing()) {
+            if (mSweetAlertDialog.isShowing()) {
+                mSweetAlertDialog.setCanceledOnTouchOutside(true);
+                mSweetAlertDialog.setTitleText(message);
+                mSweetAlertDialog.setConfirmText("OK");
+                if (isSuccess) {
+                    mSweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                } else {
+                    mSweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                }
+            }
+        }
     }
 
     @Override
     public void hideLoading() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.cancel();
+        if (!isFinishing()) {
+            if (mSweetAlertDialog.isShowing()) {
+                mSweetAlertDialog.dismissWithAnimation();
+            }
         }
     }
 
@@ -77,31 +114,23 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     @Override
-    public void onError(String message) {
-        if (message != null) {
-            showSnackBar(message);
-        } else {
-            showSnackBar(getString(R.string.some_error));
-        }
+    public void showMessage(String title, int message, int messageType) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, messageType);
+        sweetAlertDialog.setTitleText(title);
+        sweetAlertDialog.setContentText(getString(message));
+        sweetAlertDialog.setConfirmText("OK");
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
     }
 
     @Override
-    public void onError(@StringRes int resId) {
-        onError(getString(resId));
-    }
-
-    @Override
-    public void showMessage(String message) {
-        if (message != null) {
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, getString(R.string.some_error), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void showMessage(@StringRes int resId) {
-        showMessage(getString(resId));
+    public void showMessage(String title, String message, int messageType) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, messageType);
+        sweetAlertDialog.setTitleText(title);
+        sweetAlertDialog.setContentText(message);
+        sweetAlertDialog.setConfirmText("OK");
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
     }
 
     @Override
@@ -146,4 +175,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         super.onDestroy();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mPresenter != null){
+            mPresenter.unSubscribeRequests();
+        }
+    }
 }

@@ -13,9 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisterActivity extends BaseActivity implements IRegisterView{
-
-    private RegisterPresenter mPresenter;
+public class RegisterActivity extends BaseActivity<RegisterPresenter> implements IRegisterView{
 
     @BindView(R.id.txtFullName)
     EditText txtFullName;
@@ -49,7 +47,6 @@ public class RegisterActivity extends BaseActivity implements IRegisterView{
     }
 
     private void addControls() {
-        mUnbinder = ButterKnife.bind(this);
         mPresenter = new RegisterPresenter(this);
     }
 

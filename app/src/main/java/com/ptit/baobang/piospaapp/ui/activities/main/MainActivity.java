@@ -11,7 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,14 +33,11 @@ import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements IMainView, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity<MainPresenter> implements IMainView, NavigationView.OnNavigationItemSelectedListener {
     private static final String SELECTED_ITEM = "arg_selected_item";
     private static int mSelectedItem = 0;
     private static int mSelectedFragment = 0;
-
-    private MainPresenter mPresenter;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -62,6 +58,8 @@ public class MainActivity extends BaseActivity implements IMainView, NavigationV
 
     TextView txtEmai;
 
+    private Fragment mCurrentFragment;
+    private FragmentTransaction mFragmentTran;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
@@ -81,7 +79,6 @@ public class MainActivity extends BaseActivity implements IMainView, NavigationV
     }
 
     private void addControls() {
-        mUnbinder = ButterKnife.bind(this);
         mPresenter = new MainPresenter(this);
 //        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mNavigation.getLayoutParams();
 //        layoutParams.setBehavior(new BottomNavigationViewBehavior());
@@ -119,35 +116,60 @@ public class MainActivity extends BaseActivity implements IMainView, NavigationV
     }
 
     private void selectedFragment(MenuItem selectedItem) {
-        Fragment fragment = null;
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
         switch (selectedItem.getItemId()) {
             case R.id.navigation_product:
-
-                if(!(currentFragment instanceof ProductFragment)){
-                    fragment = ProductFragment.newInstance();
-                }
+                showProductFragment();
                 break;
             case R.id.navigation_service:
-
-                if(!(currentFragment instanceof ServiceFragment)){
-                    fragment = ServiceFragment.newInstance();
-                }
+                showServiceFragment();
                 break;
             case R.id.navigation_cart:
-                if(!(currentFragment instanceof CartFragment)){
-                    Log.e("NEW CAR", "NEW CART");
-                    fragment = CartFragment.newInstance();
-                }
+               showCartFragment();
                 break;
         }
         // update selected item
-        mSelectedItem = selectedItem.getItemId();
-        mNavigation.getMenu().getItem(mSelectedFragment).setChecked(true);
-        if (fragment != null) {
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content, fragment).commit();
+//        mSelectedItem = selectedItem.getItemId();
+//        mNavigation.getMenu().getItem(mSelectedFragment).setChecked(true);
+//        if (fragment != null) {
+//            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//            fragmentTransaction.replace(R.id.content, fragment).commit();
+//        }
+    }
+
+    private void showCartFragment() {
+        mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
+        if (!(mCurrentFragment instanceof CartFragment)) {
+            mToolbar.setTitle(R.string.title_cart);
+            mFragmentTran = getSupportFragmentManager().beginTransaction();
+            mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            mFragmentTran.replace(R.id.content, CartFragment.newInstance());
+            mFragmentTran.commit();
+            mNavigation.getMenu().getItem(2).setChecked(true);
+        }
+    }
+
+    private void showServiceFragment() {
+        mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
+        if (!(mCurrentFragment instanceof ServiceFragment)) {
+            mToolbar.setTitle(R.string.title_service);
+            mFragmentTran = getSupportFragmentManager().beginTransaction();
+            mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            mFragmentTran.replace(R.id.content, ServiceFragment.newInstance());
+            mFragmentTran.commit();
+            mNavigation.getMenu().getItem(1).setChecked(true);
+        }
+    }
+
+    private void showProductFragment() {
+            mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
+            if (!(mCurrentFragment instanceof ProductFragment)) {
+                mToolbar.setTitle(R.string.title_product);
+                mFragmentTran = getSupportFragmentManager().beginTransaction();
+                mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                mFragmentTran.replace(R.id.content, ProductFragment.newInstance());
+                mFragmentTran.commit();
+                mNavigation.getMenu().getItem(0).setChecked(true);
         }
     }
 

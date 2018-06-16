@@ -5,6 +5,9 @@ import com.ptit.baobang.piospaapp.ui.base.BaseView;
 
 import java.util.List;
 
-public interface IListOrderView extends BaseView{
+public interface IListOrderView extends BaseView {
     void updateRecycleView(List<Order> orders);
+
+    void openOrderDetail(Order order);
+
 }

@@ -23,6 +23,7 @@ import com.ptit.baobang.piospaapp.data.network.model_request.OrderResponse;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -34,10 +35,10 @@ public interface APIService {
     //---------------PRODUCT--------------------------
 
     @GET("product/group")
-    Call<EndPoint<List<ProductGroup>>> getAllProductGroup();
+    Observable<EndPoint<List<ProductGroup>>> getAllProductGroup();
 
     @GET("product/group/{groupId}/products")
-    Call<EndPoint<List<Product>>> getProductByGroupId(@Path("groupId") int groupId);
+    Observable<EndPoint<List<Product>>> getProductByGroupId(@Path("groupId") int groupId);
 
     @GET("product/{productId}")
     Call<EndPoint<Product>> getProductById(@Path("productId") int productId);
@@ -45,19 +46,19 @@ public interface APIService {
     //---------------SERVICE--------------------------
 
     @GET("service/group")
-    Call<EndPoint<List<ServiceGroup>>> getAllServiceGroup();
+    Observable<EndPoint<List<ServiceGroup>>> getAllServiceGroup();
 
     @GET("service/price/group/{groupId}")
-    Call<EndPoint<List<ServicePrice>>> getServicePriceByGroupId(@Path("groupId") int groupId);
+    Observable<EndPoint<List<ServicePrice>>> getServicePriceByGroupId(@Path("groupId") int groupId);
 
     @GET("service/{serviceId}")
     Call<EndPoint<Service>> getServiceById(@Path("serviceId") int serviceId);
 
     @GET("service/price/{servicePriceId}")
-    Call<EndPoint<ServicePrice>> getServicePriceById(@Path("servicePriceId") int servicePriceId);
+    Observable<EndPoint<ServicePrice>> getServicePriceById(@Path("servicePriceId") int servicePriceId);
 
     @GET("/service/packages/{packageId}")
-    Call<EndPoint<List<Service>>> getServiceByPackageId(@Path("packageId") int packageId);
+    Observable<EndPoint<List<Service>>> getServiceByPackageId(@Path("packageId") int packageId);
 
     //---------------ROOM--------------------------
     @GET("room")
@@ -65,41 +66,41 @@ public interface APIService {
 
     //---------------BOOKINNG DETAIL--------------------------
     @POST("detail/date")
-    Call<EndPoint<List<BookingDetail>>> getBookingDetailOnDayOfRoom(@Body BookingDetailRequest request);
+    Observable<EndPoint<List<BookingDetail>>> getBookingDetailOnDayOfRoom(@Body BookingDetailRequest request);
 
     // ------------------CUSTOMEMR------------------------------------
     @POST("customer/login")
-    Call<EndPoint<Customer>> login(@Body LoginRequest loginRequest);
+    Observable<EndPoint<Customer>> login(@Body LoginRequest loginRequest);
 
     @POST("customer")
-    Call<EndPoint<Customer>> register(@Body Customer customer);
+    Observable<EndPoint<Customer>> register(@Body Customer customer);
 
     // ------------------ADDREsS------------------------------------
     @GET("province")
-    Call<EndPoint<List<Province>>> getAllProvince();
+    Observable<EndPoint<List<Province>>> getAllProvince();
 
     @GET("province/{provinceId}/district")
-    Call<EndPoint<List<District>>> getDistrictByProvinceId(@Path("provinceId") int provinceid);
+    Observable<EndPoint<List<District>>> getDistrictByProvinceId(@Path("provinceId") int provinceid);
 
     @GET("district/{districtId}/ward")
-    Call<EndPoint<List<Ward>>> getWardtByDistrictId(@Path("districtId") int districtId);
+    Observable<EndPoint<List<Ward>>> getWardtByDistrictId(@Path("districtId") int districtId);
     // ------------------ORDER------------------------------------
     @GET("order/delivery-type")
-    Call<EndPoint<List<OrderDeliveryType>>> getAllOrderDeliveryType();
+    Observable<EndPoint<List<OrderDeliveryType>>> getAllOrderDeliveryType();
 
     @GET("order/payment-type")
-    Call<EndPoint<List<OrderPaymentType>>> getAllOrderPaymentType();
+    Observable<EndPoint<List<OrderPaymentType>>> getAllOrderPaymentType();
 
     @GET("order/status")
-    Call<EndPoint<List<OrderStatus>>> getAllOrderStatuses();
+    Observable<EndPoint<List<OrderStatus>>> getAllOrderStatuses();
 
     @POST("order")
-    Call<EndPoint<Order>> createOrder(@Body OrderBodyRequest orderBodyRequest);
+    Observable<EndPoint<Order>> createOrder(@Body OrderBodyRequest orderBodyRequest);
 
     @POST("order/customer-order-status")
-    Call<EndPoint<List<Order>>> getOrderByStatus(@Body OrderCustomerBody orderCustomerBody);
+    Observable<EndPoint<List<Order>>> getOrderByStatus(@Body OrderCustomerBody orderCustomerBody);
 
     @GET("order/{orderId}/order-product-service-price")
-    Call<EndPoint<OrderResponse>> getProductAndBookingDetail(@Path("orderId") int orderId);
+    Observable<EndPoint<OrderResponse>> getProductAndBookingDetail(@Path("orderId") int orderId);
 
 }

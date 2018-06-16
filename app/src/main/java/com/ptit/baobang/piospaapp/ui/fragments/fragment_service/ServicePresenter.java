@@ -1,20 +1,20 @@
 package com.ptit.baobang.piospaapp.ui.fragments.fragment_service;
 
 import com.ptit.baobang.piospaapp.data.model.ServiceGroup;
+import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class ServicePresenter extends BasePresenter implements IServicePresenter{
 
     private IServiceView mView;
 
-    public ServicePresenter(IServiceView mView) {
+    ServicePresenter(IServiceView mView) {
         this.mView = mView;
     }
 
@@ -25,20 +25,28 @@ public class ServicePresenter extends BasePresenter implements IServicePresenter
 
     @Override
     public void loadData() {
-        mApiService.getAllServiceGroup().enqueue(new Callback<EndPoint<List<ServiceGroup>>>() {
-            @Override
-            public void onResponse(Call<EndPoint<List<ServiceGroup>>> call, Response<EndPoint<List<ServiceGroup>>> response) {
-                if(response.isSuccessful()){
-                    List<ServiceGroup> groups = response.body().getData();
-                    mView.onUpdateRecycleView(groups);
-                    mView.stopShirrmentAnimation();
-                }
-            }
+        mView.showLoading("Tải dữ liệu");
+        getCompositeDisposable().add(
+                mApiService.getAllServiceGroup()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(this::handleRespone, this::handleError));
+    }
 
-            @Override
-            public void onFailure(Call<EndPoint<List<ServiceGroup>>> call, Throwable t) {
-                mView.showMessage(t.getMessage());
-            }
-        });
+    @Override
+    public void clickItem(ServicePrice servicePrice) {
+        mView.openServiceDetailActivity(servicePrice);
+    }
+
+    private void handleError(Throwable throwable) {
+        mView.hideLoading(throwable.getMessage(), false);
+
+    }
+
+    private void handleRespone(EndPoint<List<ServiceGroup>> listEndPoint) {
+        List<ServiceGroup> groups = listEndPoint.getData();
+        mView.onUpdateRecycleView(groups);
+        mView.hideLoading();
     }
 }

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.ui.adapter.TimeAdapter;
@@ -31,8 +30,6 @@ public class BookingTimeActivity extends BaseActivity implements IBookingTimeVie
     private Date mSelectedDate;
     private ServicePrice mServicePrice;
 
-    @BindView(R.id.shimmerLayout)
-    ShimmerFrameLayout shimmerFrameLayout;
 
     @BindView(R.id.rvTimes)
     RecyclerView rvTimes;
@@ -104,28 +101,11 @@ public class BookingTimeActivity extends BaseActivity implements IBookingTimeVie
     @Override
     protected void onResume() {
         super.onResume();
-        startShimmerAnimation();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        stopShimmerAnimation();
-    }
-
-    @Override
-    public void stopShimmerAnimation() {
-        if(shimmerFrameLayout != null){
-            shimmerFrameLayout.stopShimmerAnimation();
-            shimmerFrameLayout.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void startShimmerAnimation() {
-        if(shimmerFrameLayout != null){
-            shimmerFrameLayout.startShimmerAnimation();
-        }
     }
 
     @Override

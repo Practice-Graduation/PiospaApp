@@ -23,9 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CartServiceFragment extends BaseFragment implements ICartServiceFragmentView {
-
-    private CartServiceFragmentPresenter mPresenter;
+public class CartServiceFragment extends BaseFragment<CartServiceFragmentPresenter> implements ICartServiceFragmentView {
 
     private CartFragment cartFragment;
 

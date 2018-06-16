@@ -18,14 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class AllProductActivity extends BaseActivity implements IAllProductView{
+public class AllProductActivity extends BaseActivity<AllProductPresenter> implements IAllProductView{
 
     private static final String TAG = "AllProductActivity";
-
-    private AllProductPresenter mPresenter;
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -49,7 +45,6 @@ public class AllProductActivity extends BaseActivity implements IAllProductView{
     }
 
     private void addControls() {
-        mUnbinder = ButterKnife.bind(this);
 
         mPresenter = new AllProductPresenter(this);
 

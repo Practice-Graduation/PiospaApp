@@ -10,7 +10,7 @@ public class MainPresenter extends BasePresenter implements IMainPresenter {
 
     private IMainView mView;
 
-    public MainPresenter(IMainView mView) {
+    MainPresenter(IMainView mView) {
         this.mView = mView;
     }
 

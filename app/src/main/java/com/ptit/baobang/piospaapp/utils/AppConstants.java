@@ -37,4 +37,5 @@ public interface AppConstants {
     String START_TIME = "08:00:00";
     String END_TIME = "22:00:00";
     String ORDER_STATUS = "ORDER_STATUS";
+    String ORDER = "ORDER";
 }

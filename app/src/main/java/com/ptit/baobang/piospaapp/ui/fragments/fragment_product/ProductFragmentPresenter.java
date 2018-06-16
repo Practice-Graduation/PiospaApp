@@ -1,19 +1,20 @@
 package com.ptit.baobang.piospaapp.ui.fragments.fragment_product;
 
+import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.data.model.ProductGroup;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-public class ProductFragmentPresenter extends BasePresenter implements IProductFragmentPresenter{
+public class ProductFragmentPresenter extends BasePresenter implements IProductFragmentPresenter {
 
     private IProductFragmentView mView;
-    public ProductFragmentPresenter(IProductFragmentView mIProductFragmentView) {
+
+    ProductFragmentPresenter(IProductFragmentView mIProductFragmentView) {
         super();
         this.mView = mIProductFragmentView;
     }
@@ -25,25 +26,29 @@ public class ProductFragmentPresenter extends BasePresenter implements IProductF
     }
 
 
-
     @Override
     public void loadData() {
+        mView.showLoading("Tải dữ liệu");
+        getCompositeDisposable().add(
+                mApiService.getAllProductGroup()
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io())
+                        .subscribe(this::handleResponse, this::handleError));
+    }
 
-        mApiService.getAllProductGroup().enqueue(new Callback<EndPoint<List<ProductGroup>>>() {
+    @Override
+    public void clickItem(Product product) {
+        mView.openProductDetailActivity(product);
+    }
 
-            @Override
-            public void onResponse(Call<EndPoint<List<ProductGroup>>> call, Response<EndPoint<List<ProductGroup>>> response) {
-                if(response.isSuccessful()){
-                    List<ProductGroup> groups = response.body().getData();
-                    mView.onUpdateRecycleView(groups);
-                    mView.stopShimmerAnimation();
-                }
-            }
-            @Override
-            public void onFailure(Call<EndPoint<List<ProductGroup>>> call, Throwable t) {
-                mView.showMessage(t.getMessage());
-            }
-        });
+    private void handleResponse(EndPoint<List<ProductGroup>> listEndPoint) {
+        List<ProductGroup> groups = listEndPoint.getData();
+        mView.onUpdateRecycleView(groups);
+        mView.hideLoading();
+    }
 
+    private void handleError(Throwable throwable) {
+        mView.hideLoading(throwable.getMessage(), false);
     }
 }

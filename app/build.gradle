@@ -26,12 +26,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+
+    implementation 'com.pnikosis:materialish-progress:1.0'
+    implementation project(':sweet-alert-dialog')
     // butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
@@ -39,19 +42,24 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.2"
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    //call api,observer
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     // Recyclerview
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     // Cardview
     implementation 'com.android.support:cardview-v7:27.1.1'
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.4.0'
-    // Firebase
-    implementation 'com.google.firebase:firebase-core:15.0.2'
-    implementation 'com.google.firebase:firebase-database:15.0.0'
 
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
     implementation 'com.shuhart.stepview:stepview:1.2.7'
 
+    //show hide layout
+    implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
 }
 apply plugin: 'com.google.gms.google-services'

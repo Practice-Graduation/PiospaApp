@@ -2,43 +2,47 @@ package com.ptit.baobang.piospaapp.ui.activities.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
-import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
+import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.activities.register.RegisterActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity implements ILoginView {
+public class LoginActivity extends BaseActivity<LoginPresenter> implements ILoginView {
 
-    private LoginPresenter mLoginPresenter;
 
+    @BindView(R.id.root)
+    ConstraintLayout root;
 
     @BindView(R.id.login_layout)
     NestedScrollView nestedScrollView;
+
     @BindView(R.id.txtUsername)
     EditText txtUsername;
+
     @BindView(R.id.txtPassword)
     EditText txtPassword;
 
     Animation slideDownAnimation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mUnbinder = ButterKnife.bind(this);
-        mLoginPresenter = new LoginPresenter(this);
+        mPresenter = new LoginPresenter(this);
+        hideKeyboardOutside(root);
         slideDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.slide_down_animation);
         nestedScrollView.startAnimation(slideDownAnimation);
@@ -57,11 +61,11 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     void onClick(View view){
         switch (view.getId()){
             case R.id.btnLogin:
-                mLoginPresenter.onClickLogin(txtUsername.getText().toString(),
+                mPresenter.onClickLogin(txtUsername.getText().toString(),
                         txtPassword.getText().toString());
                 break;
             case R.id.btnRegister:
-                mLoginPresenter.onClickRegister();
+                mPresenter.onClickRegister();
                 break;
 
         }

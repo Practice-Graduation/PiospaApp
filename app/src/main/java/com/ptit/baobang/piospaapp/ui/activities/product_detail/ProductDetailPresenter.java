@@ -1,17 +1,17 @@
 package com.ptit.baobang.piospaapp.ui.activities.product_detail;
 
-import com.ptit.baobang.piospaapp.R;
+import android.content.Intent;
+import android.os.Bundle;
+
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.model.Product;
-import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class ProductDetailPresenter extends BasePresenter implements IProductDetailPresenter{
+public class ProductDetailPresenter extends BasePresenter implements IProductDetailPresenter {
 
     private IProductDetailView mView;
 
@@ -20,48 +20,26 @@ public class ProductDetailPresenter extends BasePresenter implements IProductDet
     }
 
     @Override
-    public void loadData(int productId) {
-        mApiService.getProductById(productId).enqueue(new Callback<EndPoint<Product>>() {
-            @Override
-            public void onResponse(Call<EndPoint<Product>> call, Response<EndPoint<Product>> response) {
-                if(response.isSuccessful()){
-                    Product product = response.body().getData();
-                    mView.stopShirrmentAnimation();
-                    mView.showProductDetail(product);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EndPoint<Product>> call, Throwable t) {
-                mView.showMessage(R.string.some_error);
-            }
-        });
+    public void loadData(Product product) {
+        mView.stopShirrmentAnimation();
+        mView.showProductDetail(product);
     }
 
     @Override
-    public void onClickAddCart(int productId) {
-        mView.showMessage("OnClick");
-        mApiService.getProductById(productId).enqueue(new Callback<EndPoint<Product>>() {
-            @Override
-            public void onResponse(Call<EndPoint<Product>> call, Response<EndPoint<Product>> response) {
-                if(response.isSuccessful()){
-                    Product product = response.body().getData();
-                    Cart cart = CartHelper.getCart();
-                    cart.add(product, 1);
-                    mView.showMessage("Added " + product.getProductName());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EndPoint<Product>> call, Throwable t) {
-                mView.showMessage("Failed");
-            }
-        });
-
+    public void onClickAddCart(Product product) {
+        Cart cart = CartHelper.getCart();
+        cart.add(product, 1);
+        mView.showMessage("Thông báo", "Thêm " + product.getProductName(), SweetAlertDialog.SUCCESS_TYPE);
     }
 
     @Override
     public void onClickGoToCart() {
         mView.openFramentCart();
+    }
+
+    @Override
+    public Product getProductFromBundle(Intent intent) {
+        Bundle bundle = intent.getExtras();
+        return (Product) (bundle != null ? bundle.getSerializable(AppConstants.PRODUCT_ID) : null);
     }
 }

@@ -8,33 +8,36 @@ import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class OrderPresenter extends BasePresenter implements IOrderPresenter{
 
-    IOrderView mView;
+    private IOrderView mView;
 
-    public OrderPresenter(IOrderView mView) {
+    OrderPresenter(IOrderView mView) {
         this.mView = mView;
     }
 
     @Override
     public void loadData(Context baseContext) {
-        mApiService.getAllOrderStatuses().enqueue(new Callback<EndPoint<List<OrderStatus>>>() {
-            @Override
-            public void onResponse(Call<EndPoint<List<OrderStatus>>> call, Response<EndPoint<List<OrderStatus>>> response) {
-                if(response.isSuccessful()){
-                    List<OrderStatus> orderStatuses = response.body().getData();
-                    mView.addTabLayout(orderStatuses);
-                }
-            }
+        mView.showLoading("Tải dữ liệu");
+        getCompositeDisposable().add(
+                mApiService.getAllOrderStatuses()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(this::handlerResponse, this::handleError)
+        );
+    }
 
-            @Override
-            public void onFailure(Call<EndPoint<List<OrderStatus>>> call, Throwable t) {
+    private void handleError(Throwable throwable) {
+        mView.hideLoading(throwable.getMessage(), false);
+    }
 
-            }
-        });
+    private void handlerResponse(EndPoint<List<OrderStatus>> listEndPoint) {
+        List<OrderStatus> orderStatuses = listEndPoint.getData();
+        mView.addTabLayout(orderStatuses);
+        mView.hideLoading();
     }
 }

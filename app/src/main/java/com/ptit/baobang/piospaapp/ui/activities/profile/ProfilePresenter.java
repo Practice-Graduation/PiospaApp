@@ -40,7 +40,7 @@ public class ProfilePresenter extends BasePresenter implements IProfilePresenter
                 customer.getFullname(),
                 customer.getPhone(),
                 customer.getEmail(),
-                DateTimeUtils.formatDateDDMMYYYY(calendar.getTime()),
+                DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY),
                 gender,
                 customer.getProvince(),
                 customer.getDistrict(),

@@ -7,7 +7,7 @@ import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import java.util.Date;
 
 public interface IBookingInfoPresenter {
-    void loadDate(Intent intent);
+    void loadDataFromBunble(Intent intent);
 
     void clickAdd(String text);
 
