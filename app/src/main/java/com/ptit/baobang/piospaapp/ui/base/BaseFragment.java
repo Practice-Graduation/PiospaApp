@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.ptit.baobang.piospaapp.ui.listener.CallBackConfirmDialog;
 import com.ptit.baobang.piospaapp.utils.NetworkUtils;
 
 import java.util.Objects;
@@ -83,6 +84,31 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
                 }
             }
         }
+    }
+
+    @Override
+    public void showConfirm(String title, String message, String text_pos, String text_neg, int msgType, CallBackConfirmDialog callback) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(), msgType);
+        sweetAlertDialog.setTitleText(title);
+        sweetAlertDialog.setContentText(message);
+        sweetAlertDialog.setConfirmText(text_pos);
+        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+                callback.DiaglogPositive();
+            }
+        });
+        sweetAlertDialog.setCancelText(text_neg);
+        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+                callback.DiaglogNegative();
+            }
+        });
+        sweetAlertDialog.setCanceledOnTouchOutside(false);
+        sweetAlertDialog.show();
     }
 
     @Override

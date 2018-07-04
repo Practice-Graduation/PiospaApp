@@ -26,6 +26,7 @@ import com.ptit.baobang.piospaapp.data.network.model_request.CartShopping;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderBodyRequest;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
+import com.ptit.baobang.piospaapp.utils.InputUtils;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
@@ -128,6 +129,9 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             mView.doneStep();
             mView.hideLoading();
             mView.showMessage("Thông báo", "Đặt hàng thành công", SweetAlertDialog.SUCCESS_TYPE);
+            Cart cart = CartHelper.getCart();
+            cart.clear();
+            mView.openOrderActivity();
         } else {
             mView.hideLoading("Đặt hàng thất bại", false);
             Log.e("Loi", orderEndPoint.getMessage());
@@ -154,6 +158,10 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         }
         if (phone == null || phone.isEmpty()) {
             mView.showMessage("Thông báo", "Vui lòng nhập vào số điện thoại", SweetAlertDialog.WARNING_TYPE);
+            return false;
+        }
+        if(!InputUtils.isValidPhone(phone)){
+            mView.showMessage("Thông báo", "Số điện thoại " + phone + " không đúng", SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (mProvince == null) {

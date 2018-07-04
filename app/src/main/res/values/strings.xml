@@ -3,7 +3,7 @@
     <string name="some_error">Some error</string>
     <!--===========================LOGIN=====================================-->
     <string name="google">Google</string>
-    <string name="login">Đăng nhâp</string>
+    <string name="login">Đăng nhập</string>
     <string name="register">Đăng kí</string>
     <string name="facebook">Facebook</string>
     <string name="password">Mật khẩu</string>
@@ -97,4 +97,7 @@
     <string name="gender">Giới tính</string>
     <string name="payment_info">Thông tin thanh toán</string>
     <string name="ship">Phí vận chuyển</string>
+    <string name="update">Cập nhật</string>
+    <string name="old_pasword">Mật khẩu cũ</string>
+    <string name="new_password">Mật khẩu mới</string>
 </resources>

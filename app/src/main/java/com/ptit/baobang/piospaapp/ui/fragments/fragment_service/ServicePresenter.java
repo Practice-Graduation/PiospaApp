@@ -20,7 +20,7 @@ public class ServicePresenter extends BasePresenter implements IServicePresenter
 
     @Override
     public void onClickMore(ServiceGroup serviceGroup) {
-        mView.openAllServiceActivity(serviceGroup.getServiceGroupId());
+        mView.openAllServiceActivity(serviceGroup.getServiceGroupId(), serviceGroup.getServiceGroupName());
     }
 
     @Override

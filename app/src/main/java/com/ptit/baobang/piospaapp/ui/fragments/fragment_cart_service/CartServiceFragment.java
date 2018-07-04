@@ -50,17 +50,11 @@ public class CartServiceFragment extends BaseFragment<CartServiceFragmentPresent
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(mPresenter != null){
-            mPresenter.loadData();
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        if(mPresenter != null){
-//            mPresenter.loadData();
-//        }
     }
 
     @Override

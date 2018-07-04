@@ -20,8 +20,9 @@ import com.ptit.baobang.piospaapp.ui.listener.OnItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductGroupAdapter<P extends BasePresenter> extends RecyclerView.Adapter<ProductGroupAdapter.ProductGroupHolder> {
     private static final String TAG = "ProductGroupAdapter";
@@ -75,12 +76,27 @@ public class ProductGroupAdapter<P extends BasePresenter> extends RecyclerView.A
 
         void binView(ProductGroup productGroup) {
             txtGroupName.setText(productGroup.getProductGroupName());
-            mPresenter.getCompositeDisposable().add(
-                    mApiService.getProductByGroupId(productGroup.getProductGroupId())
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .unsubscribeOn(Schedulers.io())
-            .subscribe(this::handleResponse, this::handleError));
+//            mPresenter.getCompositeDisposable().add(
+//                    mApiService.getProductByGroupId(productGroup.getProductGroupId())
+//            .subscribeOn(Schedulers.computation())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .unsubscribeOn(Schedulers.io())
+//            .subscribe(this::handleResponse, this::handleError));
+
+            mApiService.getProductByGroupId(productGroup.getProductGroupId()).enqueue(new Callback<EndPoint<List<Product>>>() {
+                @Override
+                public void onResponse(Call<EndPoint<List<Product>>> call, Response<EndPoint<List<Product>>> response) {
+                    if(response.body().getStatusCode() == 200){
+                        handleResponse(response.body());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<EndPoint<List<Product>>> call, Throwable t) {
+                    handleError(t);
+                }
+            });
+
             adapter.setOnClickListener(position -> mItemSelected.itemSelected(products.get(position)));
             txtMore.setOnClickListener(v -> {
                 if(mListener != null){

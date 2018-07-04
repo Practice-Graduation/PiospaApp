@@ -11,7 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,6 +20,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.ui.activities.change_password.ChangePasswordActivity;
 import com.ptit.baobang.piospaapp.ui.activities.login.LoginActivity;
 import com.ptit.baobang.piospaapp.ui.activities.order.OrderActivity;
 import com.ptit.baobang.piospaapp.ui.activities.profile.ProdfileActivity;
@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     private Fragment mCurrentFragment;
     private FragmentTransaction mFragmentTran;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
@@ -103,7 +104,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     private void addToolBar() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
@@ -124,9 +125,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 showServiceFragment();
                 break;
             case R.id.navigation_cart:
-               showCartFragment();
+                showCartFragment();
                 break;
         }
+
+        centerToolbarTitle(mToolbar, AppConstants.PADDING_TOOLBAR);
         // update selected item
 //        mSelectedItem = selectedItem.getItemId();
 //        mNavigation.getMenu().getItem(mSelectedFragment).setChecked(true);
@@ -137,10 +140,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 //        }
     }
 
+
+
     private void showCartFragment() {
         mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
         if (!(mCurrentFragment instanceof CartFragment)) {
-            mToolbar.setTitle(R.string.title_cart);
+            mToolbar.setTitle(getString(R.string.title_cart) + "    ");
             mFragmentTran = getSupportFragmentManager().beginTransaction();
             mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
             mFragmentTran.replace(R.id.content, CartFragment.newInstance());
@@ -152,7 +157,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private void showServiceFragment() {
         mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
         if (!(mCurrentFragment instanceof ServiceFragment)) {
-            mToolbar.setTitle(R.string.title_service);
+            mToolbar.setTitle(getString(R.string.title_service) + "    ");
             mFragmentTran = getSupportFragmentManager().beginTransaction();
             mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
             mFragmentTran.replace(R.id.content, ServiceFragment.newInstance());
@@ -162,14 +167,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     }
 
     private void showProductFragment() {
-            mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
-            if (!(mCurrentFragment instanceof ProductFragment)) {
-                mToolbar.setTitle(R.string.title_product);
-                mFragmentTran = getSupportFragmentManager().beginTransaction();
-                mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-                mFragmentTran.replace(R.id.content, ProductFragment.newInstance());
-                mFragmentTran.commit();
-                mNavigation.getMenu().getItem(0).setChecked(true);
+        mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
+        if (!(mCurrentFragment instanceof ProductFragment)) {
+            mToolbar.setTitle(
+                    getString(R.string.title_product) + "    ");
+            mFragmentTran = getSupportFragmentManager().beginTransaction();
+            mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            mFragmentTran.replace(R.id.content, ProductFragment.newInstance());
+            mFragmentTran.commit();
+            mNavigation.getMenu().getItem(0).setChecked(true);
         }
     }
 
@@ -180,18 +186,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             return;
         }
         super.onBackPressed();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -245,7 +239,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     public void openChangePasswordActivity() {
-
+        Intent intent = new Intent(this, ChangePasswordActivity.class);
+        startActivity(intent);
     }
 
     @Override

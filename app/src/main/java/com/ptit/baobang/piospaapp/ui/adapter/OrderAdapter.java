@@ -81,7 +81,7 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView img;
-        TextView txtName, txtDate, txtTime, txtQuanlity, txtPrice, txtMore, txtTotal;
+        TextView txtName, txtDate, txtTime, txtQuanlity, txtPrice, txtMore, txtTotal, txtStatus;
         LinearLayout layoutMore;
         ShimmerFrameLayout shimmerFrameLayout;
 
@@ -100,6 +100,8 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
             layoutMore = itemView.findViewById(R.id.layoutMore);
             shimmerFrameLayout = itemView.findViewById(R.id.shimmerLayout);
             layoutMore.setVisibility(View.GONE);
+            txtStatus = itemView.findViewById(R.id.txtStatus);
+
         }
 
         void bindView(Order order) {
@@ -151,7 +153,7 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
                     }
                     date = detail.getDateBooking();
                     time = detail.getTimeStart();
-                    quanlity = "Số khách" + detail.getNumber() + "";
+                    quanlity = "Số khách: " + detail.getNumber() + "";
                     price += CommonUtils.formatToCurrency(detail.getServicePrice().getAllPrice());
                 }
             }
@@ -163,7 +165,7 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
                 more = "Xem thêm " + (totalNumber - 1) + " sản phẩm";
             }
 
-            total +=  CommonUtils.formatToCurrency(order.getTotal());
+            total +=  CommonUtils.formatToCurrency(order.getTotal() + "");
 
             txtName.setText(name);
             txtTime.setText(time);
@@ -172,7 +174,7 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
             txtMore.setText(more);
             txtPrice.setText(price);
             txtTotal.setText(total);
-
+            txtStatus.setText(order.getOrderStatus().getOrderStatusName());
 
             RequestOptions options = new RequestOptions().error(R.drawable.error).placeholder(R.drawable.paceholder);
             Glide.with(context).load(imgStr).apply(options).into(img);

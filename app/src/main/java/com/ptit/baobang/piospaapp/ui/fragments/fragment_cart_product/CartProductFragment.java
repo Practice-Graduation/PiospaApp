@@ -2,6 +2,7 @@ package com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_product;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,6 +40,11 @@ public class CartProductFragment extends BaseFragment<CartProductFragmentPresent
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
     public static CartProductFragment newInstance() {
         CartProductFragment fragment = new CartProductFragment();
         Bundle args = new Bundle();
@@ -49,17 +55,19 @@ public class CartProductFragment extends BaseFragment<CartProductFragmentPresent
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (mPresenter != null) {
-            mPresenter.loadData();
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        if (mPresenter != null) {
-//            mPresenter.loadData();
-//        }
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        addControls();
+        addEvents();
     }
 
     @Override
@@ -68,8 +76,6 @@ public class CartProductFragment extends BaseFragment<CartProductFragmentPresent
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart_product, container, false);
         mUnBinder = ButterKnife.bind(this, view);
-        addControls();
-        addEvents();
         return view;
     }
 
@@ -101,14 +107,9 @@ public class CartProductFragment extends BaseFragment<CartProductFragmentPresent
 
     @Override
     public void showCartItemList(List<CartProductItem> cartItems) {
-//        mItems.clear();
-//        mItems.addAll(cartItems);
-//        mAdapter.notifyDataSetChanged();
-        mItems = new ArrayList<>();
+        mItems.clear();
         mItems.addAll(cartItems);
-        mAdapter = new ShoppingCartProductAdapter(getContext(), mItems);
-        rvProducts.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvProducts.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
         showEmptyCart();
     }
 

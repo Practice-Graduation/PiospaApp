@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.ptit.baobang.piospaapp.R;
@@ -16,12 +17,13 @@ import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 
-public class AllProductActivity extends BaseActivity<AllProductPresenter> implements IAllProductView{
+public class AllProductActivity extends BaseActivity<AllProductPresenter> implements IAllProductView {
 
-    private static final String TAG = "AllProductActivity";
+    private static final String TAG = "AllServiceActivity";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -39,9 +41,7 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
     }
 
     private void addEvents() {
-        mProductAdapter.setOnClickListener(position -> {
-            mPresenter.onSelectedProduct(mProducts.get(position).getProductId());
-        });
+        mProductAdapter.setOnClickListener(position -> mPresenter.onSelectedProduct(mProducts.get(position)));
     }
 
     private void addControls() {
@@ -49,16 +49,15 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
         mPresenter = new AllProductPresenter(this);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Sản phẩm");
-
+        toolbar.setTitle(getTitleFromBundle());
+        centerToolbarTitle(toolbar, 0);
         mProducts = new ArrayList<>();
         mProductAdapter = new ProductAdapter(this, mProducts);
         rvProducts.setLayoutManager(new GridLayoutManager(this, AppConstants.SPAN_COUNT));
         rvProducts.setAdapter(mProductAdapter);
-
         mPresenter.loadData(getGroupIdFromBundle());
     }
 
@@ -70,26 +69,31 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
     }
 
     @Override
-    public void openProductDetailActivity(int productId) {
+    public void openProductDetailActivity(Product product) {
         Intent intent = new Intent(this, ProductDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt(AppConstants.PRODUCT_ID, productId);
-        intent.putExtra(AppConstants.PRODUCT_BUNDLE, bundle);
+        bundle.putSerializable(AppConstants.PRODUCT_ID, product);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
     public int getGroupIdFromBundle() {
-
-        Bundle bundle = getIntent().getBundleExtra(AppConstants.PRODUCT_GROUP_BUNDLE);
-
-        return bundle.getInt(AppConstants.PRODUCT_GROUP_ID);
+        Bundle bundle = getIntent().getExtras();
+        int id = 0;
+        try {
+            if (bundle != null)
+                id = bundle.getInt(AppConstants.PRODUCT_GROUP_ID);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return id;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-               onBackPressed();
+                onBackPressed();
         }
         return (super.onOptionsItemSelected(item));
     }
@@ -98,5 +102,17 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
     public boolean onNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    public String getTitleFromBundle() {
+        Bundle bundle = getIntent().getExtras();
+        String title = getString(R.string.title_product) + "    ";
+        try {
+            if (bundle != null)
+                title = bundle.getString(AppConstants.TOOL_BAR_TITLE);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return title;
     }
 }

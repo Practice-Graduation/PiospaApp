@@ -65,7 +65,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
 
         ServiceHolder(View itemView) {
             super(itemView);
-            itemView.getLayoutParams().width = ScreenUtils.getScreenWidth(mContext) / AppConstants.SPAN_COUNT;
+            itemView.getLayoutParams().width = (ScreenUtils.getScreenWidth(mContext) - AppConstants.SPAN_COUNT * AppConstants.MARGIN) / AppConstants.SPAN_COUNT;
+            itemView.getLayoutParams().height =
+                    itemView.getLayoutParams().height > ViewGroup.LayoutParams.WRAP_CONTENT ?
+                            itemView.getLayoutParams().height : ViewGroup.LayoutParams.WRAP_CONTENT;
             img = itemView.findViewById(R.id.img);
             txtName = itemView.findViewById(R.id.txtName);
             txtPrice = itemView.findViewById(R.id.txtPrice);

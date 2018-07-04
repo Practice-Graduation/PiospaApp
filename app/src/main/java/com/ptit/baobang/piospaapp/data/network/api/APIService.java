@@ -28,6 +28,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface APIService {
@@ -35,10 +36,10 @@ public interface APIService {
     //---------------PRODUCT--------------------------
 
     @GET("product/group")
-    Observable<EndPoint<List<ProductGroup>>> getAllProductGroup();
+    Call<EndPoint<List<ProductGroup>>> getAllProductGroup();
 
     @GET("product/group/{groupId}/products")
-    Observable<EndPoint<List<Product>>> getProductByGroupId(@Path("groupId") int groupId);
+    Call<EndPoint<List<Product>>> getProductByGroupId(@Path("groupId") int groupId);
 
     @GET("product/{productId}")
     Call<EndPoint<Product>> getProductById(@Path("productId") int productId);
@@ -70,10 +71,14 @@ public interface APIService {
 
     // ------------------CUSTOMEMR------------------------------------
     @POST("customer/login")
-    Observable<EndPoint<Customer>> login(@Body LoginRequest loginRequest);
+    Call<EndPoint<Customer>> login(@Body LoginRequest loginRequest);
 
     @POST("customer")
     Observable<EndPoint<Customer>> register(@Body Customer customer);
+
+    @PUT("customer/{customerId}")
+    Observable<EndPoint<Customer>> updateCustomer(@Path("customerId") int customerId, @Body Customer customer);
+
 
     // ------------------ADDREsS------------------------------------
     @GET("province")

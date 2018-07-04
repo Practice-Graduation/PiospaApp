@@ -1,10 +1,13 @@
 package com.ptit.baobang.piospaapp.ui.activities.order;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 
 import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.util.List;
 
@@ -39,5 +42,11 @@ public class OrderPresenter extends BasePresenter implements IOrderPresenter{
         List<OrderStatus> orderStatuses = listEndPoint.getData();
         mView.addTabLayout(orderStatuses);
         mView.hideLoading();
+    }
+
+    public int getSelectedTab(Intent intent) {
+        Bundle bundle = intent.getExtras();
+        if(bundle == null) return  0;
+        return bundle.getInt(AppConstants.ORDER_FRAGMENT_INDEX);
     }
 }

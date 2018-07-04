@@ -22,6 +22,7 @@ import com.ptit.baobang.piospaapp.data.model.OrderPaymentType;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.data.model.Ward;
 import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
+import com.ptit.baobang.piospaapp.ui.activities.order.OrderActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.DeliveryTypeAdapter;
 import com.ptit.baobang.piospaapp.ui.adapter.PaymentTypeAdapter;
 import com.ptit.baobang.piospaapp.ui.adapter.ProductCartComfirmAdapter;
@@ -225,7 +226,8 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Đặt Hàng");
+        toolbar.setTitle("Đặt Hàng    ");
+        centerToolbarTitle(toolbar, 0);
     }
 
     @Override
@@ -242,6 +244,11 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         intent.putExtra(AppConstants.FRAGMENT, AppConstants.CART_INDEX);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        bacToCart();
     }
 
     @Override
@@ -367,20 +374,20 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         mDistrict = customer.getDistrict();
         mWard = customer.getWard();
 
-        if (mProvince != null){
+        if (mProvince != null) {
             txtProvince.setText(mProvince.getName());
             txtProvince.setClickable(true);
         }
-        if (mDistrict != null){
+        if (mDistrict != null) {
             txtDistrict.setText(mDistrict.getName());
             txtDistrict.setClickable(true);
         }
-        if (mWard != null){
+        if (mWard != null) {
             txtWard.setText(mWard.getName());
             txtWard.setClickable(true);
         }
 
-        if(customer.getAddress() != null){
+        if (customer.getAddress() != null) {
             txtAddress.setText(customer.getAddress());
 
         }
@@ -389,6 +396,15 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     @Override
     public void doneStep() {
         stepView.done(true);
+    }
+
+    @Override
+    public void openOrderActivity() {
+        Intent intent = new Intent(this, OrderActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConstants.ORDER_FRAGMENT_INDEX, 0);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override

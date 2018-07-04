@@ -26,8 +26,10 @@ public class BookingInfoPresenter extends BasePresenter implements  IBookingInfo
     public void loadDataFromBunble(Intent intent) {
 
         Bundle bundle = intent.getExtras();
-        ServicePrice servicePrice = (ServicePrice) bundle.getSerializable(AppConstants.SERVICE_PRICE_ID);
-        mView.attachData(servicePrice);
+        if(bundle != null){
+            ServicePrice servicePrice = (ServicePrice) bundle.getSerializable(AppConstants.SERVICE_PRICE_ID);
+            mView.attachData(servicePrice);
+        }
 
     }
 

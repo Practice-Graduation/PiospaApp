@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.ServiceGroup;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
-import com.ptit.baobang.piospaapp.ui.activities.all_product.AllProductActivity;
+import com.ptit.baobang.piospaapp.ui.activities.all_services.AllServiceActivity;
 import com.ptit.baobang.piospaapp.ui.activities.service_detail.ServiceDetailActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.ServiceGroupAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseFragment;
@@ -67,7 +67,7 @@ public class ServiceFragment extends BaseFragment<ServicePresenter> implements I
         mAdapter.setOnItemClickMoreListerner(new OnItemClickListener() {
             @Override
             public void onItemSelected(int position) {
-
+                mPresenter.onClickMore(mServiceGroups.get(position));
             }
         });
     }
@@ -84,11 +84,12 @@ public class ServiceFragment extends BaseFragment<ServicePresenter> implements I
     }
 
     @Override
-    public void openAllServiceActivity(int serviceGroupId) {
-        Intent intent = new Intent(getContext(), AllProductActivity.class);
+    public void openAllServiceActivity(int serviceGroupId, String serviceGroupName) {
+        Intent intent = new Intent(getContext(), AllServiceActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt(AppConstants.PRODUCT_GROUP_ID, serviceGroupId);
-        intent.putExtra(AppConstants.PRODUCT_GROUP_BUNDLE, bundle);
+        bundle.putInt(AppConstants.SERVICE_GROUP_ID, serviceGroupId);
+        bundle.putString(AppConstants.TOOL_BAR_TITLE, serviceGroupName);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

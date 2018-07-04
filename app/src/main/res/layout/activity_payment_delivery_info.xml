@@ -637,6 +637,94 @@
 
                     </android.support.v7.widget.CardView>
 
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
+                        app:layout_constraintTop_toBottomOf="@+id/cvPaymentTypeComfirm">
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding">
+
+                            <TextView
+                                android:id="@+id/lbPaymentInfo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/payment_info"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/subheading_size" />
+
+                            <TextView
+                                android:id="@+id/lbTotal"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="@dimen/padding"
+                                android:paddingTop="@dimen/padding"
+                                android:text="@string/total"
+                                app:layout_constraintEnd_toStartOf="@id/txtTotal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/lbPaymentInfo" />
+
+                            <TextView
+                                android:id="@+id/txtTotal"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:paddingBottom="@dimen/padding"
+                                android:paddingTop="@dimen/padding"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/lbTotal"
+                                app:layout_constraintTop_toBottomOf="@id/lbPaymentInfo" />
+
+                            <TextView
+                                android:id="@+id/lbShip"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="@dimen/padding"
+                                android:paddingTop="@dimen/padding"
+                                android:text="@string/ship"
+                                app:layout_constraintEnd_toStartOf="@id/txtShip"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/lbTotal" />
+
+                            <TextView
+                                android:id="@+id/txtShip"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:paddingBottom="@dimen/padding"
+                                android:paddingTop="@dimen/padding"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/lbShip"
+                                app:layout_constraintTop_toBottomOf="@id/txtTotal" />
+
+                            <TextView
+                                android:id="@+id/lbPayment"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="@dimen/padding"
+                                android:paddingTop="@dimen/padding"
+                                android:text="Thành tiền"
+                                app:layout_constraintEnd_toStartOf="@id/txtPayment"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/lbShip" />
+
+                            <TextView
+                                android:id="@+id/txtPayment"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:paddingBottom="@dimen/padding"
+                                android:paddingTop="@dimen/padding"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/lbPayment"
+                                app:layout_constraintTop_toBottomOf="@id/txtShip" />
+
+                        </android.support.constraint.ConstraintLayout>
+
+                    </android.support.v7.widget.CardView>
+
                 </android.support.constraint.ConstraintLayout>
 
 

@@ -11,15 +11,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.ui.listener.CallBackConfirmDialog;
+import com.ptit.baobang.piospaapp.ui.listener.CallBackDialog;
 import com.ptit.baobang.piospaapp.utils.NetworkUtils;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -130,6 +139,82 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         sweetAlertDialog.setContentText(message);
         sweetAlertDialog.setConfirmText("OK");
         sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
+    }
+
+    public void showEnterTextDialog(String title, String message, String text_pos, String text_neg, CallBackDialog callback) {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        final View dialogView = inflater.inflate(R.layout.enter_text_layout, null);
+
+        final EditText edt = dialogView.findViewById(R.id.txtText);
+        TextView txtTitle = dialogView.findViewById(R.id.txtTitle);
+        Button btnOk = dialogView.findViewById(R.id.btnOk);
+        Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+
+        txtTitle.setText(title);
+
+        edt.setText(message);
+
+        btnOk.setText(text_pos);
+
+        btnCancel.setText(text_neg);
+
+        dialogBuilder.setView(dialogView);
+        AlertDialog b = dialogBuilder.create();
+
+        btnOk.setOnClickListener(v -> callback.diaglogPositive(b, edt.getText().toString()));
+
+        btnCancel.setOnClickListener(v -> {
+            b.dismiss();
+            callback.diaglogNegative();
+        });
+
+        b.setCanceledOnTouchOutside(false);
+        b.show();
+    }
+
+    public void centerToolbarTitle(Toolbar toolbar, int paddingRight) {
+        final CharSequence title = toolbar.getTitle();
+        final ArrayList<View> outViews = new ArrayList<>(1);
+        toolbar.findViewsWithText(outViews, title, View.FIND_VIEWS_WITH_TEXT);
+        if (!outViews.isEmpty()) {
+            final TextView titleView = (TextView) outViews.get(0);
+            titleView.setGravity(Gravity.CENTER);
+            titleView.setPadding(0, 0, paddingRight, 0);
+            final Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) titleView.getLayoutParams();
+            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            toolbar.requestLayout();
+            //also you can use titleView for changing font: titleView.setTypeface(Typeface);
+        }
+
+    }
+
+    @Override
+    public void showConfirm(String title, String message, String text_pos, String text_neg, int msgType, CallBackConfirmDialog callback) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,msgType);
+        sweetAlertDialog.setTitleText(title);
+        sweetAlertDialog.setContentText(message);
+        sweetAlertDialog.setConfirmText(text_pos);
+        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+                callback.DiaglogPositive();
+            }
+        });
+        sweetAlertDialog.setCancelText(text_neg);
+        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+                callback.DiaglogNegative();
+            }
+        });
+        sweetAlertDialog.setCanceledOnTouchOutside(false);
         sweetAlertDialog.show();
     }
 

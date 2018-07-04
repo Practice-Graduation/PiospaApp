@@ -10,7 +10,8 @@ public interface AppConstants {
     int REQUEST_CODE_PROVINCE = 101;
     int REQUEST_CODE_DISTRICT = 102;
     int REQUEST_CODE_WARD = 103;
-
+    int REQUEST_CAMERA_PIC = 104;
+    int REQUEST_SELECT_FILE = 105;
     String PROVINCE = "PROVINCE";
     String DISTRICT = "DISTRICT";
     String WARD = "WARD";
@@ -38,4 +39,10 @@ public interface AppConstants {
     String END_TIME = "22:00:00";
     String ORDER_STATUS = "ORDER_STATUS";
     String ORDER = "ORDER";
+    String ORDER_FRAGMENT_INDEX = "ORDER_FRAGMENT_INDEX";
+    String CUSTOMER = "CUSTOMER";
+    int PADDING_TOOLBAR = 20;
+    String SERVICE_GROUP_ID = "SERVICE_GROUP_ID";
+    String TOOL_BAR_TITLE = "TOOL_BAR_TITLE";
+
 }

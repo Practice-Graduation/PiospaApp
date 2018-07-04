@@ -30,6 +30,8 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
     @BindView(R.id.tabOrder)
     TabLayout mTabOrder;
 
+    int selectedTab = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,7 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
 
     private void addControls() {
         mPresenter = new OrderPresenter(this);
+        selectedTab = mPresenter.getSelectedTab(getIntent());
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
@@ -75,7 +78,7 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
         mTabOrder.setupWithViewPager(mViewPager);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabOrder));
         mTabOrder.setupWithViewPager(mViewPager);
-
+        mViewPager.setCurrentItem(selectedTab);
     }
 
     @Override

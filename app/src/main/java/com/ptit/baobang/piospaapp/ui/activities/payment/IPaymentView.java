@@ -35,4 +35,7 @@ public interface IPaymentView extends BaseView{
     void showDataForInput(Customer customer);
 
     void doneStep();
+
+    void openOrderActivity();
+
 }

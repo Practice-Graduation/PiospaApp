@@ -1,5 +1,6 @@
 package com.ptit.baobang.piospaapp.ui.activities.profile;
 
+import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.data.model.Ward;
@@ -11,5 +12,15 @@ public interface IProfileView extends BaseView{
                   String birthday, String gender,
                   Province province, District district,
                   Ward ward, String address);
+
+    void showOrderActivity();
+
+    void showOrderActivity(int i);
+
+    void logOut();
+
+    void onClickUpdate(Customer customer);
+
+    void openChangePasswordActivity();
 
 }

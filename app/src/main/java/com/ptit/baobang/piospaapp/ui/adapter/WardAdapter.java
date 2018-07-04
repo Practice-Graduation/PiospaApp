@@ -75,7 +75,7 @@ public class WardAdapter extends RecyclerView.Adapter<WardAdapter.WardHolder> {
         }
 
         public void bindView(Ward Ward) {
-            txtName.setText(Ward.getName());
+            txtName.setText(Ward.getType() + " " + Ward.getName());
         }
         public void setChecked(boolean checked){
             if(checked){

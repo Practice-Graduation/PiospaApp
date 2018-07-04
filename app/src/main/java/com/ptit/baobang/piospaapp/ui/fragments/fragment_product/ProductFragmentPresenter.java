@@ -7,8 +7,9 @@ import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductFragmentPresenter extends BasePresenter implements IProductFragmentPresenter {
 
@@ -22,19 +23,28 @@ public class ProductFragmentPresenter extends BasePresenter implements IProductF
 
     @Override
     public void onClickMore(ProductGroup productGroup) {
-        mView.openAllProductActivity(productGroup.getProductGroupId());
+        mView.openAllProductActivity(productGroup.getProductGroupId(), productGroup.getProductGroupName());
     }
 
 
     @Override
     public void loadData() {
         mView.showLoading("Tải dữ liệu");
-        getCompositeDisposable().add(
-                mApiService.getAllProductGroup()
-                        .subscribeOn(Schedulers.computation())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .unsubscribeOn(Schedulers.io())
-                        .subscribe(this::handleResponse, this::handleError));
+        mApiService.getAllProductGroup().enqueue(new Callback<EndPoint<List<ProductGroup>>>() {
+            @Override
+            public void onResponse(Call<EndPoint<List<ProductGroup>>> call, Response<EndPoint<List<ProductGroup>>> response) {
+                if (response.body().getStatusCode() == 200) {
+                    handleResponse(response.body());
+                }else{
+                    mView.hideLoading(response.body().getMessage(), false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EndPoint<List<ProductGroup>>> call, Throwable t) {
+                handleError(t);
+            }
+        });
     }
 
     @Override

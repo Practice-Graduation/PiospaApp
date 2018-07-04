@@ -58,12 +58,21 @@
             android:theme="@style/Base.Theme.AppCompat.Light.Dialog.Alert" />
         <activity
             android:name=".ui.activities.profile.ProdfileActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.order.OrderActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.order_detail.OrderDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.update_profile.UpdateProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.all_services.AllServiceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.change_password.ChangePasswordActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

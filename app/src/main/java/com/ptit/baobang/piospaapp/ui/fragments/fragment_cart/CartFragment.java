@@ -18,10 +18,8 @@ import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.ui.activities.payment.PaymentActivity;
-import com.ptit.baobang.piospaapp.ui.adapter.PagerApdater;
+import com.ptit.baobang.piospaapp.ui.adapter.CartTabPagerApdater;
 import com.ptit.baobang.piospaapp.ui.base.BaseFragment;
-import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_product.CartProductFragment;
-import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_service.CartServiceFragment;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import butterknife.BindView;
@@ -29,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class CartFragment extends BaseFragment<CartPresenter> implements ICartView{
+public class CartFragment extends BaseFragment<CartPresenter> implements ICartView {
 
     @BindView(R.id.sliding_tabs)
     TabLayout mTabLayout;
@@ -74,7 +72,6 @@ public class CartFragment extends BaseFragment<CartPresenter> implements ICartVi
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         mUnBinder = ButterKnife.bind(this, view);
         mPresenter = new CartPresenter(this);
-        addControls();
         return view;
     }
 
@@ -87,31 +84,25 @@ public class CartFragment extends BaseFragment<CartPresenter> implements ICartVi
     @Override
     public void onResume() {
         super.onResume();
-        addControls();
     }
 
     @OnClick(R.id.txtPayment)
-    void onClick(View view){
+    void onClick(View view) {
         mPresenter.clickPayment();
     }
 
     private void addControls() {
         updateUI();
-        CartProductFragment cartProductFragment = CartProductFragment.newInstance();
-        cartProductFragment.setCartFragment(this);
-        CartServiceFragment cartServiceFragment = CartServiceFragment.newInstance();
-        cartServiceFragment.setCartFragment(this);
+
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        PagerApdater adapter = new PagerApdater(fragmentManager);
-        adapter.addTab(cartProductFragment, getResources().getString(R.string.product));
-        adapter.addTab(cartServiceFragment, getResources().getString(R.string.service));
-
+        CartTabPagerApdater adapter = new CartTabPagerApdater(fragmentManager);
         mViewPager.setAdapter(adapter);
-        mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setupWithViewPager(mViewPager);
+
     }
+
 
     public TextView getTxtAmount() {
         return txtQuanlity;
@@ -146,12 +137,13 @@ public class CartFragment extends BaseFragment<CartPresenter> implements ICartVi
     @Override
     public void showEmptyCart() {
         Cart cart = CartHelper.getCart();
-        if(cart.getTotalQuantity() == 0){
+        if (cart.getTotalQuantity() == 0) {
             layoutEmpty.setVisibility(View.VISIBLE);
             layoutContent.setVisibility(View.GONE);
-        }else{
+        } else {
             layoutEmpty.setVisibility(View.GONE);
             layoutContent.setVisibility(View.VISIBLE);
         }
     }
+
 }

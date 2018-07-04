@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="24dp"
+        android:layout_marginTop="@dimen/margin"
+        android:text="Title"
+        android:textColor="@android:color/black"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_20">
+        <RadioButton
+            android:id="@+id/rbMale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nam"
+            android:checked="true"/>
+        <RadioButton
+            android:id="@+id/rbFeMale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nữ"/>
+    </RadioGroup>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/margin">
+        <Button
+            android:id="@+id/btnOk"
+            android:layout_marginRight="@dimen/margin_20"
+            android:textColor="@android:color/white"
+            android:text="Ok"
+            android:textAllCaps="false"
+            android:background="@drawable/button_selector_none_radius"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:textColor="@android:color/white"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:background="@drawable/button_selector_none_radius"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

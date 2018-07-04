@@ -75,7 +75,7 @@ public class DistrictAdapter extends RecyclerView.Adapter<DistrictAdapter.Distri
         }
 
         public void bindView(District district) {
-            txtName.setText(district.getName());
+            txtName.setText(district.getType() + " " + district.getName());
         }
         public void setChecked(boolean checked){
             if(checked){

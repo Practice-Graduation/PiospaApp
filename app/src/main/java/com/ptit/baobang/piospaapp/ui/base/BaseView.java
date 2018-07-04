@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.StringRes;
 import android.view.View;
 
+import com.ptit.baobang.piospaapp.ui.listener.CallBackConfirmDialog;
+
 public interface BaseView {
     void hideLoading();
     void hideLoading(String message, boolean isSuccess);
@@ -14,4 +16,5 @@ public interface BaseView {
     void hideKeyboard();
     void hideKeyboardOutside(View view);
     Context getBaseContext();
+    void showConfirm(String title, String message, String text_pos, String text_neg, int msgType, CallBackConfirmDialog callback);
 }

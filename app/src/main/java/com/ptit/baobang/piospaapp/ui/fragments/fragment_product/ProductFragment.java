@@ -85,11 +85,12 @@ public class ProductFragment extends BaseFragment<ProductFragmentPresenter> impl
     }
 
     @Override
-    public void openAllProductActivity(int productGroupId) {
+    public void openAllProductActivity(int productGroupId, String productGroupName) {
         Intent intent = new Intent(getContext(), AllProductActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(AppConstants.PRODUCT_GROUP_ID, productGroupId);
-        intent.putExtra(AppConstants.PRODUCT_GROUP_BUNDLE, bundle);
+        bundle.putString(AppConstants.TOOL_BAR_TITLE, productGroupName);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

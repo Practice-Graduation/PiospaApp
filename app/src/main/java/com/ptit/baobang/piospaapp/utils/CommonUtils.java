@@ -1,6 +1,7 @@
 package com.ptit.baobang.piospaapp.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -9,9 +10,11 @@ import android.provider.Settings;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.ui.listener.CallBackChoosePhoto;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -33,6 +36,24 @@ public class CommonUtils {
     private CommonUtils() {
         // This utility class is not publicly instantiable
     }
+
+    public static void openDialogChooseImage(Activity activity, CallBackChoosePhoto callBack) {
+        final CharSequence[] items = {"Máy ảnh", "Bộ sưu tập"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Chọn Ảnh");
+        builder.setItems(items, (dialogInterface, i) -> {
+            if (items[i].equals("Máy ảnh")) {
+                callBack.onCamera();
+
+            } else if (items[i].equals("Bộ sưu tập")) {
+                callBack.onGallery();
+
+            }
+        });
+
+        builder.show();
+    }
+
 
     public static ProgressDialog showLoadingDialog(Context context) {
         ProgressDialog progressDialog = new ProgressDialog(context);
@@ -95,6 +116,10 @@ public class CommonUtils {
         pattern = Pattern.compile(EMAIL_PATTERN);
         matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    public static String formatDateAndMonth(int number){
+        return String.format("%02d", number);
     }
 
     public static String formatToCurrency(int number){

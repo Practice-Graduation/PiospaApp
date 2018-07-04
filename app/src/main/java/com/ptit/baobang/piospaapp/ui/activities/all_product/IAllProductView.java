@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IAllProductView extends BaseView{
     void onUpdateRecyleView(List<Product> products);
-    void openProductDetailActivity(int productId);
+    void openProductDetailActivity(Product product);
 }

@@ -7,7 +7,7 @@ import com.ptit.baobang.piospaapp.ui.base.BaseView;
 import java.util.List;
 
 public interface IProductFragmentView extends BaseView{
-    void openAllProductActivity(int productGroupId);
+    void openAllProductActivity(int productGroupId, String productGroupName);
     void openProductDetailActivity(Product product);
     void onUpdateRecycleView(List<ProductGroup> productGroups);
 }

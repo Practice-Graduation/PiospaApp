@@ -31,6 +31,7 @@ public class RetrofitClient {
             okHttpClient = builder.connectTimeout(1, TimeUnit.MINUTES)
                     .writeTimeout(1, TimeUnit.MINUTES)
                     .readTimeout(1, TimeUnit.MINUTES)
+                    .connectTimeout(1, TimeUnit.MINUTES)
                     .build();
         }
         return okHttpClient;

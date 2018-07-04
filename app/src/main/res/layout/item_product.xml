@@ -1,55 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin"
-    android:layout_marginLeft="@dimen/margin"
-    android:layout_marginStart="@dimen/margin">
+    android:layout_width="wrap_content"
+    android:layout_height="250dp"
+    android:layout_marginBottom="@dimen/margin_small"
+    android:layout_marginLeft="@dimen/margin_small"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginRight="@dimen/margin_small"
+    android:layout_marginEnd="@dimen/margin_small">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/img"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="H,16:9"
-            android:src="@drawable/test"
             android:adjustViewBounds="true"
+            android:contentDescription="@string/product_image"
             android:paddingTop="@dimen/padding"
+            android:src="@drawable/test"
+            app:layout_constraintBottom_toTopOf="@id/txtName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/txtName"
-            android:contentDescription="@string/product_image" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="3"
             android:paddingEnd="@dimen/padding"
             android:paddingLeft="@dimen/padding"
             android:paddingStart="@dimen/padding"
-            android:maxLines="3"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="111111111111111111111111111111
+1111111111111111111111111111111111111222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222"
+            app:layout_constraintBottom_toTopOf="@id/txtPrice"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img"
-            app:layout_constraintBottom_toTopOf="@id/txtPrice"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img" />
 
         <TextView
             android:id="@+id/txtPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="@dimen/margin"
             android:paddingEnd="@dimen/padding"
             android:paddingRight="@dimen/padding"
             android:paddingStart="@dimen/padding"
-            android:layout_marginBottom="@dimen/margin"
             android:textAlignment="textEnd"
-            android:layout_gravity="end"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="200.000đ"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtName"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtName" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

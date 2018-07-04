@@ -50,7 +50,7 @@ public class WardActivity extends BaseActivity implements IWardView {
     }
 
     private void addControls() {
-        setTitle(R.string.province);
+        setTitle(R.string.ward);
         mPresenter = new WardPresenter(this);
         mUnbinder = ButterKnife.bind(this);
 

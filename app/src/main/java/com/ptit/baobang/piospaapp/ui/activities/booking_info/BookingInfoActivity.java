@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -97,7 +98,7 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
     private void addControls() {
         mPresenter = new BookingInfoPresenter(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         mPresenter.loadDataFromBunble(getIntent());
     }
 
