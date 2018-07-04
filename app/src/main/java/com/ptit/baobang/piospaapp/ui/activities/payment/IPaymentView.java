@@ -38,4 +38,5 @@ public interface IPaymentView extends BaseView{
 
     void openOrderActivity();
 
+    void updateUIPaymentInfo(String totalPrice, String ship, String payment);
 }

@@ -1,11 +1,16 @@
 package com.ptit.baobang.piospaapp.ui.activities.all_product;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.ptit.baobang.piospaapp.R;
@@ -31,7 +36,7 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
     RecyclerView rvProducts;
     ProductAdapter mProductAdapter;
     List<Product> mProducts;
-
+    private SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,7 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
         addControls();
         addEvents();
     }
+
 
     private void addEvents() {
         mProductAdapter.setOnClickListener(position -> mPresenter.onSelectedProduct(mProducts.get(position)));
@@ -65,7 +71,9 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
     public void onUpdateRecyleView(List<Product> products) {
         mProducts.clear();
         mProducts.addAll(products);
-        mProductAdapter.notifyDataSetChanged();
+        mProductAdapter = new ProductAdapter(this, mProducts);
+        rvProducts.setAdapter(mProductAdapter);
+        addEvents();
     }
 
     @Override
@@ -75,6 +83,11 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
         bundle.putSerializable(AppConstants.PRODUCT_ID, product);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    @Override
+    public ProductAdapter getProductAdapter() {
+        return mProductAdapter;
     }
 
     public int getGroupIdFromBundle() {
@@ -90,10 +103,28 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+
+        SearchManager searchManager = (SearchManager)
+                getSystemService(Context.SEARCH_SERVICE);
+
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.
+                getSearchableInfo(getComponentName()));
+        searchView.setIconified(false);
+
+        mPresenter.filter(searchView);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                break;
         }
         return (super.onOptionsItemSelected(item));
     }

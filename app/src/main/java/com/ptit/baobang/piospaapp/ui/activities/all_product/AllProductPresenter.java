@@ -1,13 +1,20 @@
 package com.ptit.baobang.piospaapp.ui.activities.all_product;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
+import com.ptit.baobang.piospaapp.utils.RxSearchObservable;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,5 +64,21 @@ public class AllProductPresenter extends BasePresenter implements IAllProductPre
     @Override
     public void onSelectedProduct(Product product) {
        mView.openProductDetailActivity(product);
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void filter(SearchView searchView) {
+        RxSearchObservable.fromView(searchView)
+                .debounce(200, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(this::handFilterResponse);
+    }
+
+    private void handFilterResponse(String s) {
+        Log.e("TAG", s);
+        mView.getProductAdapter().getFilter().filter(s);
     }
 }

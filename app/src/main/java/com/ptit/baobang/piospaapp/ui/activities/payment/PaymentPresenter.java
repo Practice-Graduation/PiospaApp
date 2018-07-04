@@ -25,10 +25,12 @@ import com.ptit.baobang.piospaapp.data.network.model_request.CartItemService;
 import com.ptit.baobang.piospaapp.data.network.model_request.CartShopping;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderBodyRequest;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
+import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
 import com.ptit.baobang.piospaapp.utils.InputUtils;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +75,13 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
                 break;
         }
         currentStep++;
+        if (currentStep == 2) {
+            Cart cart = CartHelper.getCart();
+            String totalPrice = CommonUtils.formatToCurrency(cart.getTotalPrice());
+            String ship = CommonUtils.formatToCurrency(mDeliveryType.getPrice());
+            String payment = CommonUtils.formatToCurrency(cart.getTotalPrice().add(BigDecimal.valueOf(mDeliveryType.getPrice())));
+            mView.updateUIPaymentInfo(totalPrice, ship, payment);
+        }
         mView.nextStep(currentStep);
     }
 
@@ -114,10 +123,10 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         mView.showLoading("Tạo hóa đơn");
         getCompositeDisposable().add(
                 mApiService.createOrder(orderBodyRequest)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError));
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io())
+                        .subscribe(this::handleResponse, this::handleError));
     }
 
     private void handleError(Throwable throwable) {
@@ -160,7 +169,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             mView.showMessage("Thông báo", "Vui lòng nhập vào số điện thoại", SweetAlertDialog.WARNING_TYPE);
             return false;
         }
-        if(!InputUtils.isValidPhone(phone)){
+        if (!InputUtils.isValidPhone(phone)) {
             mView.showMessage("Thông báo", "Số điện thoại " + phone + " không đúng", SweetAlertDialog.WARNING_TYPE);
             return false;
         }
@@ -203,10 +212,10 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
 
         getCompositeDisposable().add(
                 mApiService.getAllOrderDeliveryType()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(this::handleDeliveryTypeResponse, this::noneHandleError)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io())
+                        .subscribe(this::handleDeliveryTypeResponse, this::noneHandleError)
         );
     }
 
@@ -312,7 +321,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         for (Map.Entry<BookingItem, Integer> entry : itemMap.entrySet()) {
             CartItemService cartItem = new CartItemService();
             cartItem.setProductId(entry.getKey().getServicePrice().getServicePriceId());
-           //
+            //
             cartItem.setDateBooking(DateTimeUtils.formatDate(entry.getKey().getSelectedDate(), DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ));
             cartItem.setNumber(entry.getValue());
             cartItems.add(cartItem);

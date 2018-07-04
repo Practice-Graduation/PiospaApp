@@ -117,6 +117,13 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     @BindView(R.id.txtPaymentTypeDescription)
     TextView txtPaymentTypeDescription;
 
+    @BindView(R.id.txtTotal)
+    TextView txtTotal;
+    @BindView(R.id.txtShip)
+    TextView txtShip;
+    @BindView(R.id.txtPayment)
+    TextView txtPayment;
+
     @BindView(R.id.rvProducts)
     RecyclerView rvProducts;
 
@@ -405,6 +412,13 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         bundle.putInt(AppConstants.ORDER_FRAGMENT_INDEX, 0);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    @Override
+    public void updateUIPaymentInfo(String totalPrice, String ship, String payment) {
+        txtTotal.setText(totalPrice);
+        txtShip.setText(ship);
+        txtPayment.setText(payment);
     }
 
     @Override

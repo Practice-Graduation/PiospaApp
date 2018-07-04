@@ -3,9 +3,12 @@ package com.ptit.baobang.piospaapp.ui.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,20 +22,25 @@ import com.ptit.baobang.piospaapp.ui.listener.OnItemClickListener;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.ScreenUtils;
+import com.ptit.baobang.piospaapp.utils.VNCharacterUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
-public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceHolder>{
+public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceHolder> implements Filterable {
 
     private Context mContext;
+    private List<ServicePrice> mFilterServicePrices;
     private List<ServicePrice> mServicePrices;
     private OnItemClickListener mListener;
 
-    public ServiceAdapter(Context mContext, List<ServicePrice> mServicePrices){
+    public ServiceAdapter(Context mContext, List<ServicePrice> mServicePrices) {
         this.mContext = mContext;
-        this.mServicePrices = mServicePrices;
+        this.mFilterServicePrices = mServicePrices;
+        mServicePrices = new ArrayList<>();
+        mServicePrices.addAll(mFilterServicePrices);
     }
 
     @NonNull
@@ -46,12 +54,17 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
 
     @Override
     public void onBindViewHolder(@NonNull ServiceHolder holder, int position) {
-        holder.binView(mServicePrices.get(position));
+        holder.binView(mFilterServicePrices.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mServicePrices.size();
+        return mFilterServicePrices.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new ServiceFilter();
     }
 
     public class ServiceHolder extends RecyclerView.ViewHolder {
@@ -73,7 +86,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
             txtName = itemView.findViewById(R.id.txtName);
             txtPrice = itemView.findViewById(R.id.txtPrice);
             itemView.setOnClickListener(v -> {
-                if(mListener != null){
+                if (mListener != null) {
                     mListener.onItemSelected(getAdapterPosition());
                 }
             });
@@ -83,12 +96,12 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
 
             String image = "", name = "", price = "";
 
-            if(servicePrice.getService() != null){
+            if (servicePrice.getService() != null) {
                 Service service = servicePrice.getService();
                 image = service.getImage();
                 name = service.getServiceName();
                 price = CommonUtils.formatToCurrency(servicePrice.getRetailPrice());
-            }else if(servicePrice.getServicePackage() != null){
+            } else if (servicePrice.getServicePackage() != null) {
                 ServicePackage servicePackage = servicePrice.getServicePackage();
                 image = servicePackage.getImage();
                 name = servicePackage.getServicePackageName();
@@ -111,5 +124,69 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
 
     public void setOnClickListener(OnItemClickListener mListener) {
         this.mListener = mListener;
+    }
+
+    private class ServiceFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            String filterSeq = constraint.toString().toLowerCase();
+            Log.e("mCus", mServicePrices.size() + "");
+            Log.e("mFil", mFilterServicePrices.size() + "");
+            Log.e("filterSeq", filterSeq);
+            if (filterSeq.length() > 0) {
+                ArrayList<ServicePrice> filter = new ArrayList<>();
+                for (ServicePrice servicePrice : mServicePrices) {
+                    // the filtering itself:
+                    if (checkContaintKey(servicePrice, filterSeq))
+                        filter.add(servicePrice);
+                }
+                mFilterServicePrices.clear();
+                mFilterServicePrices.addAll(filter);
+
+            } else {
+                // add all objects
+                mFilterServicePrices.clear();
+                mFilterServicePrices.addAll(mServicePrices);
+            }
+            FilterResults result = new FilterResults();
+            result.values = mFilterServicePrices;
+            result.count = mFilterServicePrices.size();
+            Log.e("result", result.count + "");
+            return result;
+        }
+
+        private boolean checkContaintKey(ServicePrice servicePrice, String filterSeq) {
+            if (servicePrice.getService() != null) {
+                if (servicePrice.getService().getServiceName().trim().toLowerCase().contains(filterSeq.trim())) {
+                    return true;
+                }
+                if(VNCharacterUtils.removeAccent(servicePrice.getService().getServiceName()).trim().contains(VNCharacterUtils.removeAccent(filterSeq).trim())){
+                    return true;
+                }
+            }
+            if (servicePrice.getServicePackage() != null) {
+                if (servicePrice.getServicePackage().getServicePackageName().trim().toLowerCase().contains(filterSeq.trim())) {
+                    return true;
+                }
+                if(VNCharacterUtils.removeAccent(servicePrice.getServicePackage().getServicePackageName()).toLowerCase().trim().contains(VNCharacterUtils.removeAccent(filterSeq).toLowerCase().trim())){
+                    return true;
+                }
+            }
+            if (String.valueOf(servicePrice.getAllPrice()).trim().toLowerCase().contains(filterSeq.trim())) {
+                return true;
+            }
+            if (String.valueOf(servicePrice.getRetailPrice()).trim().toLowerCase().contains(filterSeq.trim())) {
+                return true;
+            }
+
+
+
+            return false;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            notifyDataSetChanged();
+        }
     }
 }

@@ -1,10 +1,15 @@
 package com.ptit.baobang.piospaapp.ui.activities.all_services;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.ptit.baobang.piospaapp.R;
@@ -29,6 +34,7 @@ public class AllServiceActivity extends BaseActivity<AllServicePresenter> implem
     RecyclerView rvServicePrice;
     ServiceAdapter mServiceAdapter;
     List<ServicePrice> mServicePrices;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +73,9 @@ public class AllServiceActivity extends BaseActivity<AllServicePresenter> implem
     public void onUpdateRecyleView(List<ServicePrice> servicePrices) {
         mServicePrices.clear();
         mServicePrices.addAll(servicePrices);
-        mServiceAdapter.notifyDataSetChanged();
+        mServiceAdapter = new ServiceAdapter(this, mServicePrices);
+        rvServicePrice.setAdapter(mServiceAdapter);
+        addEvents();
     }
 
     @Override
@@ -79,18 +87,38 @@ public class AllServiceActivity extends BaseActivity<AllServicePresenter> implem
         startActivity(intent);
     }
 
+    @Override
+    public ServiceAdapter getServerAdapter() {
+        return mServiceAdapter;
+    }
+
     public int getGroupIdFromBundle() {
 
         Bundle bundle = getIntent().getExtras();
 
         return bundle.getInt(AppConstants.SERVICE_GROUP_ID);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
 
+        SearchManager searchManager = (SearchManager)
+                getSystemService(Context.SEARCH_SERVICE);
+
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.
+                getSearchableInfo(getComponentName()));
+        searchView.setIconified(false);
+
+        mPresenter.filter(searchView);
+        return true;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-               onBackPressed();
+                onBackPressed();
         }
         return (super.onOptionsItemSelected(item));
     }
