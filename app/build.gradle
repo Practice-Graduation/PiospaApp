@@ -65,5 +65,9 @@ dependencies {
     // firebase
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-storage:16.0.1'
+
+
+    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile 'com.loopj.android:android-async-http:1.4.9'
 }
 apply plugin: 'com.google.gms.google-services'

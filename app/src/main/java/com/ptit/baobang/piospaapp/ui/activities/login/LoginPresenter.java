@@ -35,13 +35,6 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
         LoginRequest request = new LoginRequest(username, password);
         mILoginView.showLoading("Đăng nhập");
 
-//        getCompositeDisposable().add(
-//                mApiService.login(request)
-//                        .subscribeOn(Schedulers.computation())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .unsubscribeOn(Schedulers.io())
-//                        .subscribe(this::handleResponseLogin, this::handleError));
-
         mApiService.login(request).enqueue(new Callback<EndPoint<Customer>>() {
             @Override
             public void onResponse(@NonNull Call<EndPoint<Customer>> call, @NonNull Response<EndPoint<Customer>> response) {
@@ -57,7 +50,6 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
                     }
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<EndPoint<Customer>> call, @NonNull Throwable t) {
                 mILoginView.hideLoading(t.getMessage(), false);
