@@ -58,7 +58,7 @@ public class ChangePasswordActivity extends BaseActivity<ChangePasswordPresenter
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setTitle("Đổi Mật Khẩu");
+        mToolbar.setTitle("Đổi Mật Khẩu     ");
         centerToolbarTitle(mToolbar, 20);
     }
 

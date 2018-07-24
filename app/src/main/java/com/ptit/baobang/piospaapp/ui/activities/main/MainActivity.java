@@ -1,5 +1,6 @@
 package com.ptit.baobang.piospaapp.ui.activities.main;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,11 +29,13 @@ import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart.CartFragment;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_product.ProductFragment;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_service.ServiceFragment;
+import com.ptit.baobang.piospaapp.ui.listener.CallBackConfirmDialog;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import butterknife.BindView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements IMainView, NavigationView.OnNavigationItemSelectedListener {
     private static final String SELECTED_ITEM = "arg_selected_item";
@@ -69,6 +72,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         addControls();
         addEvents();
         addSelectedFragment();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mPresenter != null) {
+            mPresenter.loadUserInfo(this);
+        }
     }
 
     private void addEvents() {
@@ -141,23 +152,22 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     }
 
 
-
     private void showCartFragment() {
-        mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
-        if (!(mCurrentFragment instanceof CartFragment)) {
-            mToolbar.setTitle(getString(R.string.title_cart) + "    ");
-            mFragmentTran = getSupportFragmentManager().beginTransaction();
-            mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-            mFragmentTran.replace(R.id.content, CartFragment.newInstance());
-            mFragmentTran.commit();
-            mNavigation.getMenu().getItem(2).setChecked(true);
-        }
+//        mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
+//        if (!(mCurrentFragment instanceof CartFragment)) {
+        mToolbar.setTitle(getString(R.string.title_cart) + "      ");
+        mFragmentTran = getSupportFragmentManager().beginTransaction();
+        mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        mFragmentTran.replace(R.id.content, CartFragment.newInstance());
+        mFragmentTran.commit();
+        mNavigation.getMenu().getItem(2).setChecked(true);
+//        }
     }
 
     private void showServiceFragment() {
         mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
         if (!(mCurrentFragment instanceof ServiceFragment)) {
-            mToolbar.setTitle(getString(R.string.title_service) + "    ");
+            mToolbar.setTitle(getString(R.string.title_service) + "      ");
             mFragmentTran = getSupportFragmentManager().beginTransaction();
             mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
             mFragmentTran.replace(R.id.content, ServiceFragment.newInstance());
@@ -170,7 +180,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
         if (!(mCurrentFragment instanceof ProductFragment)) {
             mToolbar.setTitle(
-                    getString(R.string.title_product) + "    ");
+                    getString(R.string.title_product) + "      ");
             mFragmentTran = getSupportFragmentManager().beginTransaction();
             mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
             mFragmentTran.replace(R.id.content, ProductFragment.newInstance());
@@ -181,11 +191,28 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     public void onBackPressed() {
+
+
         if (mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
             return;
         }
-        super.onBackPressed();
+
+        ActivityManager manager = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+        int sizeStack = manager.getRunningTasks(3).size();
+        if (sizeStack == 1)
+            showConfirm("Thông báo", "Bạn có muốn thoát ứng dụng", "Đồng ý", "Hủy", SweetAlertDialog.WARNING_TYPE, new CallBackConfirmDialog() {
+                @Override
+                public void DiaglogPositive() {
+                    MainActivity.super.onBackPressed();
+                }
+
+                @Override
+                public void DiaglogNegative() {
+                    return;
+                }
+            });
+
     }
 
     @Override
@@ -248,7 +275,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         txtUsername.setText(username);
         txtEmai.setText(email);
         Glide.with(this).load(image)
-                .apply(RequestOptions.centerCropTransform().circleCrop())
+                .apply(RequestOptions.centerCropTransform().circleCrop().error(R.drawable.user))
                 .into(imgAvatar);
     }
 }

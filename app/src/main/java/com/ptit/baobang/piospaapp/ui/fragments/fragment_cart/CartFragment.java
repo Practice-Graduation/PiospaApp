@@ -96,7 +96,7 @@ public class CartFragment extends BaseFragment<CartPresenter> implements ICartVi
 
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        CartTabPagerApdater adapter = new CartTabPagerApdater(fragmentManager);
+        CartTabPagerApdater adapter = new CartTabPagerApdater(fragmentManager, this);
         mViewPager.setAdapter(adapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setupWithViewPager(mViewPager);

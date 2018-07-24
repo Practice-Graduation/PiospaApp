@@ -55,6 +55,8 @@ public class ServiceDetailActivity extends BaseActivity<ServiceDetailPresenter> 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setTitle("Dịch vụ      ");
+        centerToolbarTitle(toolbar, 20);
         mServicePrice = mPresenter.getDataFromBundle(getIntent());
         mPresenter.loadData(mServicePrice);
     }

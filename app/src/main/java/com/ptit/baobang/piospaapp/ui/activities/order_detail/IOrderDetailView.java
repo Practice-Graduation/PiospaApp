@@ -2,6 +2,7 @@ package com.ptit.baobang.piospaapp.ui.activities.order_detail;
 
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
 import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
+import com.ptit.baobang.piospaapp.data.model.Tax;
 import com.ptit.baobang.piospaapp.ui.base.BaseView;
 
 import java.util.List;
@@ -16,4 +17,8 @@ public interface IOrderDetailView extends BaseView {
     void updateRecycleProducts(List<CartProductItem> productItems);
 
     void updateRecycleServices(List<CartServicePriceItem> priceItems);
+
+    void setView(String orderStatusName);
+
+    void setTax(Tax tax);
 }

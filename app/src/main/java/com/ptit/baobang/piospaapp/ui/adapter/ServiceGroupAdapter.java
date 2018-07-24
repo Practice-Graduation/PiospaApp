@@ -70,7 +70,7 @@ public class ServiceGroupAdapter<P extends BasePresenter> extends RecyclerView.A
             rvGroupProduct = itemView.findViewById(R.id.rvProducts);
             txtMore = itemView.findViewById(R.id.txtMore);
             servicePrices = new ArrayList<>();
-            adapter = new ServiceAdapter(mContext, servicePrices);
+            adapter = new ServiceAdapter(mContext, servicePrices, R.layout.item_product);
             rvGroupProduct.setLayoutManager(new LinearLayoutManager(mContext,
                     LinearLayoutManager.HORIZONTAL, false));
             rvGroupProduct.setAdapter(adapter);

@@ -62,7 +62,7 @@ public class AllServiceActivity extends BaseActivity<AllServicePresenter> implem
         centerToolbarTitle(toolbar, 0);
 
         mServicePrices = new ArrayList<>();
-        mServiceAdapter = new ServiceAdapter(this, mServicePrices);
+        mServiceAdapter = new ServiceAdapter(this, mServicePrices, R.layout.item_all_product);
         rvServicePrice.setLayoutManager(new GridLayoutManager(this, AppConstants.SPAN_COUNT));
         rvServicePrice.setAdapter(mServiceAdapter);
 
@@ -73,7 +73,7 @@ public class AllServiceActivity extends BaseActivity<AllServicePresenter> implem
     public void onUpdateRecyleView(List<ServicePrice> servicePrices) {
         mServicePrices.clear();
         mServicePrices.addAll(servicePrices);
-        mServiceAdapter = new ServiceAdapter(this, mServicePrices);
+        mServiceAdapter = new ServiceAdapter(this, mServicePrices, R.layout.item_all_product);
         rvServicePrice.setAdapter(mServiceAdapter);
         addEvents();
     }

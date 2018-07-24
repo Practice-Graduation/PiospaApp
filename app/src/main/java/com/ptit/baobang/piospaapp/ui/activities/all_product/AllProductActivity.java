@@ -61,7 +61,7 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
         toolbar.setTitle(getTitleFromBundle());
         centerToolbarTitle(toolbar, 0);
         mProducts = new ArrayList<>();
-        mProductAdapter = new ProductAdapter(this, mProducts);
+        mProductAdapter = new ProductAdapter(this, mProducts, R.layout.item_all_product);
         rvProducts.setLayoutManager(new GridLayoutManager(this, AppConstants.SPAN_COUNT));
         rvProducts.setAdapter(mProductAdapter);
         mPresenter.loadData(getGroupIdFromBundle());
@@ -71,7 +71,7 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
     public void onUpdateRecyleView(List<Product> products) {
         mProducts.clear();
         mProducts.addAll(products);
-        mProductAdapter = new ProductAdapter(this, mProducts);
+        mProductAdapter = new ProductAdapter(this, mProducts, R.layout.item_all_product);
         rvProducts.setAdapter(mProductAdapter);
         addEvents();
     }

@@ -33,9 +33,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
     private List<Product> mFilterProducts;
     private List<Product> mProducts;
     private OnItemClickListener mListener;
+    private int resource;
 
-    public ProductAdapter(Context mContext, List<Product> mProducts) {
+    public ProductAdapter(Context mContext, List<Product> mProducts, int resource) {
         this.mContext = mContext;
+        this.resource = resource;
         this.mFilterProducts = mProducts;
         this.mProducts = new ArrayList<>();
         this.mProducts.addAll(mFilterProducts);
@@ -46,7 +48,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
     public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_product, parent, false);
+        View view = inflater.inflate(resource, parent, false);
         return new ProductHolder(view);
     }
 
@@ -97,11 +99,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
                     .apply(options)
                     .into(img);
             txtName.setText(product.getProductName());
-            txtPrice.setText(CommonUtils.formatToCurrency(product.getPrice()));
+            txtPrice.setText(new StringBuilder("Giá: " + CommonUtils.formatToCurrency(product.getPrice())));
             itemView.getLayoutParams().width = (ScreenUtils.getScreenWidth(mContext) - AppConstants.SPAN_COUNT * AppConstants.MARGIN) / AppConstants.SPAN_COUNT;
-            itemView.getLayoutParams().height =
-                    itemView.getLayoutParams().height > ViewGroup.LayoutParams.WRAP_CONTENT ?
-                            itemView.getLayoutParams().height : ViewGroup.LayoutParams.WRAP_CONTENT;
+            if(itemView.getLayoutParams().height > ViewGroup.LayoutParams.WRAP_CONTENT){
+
+                itemView.getLayoutParams().height =
+                        itemView.getLayoutParams().height > ViewGroup.LayoutParams.WRAP_CONTENT ?
+                                itemView.getLayoutParams().height : ViewGroup.LayoutParams.WRAP_CONTENT;
+            }
         }
     }
 

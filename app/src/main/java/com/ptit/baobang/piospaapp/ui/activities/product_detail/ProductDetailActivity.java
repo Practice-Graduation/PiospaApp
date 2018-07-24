@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -13,16 +13,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.cart.Cart;
-import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
-
-import java.util.Objects;
+import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,11 +27,10 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
 
     private Product product;
 
-    @BindView(R.id.shimmerLayout)
-    ShimmerFrameLayout shimmerFrameLayout;
-
     @BindView(R.id.img)
     ImageView img;
+    @BindView(R.id.imgSmallImage)
+    ImageView imgSmallImage;
     @BindView(R.id.txtName)
     TextView txtName;
     @BindView(R.id.txtPrice)
@@ -48,6 +43,8 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     Toolbar toolbar;
     @BindView(R.id.clToolbar)
     CollapsingToolbarLayout clToolbar;
+    @BindView(R.id.txtAmount)
+    TextView txtAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,36 +56,41 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     @Override
     protected void onResume() {
         super.onResume();
-        startShirrmentAnimation();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        stopShirrmentAnimation();
     }
 
     private void addControls() {
         mPresenter = new ProductDetailPresenter(this);
 
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Sản Phẩm");
+        toolbar.setTitle("Sản Phẩm      ");
+        centerToolbarTitle(toolbar, 40);
         product = mPresenter.getProductFromBundle(getIntent());
         mPresenter.loadData(product);
 
     }
 
-    @OnClick({R.id.btnAddCart, R.id.fbGoToCart})
+    @OnClick({R.id.btnAddCart, R.id.fbGoToCart, R.id.btnAdd, R.id.btnRemove})
     void onClick(View view){
         switch (view.getId()){
             case R.id.btnAddCart:
-                mPresenter.onClickAddCart(product);
+                mPresenter.onClickAddCart(product, txtAmount.getText().toString());
                 break;
             case R.id.fbGoToCart:
                 mPresenter.onClickGoToCart();
+                break;
+            case R.id.btnAdd:
+                mPresenter.onClickAddButton(txtAmount.getText().toString());
+                break;
+            case R.id.btnRemove:
+                mPresenter.onClickRemoveButton(txtAmount.getText().toString());
                 break;
         }
     }
@@ -96,32 +98,25 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     @Override
     public void showProductDetail(Product product) {
         txtName.setText(product.getProductName());
-        txtPrice.setText(new StringBuilder(product.getPrice() + ""));
-        txtInfo.setText(product.getDescription());
+        txtPrice.setText(new StringBuilder("Giá: " + CommonUtils.formatToCurrency(product.getPrice())));
+        txtInfo.setText(Html.fromHtml(product.getDescription()));
+        txtAmount.setText("1");
         RequestOptions options = new RequestOptions().placeholder(R.drawable.paceholder).error(R.drawable.error);
         Glide.with(this).load(product.getImage()).apply(options).into(img);
+        Glide.with(this).load(product.getImage()).apply(options).into(imgSmallImage);
     }
 
     @Override
     public void openFramentCart() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(AppConstants.FRAGMENT, AppConstants.CART_INDEX);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
     @Override
-    public void startShirrmentAnimation() {
-        if(shimmerFrameLayout != null)
-        shimmerFrameLayout.startShimmerAnimation();
-    }
-
-    @Override
-    public void stopShirrmentAnimation() {
-        if(shimmerFrameLayout != null){
-            shimmerFrameLayout.stopShimmerAnimation();
-            shimmerFrameLayout.setVisibility(View.GONE);
-        }
-
+    public void setAmount(String s) {
+        txtAmount.setText(s);
     }
 
     @Override

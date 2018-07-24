@@ -3,12 +3,12 @@ package com.ptit.baobang.piospaapp.ui.adapter;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PagerApdater extends FragmentPagerAdapter {
+public class PagerApdater extends FragmentStatePagerAdapter {
     private List<Fragment> mFragments = new ArrayList<>();
     private List<String> mTitles = new ArrayList<>();
     private boolean doNotifyDataSetChangedOnce = false;

@@ -21,15 +21,18 @@ public class ProductDetailPresenter extends BasePresenter implements IProductDet
 
     @Override
     public void loadData(Product product) {
-        mView.stopShirrmentAnimation();
         mView.showProductDetail(product);
     }
 
     @Override
-    public void onClickAddCart(Product product) {
+    public void onClickAddCart(Product product, String amount) {
         Cart cart = CartHelper.getCart();
-        cart.add(product, 1);
-        mView.showMessage("Thông báo", "Thêm " + product.getProductName(), SweetAlertDialog.SUCCESS_TYPE);
+        try {
+            cart.add(product, Integer.parseInt(amount));
+            mView.showMessage("Thông báo", "Thêm " + product.getProductName(), SweetAlertDialog.SUCCESS_TYPE);
+        } catch (Exception e) {
+            mView.showMessage("Thông báo", e.getMessage(), SweetAlertDialog.ERROR_TYPE);
+        }
     }
 
     @Override
@@ -41,5 +44,18 @@ public class ProductDetailPresenter extends BasePresenter implements IProductDet
     public Product getProductFromBundle(Intent intent) {
         Bundle bundle = intent.getExtras();
         return (Product) (bundle != null ? bundle.getSerializable(AppConstants.PRODUCT_ID) : null);
+    }
+
+    @Override
+    public void onClickAddButton(String s) {
+        int amount = Integer.parseInt(s);
+        mView.setAmount(String.valueOf(++amount));
+    }
+
+    @Override
+    public void onClickRemoveButton(String s) {
+        int amount = Integer.parseInt(s);
+        if (amount > 1) --amount;
+        mView.setAmount(String.valueOf(amount));
     }
 }

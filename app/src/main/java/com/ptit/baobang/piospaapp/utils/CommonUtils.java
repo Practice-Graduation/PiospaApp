@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.provider.Settings;
 import android.support.design.internal.BottomNavigationItemView;
@@ -19,6 +21,7 @@ import com.ptit.baobang.piospaapp.ui.listener.CallBackChoosePhoto;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
@@ -36,7 +39,16 @@ public class CommonUtils {
     private CommonUtils() {
         // This utility class is not publicly instantiable
     }
-
+    public static String convertDateToString(Date date, String outputFormat) {
+        String convertString = "";
+        SimpleDateFormat df = new SimpleDateFormat(outputFormat);
+        try {
+            convertString = df.format(date);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return convertString;
+    }
     public static void openDialogChooseImage(Activity activity, CallBackChoosePhoto callBack) {
         final CharSequence[] items = {"Máy ảnh", "Bộ sưu tập"};
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -131,5 +143,20 @@ public class CommonUtils {
     public static String formatToCurrency(String number){
         Long aLong = Long.valueOf(number);
         return numberFormat.format(aLong) + currency.getSymbol();
+    }
+
+    public static Bitmap resizeImage(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float scaleWidth = ((float) 640) / width;
+        float scaleHeight = ((float) 480) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        return Bitmap.createBitmap(
+                bitmap, 0, 0, width, height, matrix, false);
     }
 }

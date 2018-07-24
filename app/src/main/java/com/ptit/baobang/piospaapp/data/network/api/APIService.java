@@ -10,10 +10,10 @@ import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.data.model.ProductGroup;
 import com.ptit.baobang.piospaapp.data.model.Province;
-import com.ptit.baobang.piospaapp.data.model.Room;
 import com.ptit.baobang.piospaapp.data.model.Service;
 import com.ptit.baobang.piospaapp.data.model.ServiceGroup;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
+import com.ptit.baobang.piospaapp.data.model.Tax;
 import com.ptit.baobang.piospaapp.data.model.Ward;
 import com.ptit.baobang.piospaapp.data.network.model_request.BookingDetailRequest;
 import com.ptit.baobang.piospaapp.data.network.model_request.LoginRequest;
@@ -24,6 +24,7 @@ import com.ptit.baobang.piospaapp.data.network.model_request.OrderResponse;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -60,10 +61,6 @@ public interface APIService {
 
     @GET("/service/packages/{packageId}")
     Observable<EndPoint<List<Service>>> getServiceByPackageId(@Path("packageId") int packageId);
-
-    //---------------ROOM--------------------------
-    @GET("room")
-    Call<EndPoint<List<Room>>> getAllRoom();
 
     //---------------BOOKINNG DETAIL--------------------------
     @POST("detail/date")
@@ -102,10 +99,20 @@ public interface APIService {
     @POST("order")
     Observable<EndPoint<Order>> createOrder(@Body OrderBodyRequest orderBodyRequest);
 
+    @PUT("order/{orderId}")
+    Observable<EndPoint<Order>>updateOrder(@Path("orderId") int orderId, @Body Order order);
+
     @POST("order/customer-order-status")
     Observable<EndPoint<List<Order>>> getOrderByStatus(@Body OrderCustomerBody orderCustomerBody);
 
     @GET("order/{orderId}/order-product-service-price")
     Observable<EndPoint<OrderResponse>> getProductAndBookingDetail(@Path("orderId") int orderId);
 
+    // ----------------------------UPLOAD FILE -----------------------------
+    @POST("upload-api/")
+    Observable<EndPoint<String>> uploadImage(@Body RequestBody body);
+
+    // ------------------------------TAX---------------------------
+    @GET("tax/{taxId}")
+    Observable<EndPoint<Tax>>getTax(@Path("taxId") int taxId);
 }

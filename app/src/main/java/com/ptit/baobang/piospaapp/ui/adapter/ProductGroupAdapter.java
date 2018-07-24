@@ -69,7 +69,7 @@ public class ProductGroupAdapter<P extends BasePresenter> extends RecyclerView.A
             rvGroupProduct = itemView.findViewById(R.id.rvProducts);
             txtMore = itemView.findViewById(R.id.txtMore);
             products = new ArrayList<>();
-            adapter = new ProductAdapter(mContext, products);
+            adapter = new ProductAdapter(mContext, products, R.layout.item_product);
             rvGroupProduct.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
             rvGroupProduct.setAdapter(adapter);
         }

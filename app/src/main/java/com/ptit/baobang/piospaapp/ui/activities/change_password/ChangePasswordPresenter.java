@@ -5,6 +5,7 @@ import android.content.Context;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
+import com.ptit.baobang.piospaapp.utils.InputUtils;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -35,6 +36,12 @@ public class ChangePasswordPresenter extends BasePresenter implements IChangePas
             mView.showMessage("Thông báo", "Vui lòng nhập vào mật khẩu mới", SweetAlertDialog.WARNING_TYPE);
             return;
         }
+
+        if(!InputUtils.isValidPassword(newPassword.trim())){
+            mView.showMessage("Thông báo","Mật khẩu ít nhất 5 kí tự", SweetAlertDialog.WARNING_TYPE);
+            return;
+        }
+
         if (passwordConfirm.trim().length() == 0) {
             mView.showMessage("Thông báo", "Vui lòng nhập vào xác nhận mật khẩu", SweetAlertDialog.WARNING_TYPE);
             return;

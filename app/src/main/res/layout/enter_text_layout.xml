@@ -10,11 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="24dp"
-        android:layout_marginBottom="@dimen/margin_20"
         android:layout_marginTop="@dimen/margin"
         android:text="Title"
         android:textColor="@android:color/black"/>
-
     <EditText
         android:id="@+id/txtText"
         android:layout_margin="@dimen/margin"

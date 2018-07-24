@@ -41,6 +41,9 @@ public class Product implements Serializable, Comparable<Product>{
     @SerializedName("productName")
     @Expose
     private String productName;
+    @SerializedName("amount")
+    @Expose
+    private int amount;
     @SerializedName("quantity")
     @Expose
     private int quantity;
@@ -68,9 +71,6 @@ public class Product implements Serializable, Comparable<Product>{
     @SerializedName("productOrigin")
     @Expose
     private ProductOrigin productOrigin;
-    @SerializedName("productUnit")
-    @Expose
-    private ProductUnit productUnit;
 
     public int getProductId() {
         return productId;
@@ -232,17 +232,17 @@ public class Product implements Serializable, Comparable<Product>{
         this.productOrigin = productOrigin;
     }
 
-    public ProductUnit getProductUnit() {
-        return productUnit;
-    }
-
-    public void setProductUnit(ProductUnit productUnit) {
-        this.productUnit = productUnit;
-    }
-
     @Override
     public int compareTo(@NonNull Product o) {
 
         return this.productId == o.getProductId() ? 0 : 1;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }

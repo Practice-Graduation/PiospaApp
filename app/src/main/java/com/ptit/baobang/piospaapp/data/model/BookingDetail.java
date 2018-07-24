@@ -35,9 +35,7 @@ public class BookingDetail implements Serializable{
     @SerializedName("booking")
     @Expose
     private Booking booking;
-    @SerializedName("room")
-    @Expose
-    private Room room;
+
     @SerializedName("servicePrice")
     @Expose
     private ServicePrice servicePrice;
@@ -112,14 +110,6 @@ public class BookingDetail implements Serializable{
 
     public void setBooking(Booking booking) {
         this.booking = booking;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
     }
 
     public ServicePrice getServicePrice() {

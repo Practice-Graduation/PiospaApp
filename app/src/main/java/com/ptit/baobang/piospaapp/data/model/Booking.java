@@ -32,9 +32,6 @@ public class Booking implements Serializable {
     @SerializedName("price")
     @Expose
     private int price;
-    @SerializedName("taxId")
-    @Expose
-    private int taxId;
     @SerializedName("timeEnd")
     @Expose
     private String timeEnd;
@@ -122,14 +119,6 @@ public class Booking implements Serializable {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public int getTaxId() {
-        return taxId;
-    }
-
-    public void setTaxId(int taxId) {
-        this.taxId = taxId;
     }
 
     public String getTimeEnd() {

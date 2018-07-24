@@ -30,7 +30,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> implements IBookingInfoView{
+public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> implements IBookingInfoView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -72,8 +72,8 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
     @OnClick({R.id.btnAdd, R.id.btnRemove,
             R.id.btnComfirm, R.id.fbGoToCart,
             R.id.txtDate, R.id.txtTimeStart})
-    void onClick(View view){
-        switch (view.getId()){
+    void onClick(View view) {
+        switch (view.getId()) {
             case R.id.fbGoToCart:
                 mPresenter.clickFloatButtonCart();
                 break;
@@ -98,7 +98,11 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
     private void addControls() {
         mPresenter = new BookingInfoPresenter(this);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitle("Đặt Hẹn       ");
+        centerToolbarTitle(toolbar, 40);
         mPresenter.loadDataFromBunble(getIntent());
     }
 
@@ -110,11 +114,11 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
                 .placeholder(R.drawable.paceholder);
 
         String image = "", name = "", time = "";
-        if(servicePrice.getService() != null){
+        if (servicePrice.getService() != null) {
             image = servicePrice.getService().getImage();
             name = servicePrice.getService().getServiceName();
             time = servicePrice.getService().getServiceTime().getTime() + "";
-        }else if(servicePrice.getServicePackage() != null){
+        } else if (servicePrice.getServicePackage() != null) {
             image = servicePrice.getServicePackage().getImage();
             name = servicePrice.getServicePackage().getServicePackageName();
         }
@@ -178,8 +182,8 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == AppConstants.REQUEST_CODE){
-            if(resultCode == RESULT_OK){
+        if (requestCode == AppConstants.REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
                 String timeStart = data.getStringExtra(AppConstants.TIME_SELECRED);
                 txtTimeStart.setText(new StringBuilder(getString(R.string.time_booking) + ": " + timeStart));
                 mSelectedDate = CommonUtils.getDateTime(mSelectedDate, timeStart);
@@ -188,7 +192,7 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
     }
 
     @Override
-    public void openTimePicker(Date date ) {
+    public void openTimePicker(Date date) {
         Intent intent = new Intent(this, BookingTimeActivity.class);
         intent.putExtra(AppConstants.DATE_SELECTED, date);
         intent.putExtra(AppConstants.SERVICE_PRICE_ID, mServicePrice);

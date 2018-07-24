@@ -74,9 +74,7 @@
         <activity
             android:name=".ui.activities.change_password.ChangePasswordActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activities.test.TestActivity">
-
-        </activity>
+        <activity android:name=".ui.activities.test.TestActivity"></activity>
     </application>
 
 </manifest>

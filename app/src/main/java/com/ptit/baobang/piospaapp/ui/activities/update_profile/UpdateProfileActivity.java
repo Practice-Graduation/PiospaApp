@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -26,12 +28,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.data.model.Ward;
 import com.ptit.baobang.piospaapp.ui.activities.login.LoginActivity;
-import com.ptit.baobang.piospaapp.ui.activities.order.OrderActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.ui.dialogs.district.DistrictActivity;
 import com.ptit.baobang.piospaapp.ui.dialogs.province.ProvinceActivity;
@@ -149,10 +149,10 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
                 mPresenter.clickProvine(mProvince);
                 break;
             case R.id.txtDistrict:
-                mPresenter.clickDistrict(mDistrict);
+                mPresenter.clickDistrict(mProvince, mDistrict);
                 break;
             case R.id.txtWard:
-                mPresenter.clickWard(mWard);
+                mPresenter.clickWard(mDistrict, mWard);
                 break;
             case R.id.txtAddress:
                 mPresenter.clickAddress(txtAddress.getText().toString());
@@ -208,11 +208,13 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
                          Province province, District district,
                          Ward ward, String address) {
 
-        RequestOptions options = new RequestOptions().placeholder(R.drawable.paceholder).error(R.drawable.error);
-
+        RequestOptions options = new RequestOptions().placeholder(R.drawable.paceholder).error(R.drawable.user);
+        Bitmap error = BitmapFactory.decodeResource(getResources(), R.drawable.user);
+        RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), error);
+        circularBitmapDrawable.setCircular(true);
         Glide.with(this).load(customerAvatar).apply(options).into(imgAvatarBackground);
         Glide.with(this).load(customerAvatar)
-                .apply(RequestOptions.centerCropTransform().circleCrop())
+                .apply(RequestOptions.centerCropTransform().circleCrop().error(circularBitmapDrawable))
                 .into(imgAvatar);
 
         txtFullName.setText(fullname);
@@ -221,27 +223,12 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
         txtBirthDay.setText(birthday);
         txtGender.setText(gender);
         mProvince = province;
-        txtProvince.setText(province.getName());
+        txtProvince.setText(province == null ? "" : province.getName());
         mDistrict = district;
-        txtDistrict.setText(district.getName());
+        txtDistrict.setText(district == null ? "" : district.getName());
         mWard = ward;
-        txtWard.setText(ward.getName());
+        txtWard.setText(ward == null ? "" : ward.getName());
         txtAddress.setText(address);
-    }
-
-    @Override
-    public void showOrderActivity() {
-        Intent intent = new Intent(this, OrderActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void showOrderActivity(int i) {
-        Intent intent = new Intent(this, OrderActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putInt(AppConstants.ORDER_FRAGMENT_INDEX, i);
-        intent.putExtras(bundle);
-        startActivity(intent);
     }
 
     @Override
@@ -250,15 +237,6 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public void onClickUpdate(Customer customer) {
-        Intent intent = new Intent(this, UpdateProfileActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(AppConstants.CUSTOMER, customer);
-        intent.putExtras(bundle);
-        startActivity(intent);
     }
 
     @Override
@@ -367,7 +345,6 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
         } else {
             rbFeMale.setChecked(true);
         }
-        txtTitle.setText("Chọn giới tính");
         btnOk.setText("Ok");
         btnCancel.setText("Hủy");
 

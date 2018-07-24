@@ -7,6 +7,7 @@ import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.OrderDeliveryType;
 import com.ptit.baobang.piospaapp.data.model.OrderPaymentType;
 import com.ptit.baobang.piospaapp.data.model.Province;
+import com.ptit.baobang.piospaapp.data.model.Tax;
 import com.ptit.baobang.piospaapp.ui.base.BaseView;
 
 import java.util.List;
@@ -39,4 +40,6 @@ public interface IPaymentView extends BaseView{
     void openOrderActivity();
 
     void updateUIPaymentInfo(String totalPrice, String ship, String payment);
+
+    void setTax(Tax data);
 }

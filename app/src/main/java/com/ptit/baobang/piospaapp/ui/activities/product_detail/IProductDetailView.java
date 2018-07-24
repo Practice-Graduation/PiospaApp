@@ -6,6 +6,6 @@ import com.ptit.baobang.piospaapp.ui.base.BaseView;
 public interface IProductDetailView extends BaseView{
     void showProductDetail(Product product);
     void openFramentCart();
-    void startShirrmentAnimation();
-    void stopShirrmentAnimation();
+
+    void setAmount(String s);
 }

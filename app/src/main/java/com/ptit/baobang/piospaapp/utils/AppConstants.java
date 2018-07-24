@@ -4,7 +4,7 @@ public interface AppConstants {
     String DATE_FORMAT = "dd/MM/yyyy";
 
     int PADDING = 10;
-    int MARGIN = 10;
+    int MARGIN = 5;
     int SPAN_COUNT = 2;
     int REQUEST_CODE = 100;
     int REQUEST_CODE_PROVINCE = 101;
@@ -45,4 +45,7 @@ public interface AppConstants {
     String SERVICE_GROUP_ID = "SERVICE_GROUP_ID";
     String TOOL_BAR_TITLE = "TOOL_BAR_TITLE";
 
+    int ORDER_STATUS_CANCLE = 3;
+    int ORDER_REASON_CANCEL = 1;
+    int TAX_ID = 1;
 }

@@ -10,17 +10,11 @@ import com.ptit.baobang.piospaapp.data.model.Ward;
 public interface IUpdateProfilePresenter {
     void loadData(Context baseContext);
 
-    void clickShowOrder();
-
-    void clickShowOrder(int i);
-
     void logOut();
-
-    void clickUpdate();
 
     void clickProvine(Province mProvince);
 
-    void clickDistrict(District mDistrict);
+    void clickDistrict(Province mProvince, District mDistrict);
 
     void clickAddress(String s);
 
@@ -28,7 +22,7 @@ public interface IUpdateProfilePresenter {
 
     void clickEmil(String s);
 
-    void clickWard(Ward mWard);
+    void clickWard(District mDistrict, Ward mWard);
 
     void clickPhone(String s);
 

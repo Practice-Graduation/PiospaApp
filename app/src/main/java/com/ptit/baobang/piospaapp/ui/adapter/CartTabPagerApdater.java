@@ -3,25 +3,34 @@ package com.ptit.baobang.piospaapp.ui.adapter;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart.CartFragment;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_product.CartProductFragment;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_service.CartServiceFragment;
 
-public class CartTabPagerApdater extends FragmentPagerAdapter {
-    public CartTabPagerApdater(FragmentManager fm) {
+public class CartTabPagerApdater extends FragmentStatePagerAdapter {
+    private CartFragment mCartFragment;
+    public CartTabPagerApdater(FragmentManager fm, CartFragment cartFragment) {
         super(fm);
+        this.mCartFragment = cartFragment;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return CartProductFragment.newInstance();
+                CartProductFragment fragment = CartProductFragment.newInstance();
+                fragment.setCartFragment(mCartFragment);
+                return fragment;
             case 1:
-                return CartServiceFragment.newInstance();
+                CartServiceFragment serviceFragment = CartServiceFragment.newInstance();
+                serviceFragment.setCartFragment(mCartFragment);
+                return serviceFragment;
             default:
-                return CartProductFragment.newInstance();
+                CartProductFragment fragment2 = CartProductFragment.newInstance();
+                fragment2.setCartFragment(mCartFragment);
+                return fragment2;
         }
     }
 

@@ -1,7 +1,11 @@
 package com.ptit.baobang.piospaapp.ui.activities.profile;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -165,11 +169,15 @@ public class ProdfileActivity extends BaseActivity<ProfilePresenter> implements 
                          Province province, District district,
                          Ward ward, String address) {
 
-        RequestOptions options = new RequestOptions().placeholder(R.drawable.paceholder).error(R.drawable.error);
+        RequestOptions options = new RequestOptions().placeholder(R.drawable.paceholder).error(R.drawable.user);
+
+        Bitmap error = BitmapFactory.decodeResource(getResources(), R.drawable.user);
+        RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), error);
+        circularBitmapDrawable.setCircular(true);
 
         Glide.with(this).load(customerAvatar).apply(options).into(imgAvatarBackground);
         Glide.with(this).load(customerAvatar)
-                .apply(RequestOptions.centerCropTransform().circleCrop())
+                .apply(RequestOptions.centerCropTransform().circleCrop().error(circularBitmapDrawable))
                 .into(imgAvatar);
 
         txtFullName.setText(fullname);
@@ -178,11 +186,11 @@ public class ProdfileActivity extends BaseActivity<ProfilePresenter> implements 
         txtBirthDay.setText(birthday);
         txtGender.setText(gender);
         mProvince = province;
-        txtProvince.setText(province.getName());
+        txtProvince.setText(province == null ? "" : province.getName());
         mDistrict = district;
-        txtDistrict.setText(district.getName());
+        txtDistrict.setText(district == null ? "" : district.getName());
         mWard = ward;
-        txtWard.setText(ward.getName());
+        txtWard.setText(ward == null ? "" : ward.getName());
         txtAddress.setText(address);
     }
 

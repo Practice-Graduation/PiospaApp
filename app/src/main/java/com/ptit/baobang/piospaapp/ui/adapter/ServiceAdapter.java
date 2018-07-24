@@ -35,9 +35,11 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
     private List<ServicePrice> mFilterServicePrices;
     private List<ServicePrice> mServicePrices;
     private OnItemClickListener mListener;
+    private int resource;
 
-    public ServiceAdapter(Context mContext, List<ServicePrice> mServicePrices) {
+    public ServiceAdapter(Context mContext, List<ServicePrice> mServicePrices, int resource) {
         this.mContext = mContext;
+        this.resource = resource;
         this.mFilterServicePrices = mServicePrices;
         mServicePrices = new ArrayList<>();
         mServicePrices.addAll(mFilterServicePrices);
@@ -48,7 +50,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
     public ServiceHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_product, parent, false);
+        View view = inflater.inflate(resource, parent, false);
         return new ServiceHolder(view);
     }
 

@@ -20,6 +20,7 @@ import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.OrderDeliveryType;
 import com.ptit.baobang.piospaapp.data.model.OrderPaymentType;
 import com.ptit.baobang.piospaapp.data.model.Province;
+import com.ptit.baobang.piospaapp.data.model.Tax;
 import com.ptit.baobang.piospaapp.data.model.Ward;
 import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.activities.order.OrderActivity;
@@ -32,6 +33,7 @@ import com.ptit.baobang.piospaapp.ui.dialogs.district.DistrictActivity;
 import com.ptit.baobang.piospaapp.ui.dialogs.province.ProvinceActivity;
 import com.ptit.baobang.piospaapp.ui.dialogs.ward.WardActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.shuhart.stepview.StepView;
 
 import java.util.ArrayList;
@@ -123,6 +125,10 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     TextView txtShip;
     @BindView(R.id.txtPayment)
     TextView txtPayment;
+    @BindView(R.id.lbTax)
+    TextView lbTax;
+    @BindView(R.id.txtTax)
+    TextView txtTax;
 
     @BindView(R.id.rvProducts)
     RecyclerView rvProducts;
@@ -147,6 +153,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     private Ward mWard;
     private OrderDeliveryType mDeliveryType;
     private OrderPaymentType mPaymentType;
+    private Tax mTax;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +167,8 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         mPaymentTypeAdapter.setListener(position -> mPaymentType = mOrderPaymentTypes.get(position));
 
         mDeliveryTypeAdapter.setmListener(position -> mDeliveryType = mOrderDeliveryTypes.get(position));
+
+
     }
 
     @OnClick({R.id.btnNext, R.id.txtProvince, R.id.txtDistrict, R.id.txtWard})
@@ -174,7 +183,8 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
                         mWard,
                         txtAddress.getText().toString(),
                         mDeliveryType,
-                        mPaymentType);
+                        mPaymentType,
+                        mTax);
                 break;
             case R.id.txtProvince:
                 mPresenter.clickTextViewProvince();
@@ -226,6 +236,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         mPresenter.attachDataForInput(getBaseContext());
         mPresenter.loadDeliveryType();
         mPresenter.loadPaymentType();
+        mPresenter.loadTax();
     }
 
     private void setSupportToolbar() {
@@ -233,7 +244,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Đặt Hàng    ");
+        toolbar.setTitle("Đặt Hàng          ");
         centerToolbarTitle(toolbar, 0);
     }
 
@@ -383,21 +394,33 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
 
         if (mProvince != null) {
             txtProvince.setText(mProvince.getName());
-            txtProvince.setClickable(true);
         }
         if (mDistrict != null) {
             txtDistrict.setText(mDistrict.getName());
-            txtDistrict.setClickable(true);
         }
         if (mWard != null) {
             txtWard.setText(mWard.getName());
-            txtWard.setClickable(true);
+        }
+
+        if(mProvince == null){
+            txtProvince.setClickable(true);
+            txtDistrict.setClickable(false);
+            txtWard.setClickable(false);
+        }else{
+            txtProvince.setClickable(true);
+            txtDistrict.setClickable(false);
+            if(mDistrict == null){
+                txtWard.setClickable(false);
+            }else{
+                txtWard.setClickable(true);
+            }
         }
 
         if (customer.getAddress() != null) {
             txtAddress.setText(customer.getAddress());
-
         }
+
+
     }
 
     @Override
@@ -412,6 +435,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         bundle.putInt(AppConstants.ORDER_FRAGMENT_INDEX, 0);
         intent.putExtras(bundle);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -419,6 +443,19 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         txtTotal.setText(totalPrice);
         txtShip.setText(ship);
         txtPayment.setText(payment);
+    }
+
+    @Override
+    public void setTax(Tax data) {
+        mTax = data;
+        lbTax.setText(data.getName());
+        if(data.getType().equals("percent")){
+            txtTax.setText(new StringBuilder(data.getValue() + "%"));
+        }else if(data.getType().equals("money")){
+            txtTax.setText(CommonUtils.formatToCurrency(data.getValue()));
+        }
+        mPresenter.computeTax(mDeliveryType, data);
+
     }
 
     @Override

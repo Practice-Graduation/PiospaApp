@@ -18,6 +18,7 @@ import com.ptit.baobang.piospaapp.data.model.OrderPaymentType;
 import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.data.model.Province;
+import com.ptit.baobang.piospaapp.data.model.Tax;
 import com.ptit.baobang.piospaapp.data.model.Ward;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.data.network.model_request.CartItemProduct;
@@ -25,6 +26,7 @@ import com.ptit.baobang.piospaapp.data.network.model_request.CartItemService;
 import com.ptit.baobang.piospaapp.data.network.model_request.CartShopping;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderBodyRequest;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
 import com.ptit.baobang.piospaapp.utils.InputUtils;
@@ -56,7 +58,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
                                 String phone, Province mProvince,
                                 District mDistrict, Ward mWard,
                                 String address, OrderDeliveryType mDeliveryType,
-                                OrderPaymentType mPaymentType) {
+                                OrderPaymentType mPaymentType, Tax mTax) {
         switch (currentStep) {
             case 0:
                 if (!checkDeliveryInfoInput(name, phone, mProvince,
@@ -71,24 +73,41 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
                 break;
             case 2:
                 createOrder(name, phone, mProvince, mDistrict, mWard,
-                        address, mDeliveryType, mPaymentType);
+                        address, mDeliveryType, mPaymentType, mTax);
                 break;
         }
         currentStep++;
         if (currentStep == 2) {
-            Cart cart = CartHelper.getCart();
-            String totalPrice = CommonUtils.formatToCurrency(cart.getTotalPrice());
-            String ship = CommonUtils.formatToCurrency(mDeliveryType.getPrice());
-            String payment = CommonUtils.formatToCurrency(cart.getTotalPrice().add(BigDecimal.valueOf(mDeliveryType.getPrice())));
-            mView.updateUIPaymentInfo(totalPrice, ship, payment);
+            computeTax(mDeliveryType, mTax);
         }
         mView.nextStep(currentStep);
+    }
+
+    public void computeTax(OrderDeliveryType mDeliveryType, Tax mTax) {
+
+        if (mDeliveryType != null && mTax != null) {
+            Cart cart = CartHelper.getCart();
+
+            BigDecimal total = cart.getTotalPrice();
+            if (mTax.getType().equals("percent")) {
+                total = total.add(total.multiply(BigDecimal.valueOf(10)).divide(BigDecimal.valueOf(100)));
+            } else if (mTax.getType().equals("money")) {
+                total = total.add(new BigDecimal(mTax.getValue()));
+            }
+            int intShip = 0;
+            intShip = mDeliveryType.getPrice();
+            String totalPrice = CommonUtils.formatToCurrency(cart.getTotalPrice());
+            String ship = CommonUtils.formatToCurrency(intShip);
+            String payment = CommonUtils.formatToCurrency(total.add(BigDecimal.valueOf(intShip)));
+            mView.updateUIPaymentInfo(totalPrice, ship, payment);
+        }
+
     }
 
     private void createOrder(String name, String phone, Province mProvince,
                              District mDistrict, Ward mWard, String address,
                              OrderDeliveryType mDeliveryType,
-                             OrderPaymentType mPaymentType) {
+                             OrderPaymentType mPaymentType, Tax mTax) {
 
         String deliveyAddress = address + ", " + mWard.getType() + " " + mWard.getName()
                 + "," + mDistrict.getType() + " " + mDistrict.getName()
@@ -105,6 +124,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         order.setOrderPaymentType(mPaymentType);
         order.setOrderDeliveryType(mDeliveryType);
         order.setDeliveryCost(mDeliveryType.getPrice());
+        order.setTax(mTax);
         // to get default value was define on database
         order.setOrderStatus(new OrderStatus());
         order.setOrderDeliveryStatus(new OrderDeliveryStatus());
@@ -137,7 +157,6 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         if (orderEndPoint.getStatusCode() == 200) {
             mView.doneStep();
             mView.hideLoading();
-            mView.showMessage("Thông báo", "Đặt hàng thành công", SweetAlertDialog.SUCCESS_TYPE);
             Cart cart = CartHelper.getCart();
             cart.clear();
             mView.openOrderActivity();
@@ -266,6 +285,21 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
     public void attachDataForInput(Context baseContext) {
         Customer customer = SharedPreferenceUtils.getUser(baseContext);
         mView.showDataForInput(customer);
+    }
+
+    @Override
+    public void loadTax() {
+        getCompositeDisposable().add(
+                mApiService.getTax(AppConstants.TAX_ID)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io())
+                        .subscribe(this::handleTaxResponse, this::noneHandleError)
+        );
+    }
+
+    private void handleTaxResponse(EndPoint<Tax> taxEndPoint) {
+        mView.setTax(taxEndPoint.getData());
     }
 
     private List<CartProductItem> getCartProductItems() {

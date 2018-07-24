@@ -27,36 +27,35 @@ public class ProfilePresenter extends BasePresenter implements IProfilePresenter
         Customer customer = SharedPreferenceUtils.getUser(baseContext);
 
         String gender = customer.getGender();
-
-        gender = gender.equalsIgnoreCase("male") ? "Nam" : "Nữ";
+        String birday = (customer.getBirthday() == null || customer.getBirthday().trim().length() == 0) ? "" : customer.getBirthday();
+        if(gender == null || gender.trim().length() == 0){
+            gender = "";
+        }else{
+            gender = gender.equalsIgnoreCase("male") ? "Nam" : "Nữ";
+        }
         String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat(pattern, new Locale("vi", "VN"));
         try {
-            calendar.setTime(sdf.parse(customer.getBirthday()));
+            calendar.setTime(sdf.parse(birday));
+            birday = DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY);
         } catch (ParseException e) {
-
             e.printStackTrace();
-
-            sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", new Locale("vi", "VN"));
-            try {
-                calendar.setTime(sdf.parse(customer.getBirthday()));
-            } catch (ParseException e1) {
-                e1.printStackTrace();
-            }
+            birday = "";
         }
 
-        mView.loadData(customer.getCustomerAvatar(),
+        mView.loadData(
+                (customer.getCustomerAvatar() == null || customer.getCustomerAvatar().trim().length() == 0) ? "" : customer.getCustomerAvatar(),
                 customer.getFullname(),
-                customer.getPhone(),
-                customer.getEmail(),
-                DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY),
+                (customer.getPhone() == null || customer.getPhone().trim().length() == 0) ? "" : customer.getPhone(),
+                (customer.getEmail() == null || customer.getEmail().trim().length() == 0) ? "" : customer.getEmail(),
+                birday,
                 gender,
                 customer.getProvince(),
                 customer.getDistrict(),
                 customer.getWard(),
-                customer.getAddress());
+                (customer.getAddress() == null || customer.getAddress().trim().length() == 0) ? "" : customer.getAddress());
     }
 
     @Override

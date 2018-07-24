@@ -23,7 +23,7 @@
         android:id="@+id/comfirm"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnCancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
@@ -35,7 +35,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             app:el_duration="2000"
-            app:el_expanded="false"
+            app:el_expanded="true"
             app:el_parallax="0">
 
             <LinearLayout
@@ -321,7 +321,27 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/lbTotal"
                             app:layout_constraintTop_toBottomOf="@id/lbPaymentInfo" />
+                        <TextView
+                            android:id="@+id/lbTax"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/padding"
+                            android:paddingTop="@dimen/padding"
+                            android:text="Thuế"
+                            app:layout_constraintEnd_toStartOf="@id/txtTax"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/lbTotal" />
 
+                        <TextView
+                            android:id="@+id/txtTax"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:paddingBottom="@dimen/padding"
+                            android:paddingTop="@dimen/padding"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/lbTax"
+                            app:layout_constraintTop_toBottomOf="@id/txtTotal" />
                         <TextView
                             android:id="@+id/lbShip"
                             android:layout_width="0dp"
@@ -331,7 +351,7 @@
                             android:text="@string/ship"
                             app:layout_constraintEnd_toStartOf="@id/txtShip"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/lbTotal" />
+                            app:layout_constraintTop_toBottomOf="@id/lbTax" />
 
                         <TextView
                             android:id="@+id/txtShip"
@@ -342,7 +362,7 @@
                             android:paddingTop="@dimen/padding"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/lbShip"
-                            app:layout_constraintTop_toBottomOf="@id/txtTotal" />
+                            app:layout_constraintTop_toBottomOf="@id/txtTax" />
 
                         <TextView
                             android:id="@+id/lbPayment"
@@ -370,10 +390,23 @@
 
                 </android.support.v7.widget.CardView>
 
+
+
             </LinearLayout>
 
         </net.cachapa.expandablelayout.ExpandableLayout>
 
 
     </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_selector_none_radius"
+        android:text="Hủy đơn hàng"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>

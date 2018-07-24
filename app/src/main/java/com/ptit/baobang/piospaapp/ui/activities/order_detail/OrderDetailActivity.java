@@ -7,15 +7,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
 import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
+import com.ptit.baobang.piospaapp.data.model.Order;
+import com.ptit.baobang.piospaapp.data.model.Tax;
 import com.ptit.baobang.piospaapp.ui.adapter.ProductCartComfirmAdapter;
 import com.ptit.baobang.piospaapp.ui.adapter.ServiceCartComfirmAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
+import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -24,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> implements IOrderDetailView {
 
@@ -85,6 +90,14 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     @BindView(R.id.expandable_layout)
     ExpandableLayout expandableLayout;
 
+    @BindView(R.id.btnCancel)
+    Button btnCancel;
+
+    TextView lbTax;
+    @BindView(R.id.txtTax)
+    TextView txtTax;
+    private Order order;
+
 
     @BindView(R.id.rvProducts)
     RecyclerView rvProducts;
@@ -108,7 +121,8 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     private void init() {
         mPresenter = new OrderDetailPresenter(this);
         setToolbar();
-        mPresenter.getDate(getIntent());
+        order = mPresenter.getDate(getIntent());
+        mPresenter.loadData(order);
 
         mProduct = new ArrayList<>();
         mProductAdapter = new ProductCartComfirmAdapter(this, mProduct);
@@ -121,12 +135,22 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         rvServices.setAdapter(mServiceAdapter);
     }
 
+    @OnClick(R.id.btnCancel)
+    void onClick(View view){
+        switch (view.getId()){
+            case R.id.btnCancel:
+                mPresenter.clickCancelOrder(order);
+                break;
+        }
+    }
+
     private void setToolbar() {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Chi tiết đơn hàng");
+        toolbar.setTitle("Chi tiết đơn hàng     ");
+        centerToolbarTitle(toolbar, 0);
     }
 
     @Override
@@ -147,12 +171,15 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         switch (orderStatusName) {
             case "Chưa thanh toán":
                 cvOrderStatus.setBackgroundResource(R.color.light_blue);
+                btnCancel.setVisibility(View.VISIBLE);
                 break;
             case "Thanh toán":
                 cvOrderStatus.setBackgroundResource(R.color.light_green);
+                btnCancel.setVisibility(View.GONE);
                 break;
             case "Hủy":
                 cvOrderStatus.setBackgroundResource(R.color.light_red);
+                btnCancel.setVisibility(View.GONE);
                 break;
         }
 
@@ -202,4 +229,34 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         mServices.addAll(priceItems);
         mServiceAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void setView(String orderStatusName) {
+        switch (orderStatusName) {
+            case "Chưa thanh toán":
+                cvOrderStatus.setBackgroundResource(R.color.light_blue);
+                btnCancel.setVisibility(View.VISIBLE);
+                break;
+            case "Thanh toán":
+                cvOrderStatus.setBackgroundResource(R.color.light_green);
+                btnCancel.setVisibility(View.GONE);
+                break;
+            case "Hủy":
+                cvOrderStatus.setBackgroundResource(R.color.light_red);
+                btnCancel.setVisibility(View.GONE);
+                break;
+        }
+        txtStatus.setText("Trạng thái: " + orderStatusName);
+    }
+
+    @Override
+    public void setTax(Tax tax) {
+        lbTax.setText(tax.getName());
+        if(tax.getType().equals("percent")){
+            txtTax.setText(new StringBuilder(tax.getValue() + "%"));
+        }else if(tax.getType().equals("money")){
+            txtTax.setText(CommonUtils.formatToCurrency(tax.getValue()));
+        }
+    }
+
 }

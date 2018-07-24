@@ -13,22 +13,22 @@ public class Customer implements Serializable {
     private int customerId;
     @SerializedName("account")
     @Expose
-    private String account;
+    private String account = "";
     @SerializedName("address")
     @Expose
-    private String address;
+    private String address = "";
     @SerializedName("birthday")
     @Expose
-    private String birthday;
+    private String birthday = "";
     @SerializedName("cmnd")
     @Expose
-    private String cmnd;
+    private String cmnd = "";
     @SerializedName("code")
     @Expose
-    private String code;
+    private String code = "";
     @SerializedName("createdAt")
     @Expose
-    private String createdAt;
+    private String createdAt = "";
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
@@ -37,49 +37,49 @@ public class Customer implements Serializable {
     private int cusomerReferId;
     @SerializedName("customerAvatar")
     @Expose
-    private String customerAvatar;
+    private String customerAvatar = "";
     @SerializedName("dateLastLogin")
     @Expose
-    private String dateLastLogin;
+    private String dateLastLogin = "";
     @SerializedName("district")
     @Expose
     private District district;
     @SerializedName("email")
     @Expose
-    private String email;
+    private String email = "";
     @SerializedName("facebook")
     @Expose
-    private String facebook;
+    private String facebook = "";
     @SerializedName("facebookId")
     @Expose
-    private int facebookId;
+    private int facebookId = 0;
     @SerializedName("fullname")
     @Expose
-    private String fullname;
+    private String fullname = "";
     @SerializedName("gender")
     @Expose
-    private String gender;
+    private String gender = "male";
     @SerializedName("isActive")
     @Expose
-    private int isActive;
+    private int isActive = 1;
     @SerializedName("isMember")
     @Expose
-    private int isMember;
+    private int isMember = 0;
     @SerializedName("memberCode")
     @Expose
-    private String memberCode;
+    private String memberCode = "";
     @SerializedName("password")
     @Expose
-    private String password;
+    private String password = "";
     @SerializedName("phone")
     @Expose
-    private String phone;
+    private String phone = "";
     @SerializedName("point")
     @Expose
-    private int point;
+    private int point = 0;
     @SerializedName("pointUsed")
     @Expose
-    private int pointUsed;
+    private int pointUsed = 0;
     @SerializedName("province")
     @Expose
     private Province province;
@@ -94,7 +94,7 @@ public class Customer implements Serializable {
     private Ward ward;
     @SerializedName("zalo")
     @Expose
-    private String zalo;
+    private String zalo = "";
     @SerializedName("customerSource")
     @Expose
     private int customerSource;
@@ -340,8 +340,13 @@ public class Customer implements Serializable {
     }
 
     public String getFullAddress(){
-        return address + ", " + ward.getType() + " " + ward.getName()
-                + ","+ district.getType() + " " + district.getName()
-                + ", "+ province.getType() + " " + province.getName();
+        String fullAdress =  address;
+        if(ward != null)
+            fullAdress +=  ", " + ward.getType() + " " + ward.getName();
+        if(district != null)
+            fullAdress += ","+ district.getType() + " " + district.getName();
+        if(province != null)
+            fullAdress += ", "+ province.getType() + " " + province.getName();
+        return fullAdress;
     }
 }

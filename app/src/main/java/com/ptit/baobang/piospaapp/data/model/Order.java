@@ -56,9 +56,9 @@ public class Order implements Serializable {
     @SerializedName("subTotal")
     @Expose
     private int subTotal;
-    @SerializedName("taxId")
+    @SerializedName("tax")
     @Expose
-    private int taxId;
+    private Tax tax;
     @SerializedName("total")
     @Expose
     private int total;
@@ -71,9 +71,6 @@ public class Order implements Serializable {
     @SerializedName("voucherId")
     @Expose
     private int voucherId;
-    @SerializedName("customerSource")
-    @Expose
-    private CustomerSource customerSource;
     @SerializedName("customer")
     @Expose
     private Customer customer;
@@ -205,12 +202,12 @@ public class Order implements Serializable {
         this.subTotal = subTotal;
     }
 
-    public int getTaxId() {
-        return taxId;
+    public Tax getTax() {
+        return tax;
     }
 
-    public void setTaxId(int taxId) {
-        this.taxId = taxId;
+    public void setTax(Tax tax) {
+        this.tax = tax;
     }
 
     public int getTotal() {
@@ -243,14 +240,6 @@ public class Order implements Serializable {
 
     public void setVoucherId(int voucherId) {
         this.voucherId = voucherId;
-    }
-
-    public CustomerSource getCustomerSource() {
-        return customerSource;
-    }
-
-    public void setCustomerSource(CustomerSource customerSource) {
-        this.customerSource = customerSource;
     }
 
     public Customer getCustomer() {

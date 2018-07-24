@@ -51,7 +51,8 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Đơn Hàng");
+        toolbar.setTitle("Đơn Hàng      ");
+        centerToolbarTitle(toolbar, 20);
         mTabOrder.setTabGravity(TabLayout.GRAVITY_FILL);
         mPresenter.loadData(getBaseContext());
     }
@@ -84,6 +85,9 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
     @Override
     public void onResume() {
         super.onResume();
+        if(mPresenter != null){
+            mPresenter.loadData(getBaseContext());
+        }
     }
 
     @Override
