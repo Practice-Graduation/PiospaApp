@@ -5,49 +5,36 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmField;
+public class OrderReasonCancel  implements Serializable {
 
-public class OrderReasonCancel extends RealmObject implements Serializable {
-
-    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
 
-    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
 
-    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
 
-    @RealmField(name = "order_reason_cancel_descripton")
     @SerializedName("orderReasonCancelDescripton")
     @Expose
     private String orderReasonCancelDescripton;
 
-    @PrimaryKey
-    @RealmField(name = "order_reason_cancel_id")
     @SerializedName("orderReasonCancelId")
     @Expose
     private int orderReasonCancelId;
 
-    @RealmField(name = "order_reason_cancel_name")
     @SerializedName("orderReasonCancelName")
     @Expose
     private String orderReasonCancelName;
 
-    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
 
-    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;

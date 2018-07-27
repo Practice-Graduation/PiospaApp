@@ -10,6 +10,7 @@ import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
 import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
+import com.ptit.baobang.piospaapp.data.local.OrderHelper;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Order;
@@ -160,6 +161,9 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             mView.hideLoading();
             Cart cart = CartHelper.getCart();
             cart.clear();
+
+            OrderHelper.saveOrder(orderEndPoint.getData());
+
             mView.openOrderActivity();
         } else {
             mView.hideLoading(mContext.getString(R.string.create_order_failed), false);

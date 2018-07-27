@@ -6,74 +6,56 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmField;
+public class Booking   implements Serializable {
 
-public class Booking extends RealmObject implements Serializable {
-
-    @PrimaryKey
-    @RealmField(name = "booking_id")
     @SerializedName("bookingId")
     @Expose
     private int bookingId;
 
-    @RealmField(name = "code")
     @SerializedName("code")
     @Expose
     private String code;
 
-    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
 
-    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
 
-    @RealmField(name = "discount")
     @SerializedName("discount")
     @Expose
     private int discount;
 
-    @RealmField(name = "number")
     @SerializedName("number")
     @Expose
     private int number;
 
-    @RealmField(name = "price")
     @SerializedName("price")
     @Expose
     private int price;
 
-    @RealmField(name = "total")
     @SerializedName("total")
     @Expose
     private int total;
 
-    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
 
-    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
 
-    @RealmField(name = "voucherId")
     @SerializedName("voucherId")
     @Expose
     private int voucherId;
 
-    @RealmField(name = "customer")
     @SerializedName("customer")
     @Expose
     private Customer customer;
 
-    @RealmField(name = "order")
     @SerializedName("order")
     @Expose
     private Order order;

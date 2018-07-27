@@ -5,53 +5,39 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmField;
-
-public class ProductLabel extends RealmObject implements Serializable {
-    @PrimaryKey
-    @RealmField(name = "product_label_id")
+public class ProductLabel  implements Serializable {
     @SerializedName("productLabelId")
     @Expose
     private int productLabelId;
 
-    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
 
-    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
 
-    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
 
-    @RealmField(name = "product_label_code")
     @SerializedName("productLabelCode")
     @Expose
     private String productLabelCode;
 
-    @RealmField(name = "product_label_description")
     @SerializedName("productLabelDescription")
     @Expose
     private String productLabelDescription;
 
-    @RealmField(name = "product_label_name")
     @SerializedName("productLabelName")
     @Expose
     private String productLabelName;
 
-    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
 
-    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;

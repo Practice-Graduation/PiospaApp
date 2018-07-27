@@ -6,54 +6,40 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmField;
+public class OrderDeliveryType  implements Serializable {
 
-public class OrderDeliveryType extends RealmObject implements Serializable {
-
-    @PrimaryKey
-    @RealmField(name = "order_delivery_type_id")
     @SerializedName("orderDeliveryTypeId")
     @Expose
     private int orderDeliveryTypeId;
 
-    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
 
-    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
 
-    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
 
-    @RealmField(name = "price")
     @SerializedName("price")
     @Expose
     private int price;
 
-    @RealmField(name = "order_delivery_type_code")
     @SerializedName("orderDeliveryTypeCode")
     @Expose
     private String orderDeliveryTypeCode;
 
-    @RealmField(name = "order_delivery_type_name")
     @SerializedName("orderDeliveryTypeName")
     @Expose
     private String orderDeliveryTypeName;
 
-    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
 
-    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;

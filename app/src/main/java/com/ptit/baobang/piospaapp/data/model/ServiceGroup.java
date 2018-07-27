@@ -6,44 +6,32 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmField;
+public class ServiceGroup  implements Serializable {
 
-public class ServiceGroup extends RealmObject implements Serializable {
-
-    @PrimaryKey
-    @RealmField(name = "service_group_id")
     @SerializedName("serviceGroupId")
     @Expose
     private int serviceGroupId;
 
-    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
 
-    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
 
-    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
 
-    @RealmField(name = "service_group_name")
     @SerializedName("serviceGroupName")
     @Expose
     private String serviceGroupName;
 
-    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
 
-    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;

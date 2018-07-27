@@ -5,54 +5,40 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmField;
+public class Tax  implements Serializable {
 
-public class Tax extends RealmObject implements Serializable {
-
-    @PrimaryKey
-    @RealmField(name = "tax_id")
     @SerializedName("taxId")
     @Expose
     private int taxId;
 
-    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
 
-    @RealmField(name = "name")
     @SerializedName("name")
     @Expose
     private String name;
 
-    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private String createdBy;
 
-    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
 
-    @RealmField(name = "type")
     @SerializedName("type")
     @Expose
     private String type;
 
-    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
 
-    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
 
-    @RealmField(name = "value")
     @SerializedName("value")
     @Expose
     private int value;
