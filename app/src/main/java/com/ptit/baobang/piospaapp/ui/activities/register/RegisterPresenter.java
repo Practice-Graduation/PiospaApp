@@ -1,5 +1,8 @@
 package com.ptit.baobang.piospaapp.ui.activities.register;
 
+import android.content.Context;
+
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
@@ -9,11 +12,14 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class RegisterPresenter extends BasePresenter implements IRegisterPresenter{
+public class RegisterPresenter extends BasePresenter implements IRegisterPresenter {
 
-    IRegisterView mView;
+    private IRegisterView mView;
+    private Context mContext;
 
-    public RegisterPresenter(IRegisterView mView) {
+    public RegisterPresenter(Context mContext, IRegisterView mView) {
+
+        this.mContext = mContext;
         this.mView = mView;
     }
 
@@ -24,36 +30,36 @@ public class RegisterPresenter extends BasePresenter implements IRegisterPresent
 
     @Override
     public void clickRegister(String fullName, String email, String password, String retypePassword) {
-        if(fullName.trim().length() == 0){
-            mView.showMessage("Thông báo", "Nhập vào họ và tên", SweetAlertDialog.WARNING_TYPE);
+        if (fullName.trim().length() == 0) {
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_fullname_empty, SweetAlertDialog.WARNING_TYPE);
             return;
         }
-        if(email.trim().length() == 0){
-            mView.showMessage("Thông báo","Nhập vào tên đăng nhập", SweetAlertDialog.WARNING_TYPE);
-            return;
-        }
-
-        if(!InputUtils.isValidUsername(email)){
-            mView.showMessage("Thông báo","Tài khoản ít nhất 5 kí tự a-zA-Z0-9._-", SweetAlertDialog.WARNING_TYPE);
+        if (email.trim().length() == 0) {
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_username_empty, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
-        if(password.trim().length() == 0){
-            mView.showMessage("Thông báo","Nhập vào mật khẩu", SweetAlertDialog.WARNING_TYPE);
+        if (!InputUtils.isValidUsername(email)) {
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_username_invalid, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
-        if(!InputUtils.isValidPassword(password.trim())){
-            mView.showMessage("Thông báo","Mật khẩu ít nhất 5 kí tự", SweetAlertDialog.WARNING_TYPE);
+        if (password.trim().length() == 0) {
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_empty, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
-        if(retypePassword.trim().length() == 0){
-            mView.showMessage("Thông báo","Nhập vào xác nhận mật khẩu", SweetAlertDialog.WARNING_TYPE);
+        if (!InputUtils.isValidPassword(password.trim())) {
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_invalid, SweetAlertDialog.WARNING_TYPE);
             return;
         }
-        if(!password.trim().equalsIgnoreCase(retypePassword.trim())){
-            mView.showMessage("Thông báo","Mật không nhập không trùng nhau", SweetAlertDialog.WARNING_TYPE);
+
+        if (retypePassword.trim().length() == 0) {
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_comfirm_empty, SweetAlertDialog.WARNING_TYPE);
+            return;
+        }
+        if (!password.trim().equalsIgnoreCase(retypePassword.trim())) {
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_and_pwd_comfirm_not_same, SweetAlertDialog.WARNING_TYPE);
             return;
         }
         Customer customer = new Customer();
@@ -61,14 +67,14 @@ public class RegisterPresenter extends BasePresenter implements IRegisterPresent
         customer.setPassword(password);
         customer.setFullname(fullName);
 
-        mView.showLoading("Đăng kí");
+        mView.showLoading(mContext.getString(R.string.register));
 
         getCompositeDisposable().add(
                 mApiService.register(customer)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io())
+                        .subscribe(this::handleResponse, this::handleError)
         );
     }
 
@@ -77,12 +83,12 @@ public class RegisterPresenter extends BasePresenter implements IRegisterPresent
     }
 
     private void handleResponse(EndPoint<Customer> customerEndPoint) {
-        if(customerEndPoint.getStatusCode() == 200){
+        if (customerEndPoint.getStatusCode() == 200) {
             mView.hideLoading();
             mView.backToLoginActiviry(
                     customerEndPoint.getData().getAccount(),
                     customerEndPoint.getData().getPassword());
-        }else{
+        } else {
             mView.hideLoading(customerEndPoint.getMessage(), false);
         }
     }

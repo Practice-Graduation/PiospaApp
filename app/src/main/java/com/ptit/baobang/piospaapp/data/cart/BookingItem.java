@@ -3,11 +3,12 @@ package com.ptit.baobang.piospaapp.data.cart;
 import android.support.annotation.NonNull;
 
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
+import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class BookingItem implements Serializable, Comparable<BookingItem>{
+public class BookingItem implements Serializable, Comparable<BookingItem> {
     private ServicePrice servicePrice;
     private Date selectedDateTime;
 
@@ -15,7 +16,6 @@ public class BookingItem implements Serializable, Comparable<BookingItem>{
         this.servicePrice = servicePrice;
         this.selectedDateTime = selectedDate;
     }
-
 
 
     public ServicePrice getServicePrice() {
@@ -36,6 +36,16 @@ public class BookingItem implements Serializable, Comparable<BookingItem>{
 
     @Override
     public int compareTo(@NonNull BookingItem o) {
-        return servicePrice.getServicePriceId() == o.getServicePrice().getServicePriceId() ? 0 : 1;
+
+        boolean isSameService = servicePrice.getServicePriceId() == o.getServicePrice().getServicePriceId();
+
+        boolean isSameDateTime = DateTimeUtils.formatDate(selectedDateTime, DateTimeUtils.DATETIME_PATTERN)
+                .equals(DateTimeUtils.formatDate(o.getSelectedDate(), DateTimeUtils.DATETIME_PATTERN));
+
+        if (isSameService && isSameDateTime) {
+            return 0;
+        }
+
+        return 1;
     }
 }

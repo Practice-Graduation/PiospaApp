@@ -1,10 +1,12 @@
 package com.ptit.baobang.piospaapp.ui.activities.all_product;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
@@ -19,17 +21,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AllProductPresenter extends BasePresenter implements IAllProductPresenter{
+public class AllProductPresenter extends BasePresenter implements IAllProductPresenter {
 
     private IAllProductView mView;
+    private Context mContext;
 
-    AllProductPresenter(IAllProductView mView) {
+    AllProductPresenter(Context mContext, IAllProductView mView) {
+        this.mContext = mContext;
         this.mView = mView;
     }
 
     @Override
     public void loadData(int productGroupId) {
-        mView.showLoading("Tải dữ liệu");
+        mView.showLoading(mContext.getString(R.string.loading));
 //        getCompositeDisposable().add(
 //                mApiService.getProductByGroupId(productGroupId)
 //                .subscribeOn(Schedulers.computation())
@@ -44,7 +48,7 @@ public class AllProductPresenter extends BasePresenter implements IAllProductPre
 
             @Override
             public void onFailure(@NonNull Call<EndPoint<List<Product>>> call, @NonNull Throwable t) {
-                    handleError(t);
+                handleError(t);
             }
         });
 
@@ -63,14 +67,14 @@ public class AllProductPresenter extends BasePresenter implements IAllProductPre
 
     @Override
     public void onSelectedProduct(Product product) {
-       mView.openProductDetailActivity(product);
+        mView.openProductDetailActivity(product);
     }
 
     @SuppressLint("CheckResult")
     @Override
     public void filter(SearchView searchView) {
         RxSearchObservable.fromView(searchView)
-                .debounce(200, TimeUnit.MILLISECONDS)
+                .debounce(100, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())

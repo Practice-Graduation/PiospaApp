@@ -2,6 +2,7 @@ package com.ptit.baobang.piospaapp.ui.activities.register;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.EditText;
 
@@ -10,7 +11,6 @@ import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RegisterActivity extends BaseActivity<RegisterPresenter> implements IRegisterView{
@@ -23,11 +23,14 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     EditText txtPassword;
     @BindView(R.id.txtRetypePassword)
     EditText txtRetypePassword;
+    @BindView(R.id.root)
+    ConstraintLayout root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        hideKeyboardOutside(root);
         addControls();
     }
 
@@ -47,7 +50,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     }
 
     private void addControls() {
-        mPresenter = new RegisterPresenter(this);
+        mPresenter = new RegisterPresenter(this, this);
     }
 
     @Override

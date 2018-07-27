@@ -13,7 +13,7 @@ public interface IBookingInfoPresenter {
 
     void clickRemove(String text);
 
-    void clickConfirm(ServicePrice mServicePrice, Date mSelectedDate, String amount);
+    void clickConfirm(ServicePrice mServicePrice, Date mSelectedDate, String mTimeSelected, String amount);
 
     void clickFloatButtonCart();
 

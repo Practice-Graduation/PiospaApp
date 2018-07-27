@@ -5,7 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -36,6 +39,7 @@ public class CartProductFragment extends BaseFragment<CartProductFragmentPresent
 
     private CartFragment cartFragment;
 
+    private SearchView searchView;
     public CartProductFragment() {
         // Required empty public constructor
     }
@@ -61,6 +65,11 @@ public class CartProductFragment extends BaseFragment<CartProductFragmentPresent
     public void onResume() {
         super.onResume();
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -125,6 +134,7 @@ public class CartProductFragment extends BaseFragment<CartProductFragmentPresent
             rvProducts.setVisibility(View.VISIBLE);
         }
     }
+
 
     public void setCartFragment(CartFragment cartFragment) {
         this.cartFragment = cartFragment;

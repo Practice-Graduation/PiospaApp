@@ -1,8 +1,10 @@
 package com.ptit.baobang.piospaapp.ui.activities.product_detail;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.model.Product;
@@ -14,8 +16,9 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class ProductDetailPresenter extends BasePresenter implements IProductDetailPresenter {
 
     private IProductDetailView mView;
-
-    public ProductDetailPresenter(IProductDetailView mIProductDetailView) {
+    private Context mContext;
+    public ProductDetailPresenter(Context mContext, IProductDetailView mIProductDetailView) {
+        this.mContext = mContext;
         this.mView = mIProductDetailView;
     }
 
@@ -29,9 +32,9 @@ public class ProductDetailPresenter extends BasePresenter implements IProductDet
         Cart cart = CartHelper.getCart();
         try {
             cart.add(product, Integer.parseInt(amount));
-            mView.showMessage("Thông báo", "Thêm " + product.getProductName(), SweetAlertDialog.SUCCESS_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), mContext.getString(R.string.added) + " " + product.getProductName(), SweetAlertDialog.SUCCESS_TYPE);
         } catch (Exception e) {
-            mView.showMessage("Thông báo", e.getMessage(), SweetAlertDialog.ERROR_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), e.getMessage(), SweetAlertDialog.ERROR_TYPE);
         }
     }
 

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">PioSpa</string>
-    <string name="some_error">Some error</string>
+    <string name="some_error" translatable="false">Some error</string>
     <!--===========================LOGIN=====================================-->
     <string name="google">Google</string>
     <string name="login">Đăng nhập</string>
@@ -13,10 +13,10 @@
     <string name="already_has_account">Bạn đã có tài khoản</string>
     <!--===========================TOOLBAR TITLE=====================================-->
     <string name="title_cart">Giỏ hàng</string>
-    <string name="title_service">Dịch Vụ</string>
-    <string name="title_product">Sản Phẩm</string>
+    <string name="title_service">Dịch vụ</string>
+    <string name="title_product">Sản phẩm</string>
     <!--===========================PRODUCT=====================================-->
-    <string name="add">Add</string>
+    <string name="add">Thêm</string>
     <string name="more">THÊM</string>
     <string name="remove">Xóa</string>
     <string name="add_cart">Thêm Giỏ hàng</string>
@@ -28,16 +28,16 @@
     <!--===========================NAVIGATION=====================================-->
     <string name="other">Khác</string>
     <string name="order">Đơn hàng</string>
-    <string name="service">Dịch Vụ</string>
-    <string name="product">Sản Phẩm</string>
+    <string name="service">Dịch vụ</string>
+    <string name="product">Sản phẩm</string>
     <string name="logout">Đăng xuất</string>
     <string name="account">Tài khoản</string>
-    <string name="check_out">Thanh toán</string>
+    <string name="check_out">Đặt hàng</string>
     <string name="change_password">Đổi mật khẩu</string>
     <!--===========================BOOKING=====================================-->
     <string name="email">Email</string>
     <string name="note">Ghi chú</string>
-    <string name="booking">Đặt Hẹn</string>
+    <string name="booking">Đặt hẹn</string>
     <string name="comfirm">Xác nhận</string>
     <string name="full_name">Họ và tên</string>
     <string name="phone">Số điện thoại</string>
@@ -45,13 +45,12 @@
     <string name="date_booking">Ngày hẹn</string>
 
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Cài đặt</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="number_customer">Số khách</string>
     <string name="pick_time">Chọn thời gian</string>
     <string name="cancel">Hủy</string>
     <string name="price">Giá</string>
@@ -76,7 +75,7 @@
     <string name="enter_ward">Điền phường/xã</string>
     <string name="specific_address">Địa chỉ cụ thể</string>
     <string name="address">Địa chỉ</string>
-    <string name="address_note">Số nhà, tên toàn nhà, tên khu vực</string>
+    <string name="address_note">Số nhà, tên toà nhà, tên khu vực</string>
     <string name="enter_address">Điền địa chỉ cụ thể</string>
     <string name="delivery_type">Loại hình giao hàng</string>
     <string name="payment_type">Hình thức thanh toán</string>
@@ -88,7 +87,7 @@
     <string name="transition_background" translatable="false">background</string>
     <string name="transition_card" translatable="false">card</string>
     <string name="transition_avatar_border" translatable="false">avatar_border</string>
-    <string name="details_connect">CONNECT</string>
+    <string name="details_connect">Kết nối</string>
     <string name="show_order">Xem đơn hàng</string>
     <string name="icon">icon</string>
     <string name="not_payment">Chưa thanh toán</string>
@@ -101,27 +100,75 @@
     <string name="old_pasword">Mật khẩu cũ</string>
     <string name="new_password">Mật khẩu mới</string>
 
+    <string name="loading">Tải dữ liệu</string>
+    <string name="message">Thông báo</string>
+    <string name="loading_cacel_order">Hủy đơn hàng</string>
+    <string name="loading_cacel_order_failed">Hủy thất bại</string>
+    <string name="cart_empty_message">Giỏ hàng hiện rỗng, vui lòng mua hàng trước khi thanh toán</string>
+    <string name="message_quit_app">Bạn có muốn thoát ứng dụng</string>
+    <string name="ok">Đồng ý</string>
+    <string name="message_username_empty">Vui lòng nhập vào tên đăng nhập</string>
+    <string name="message_pwd_empty">Vui lòng nhập vào mật khẩu</string>
+    <string name="minute">phút</string>
+    <string name="message_booking_date_empty">Chọn ngày đặt hẹn</string>
+    <string name="message_time_booking_empty">Chọn giờ đặt hẹn</string>
+    <string name="_in_cart">vào giỏ hàng</string>
+    <string name="message_change_pwd_success">Đổi mật khẩu thành công</string>
+    <string name="message_old_password_empty">Vui lòng nhập vào mật khẩu cũ</string>
+    <string name="message_new_pwd_empty">Vui lòng nhập vào mật khẩu mới</string>
+    <string name="message_pwd_invalid">Mật khẩu ít nhất 5 kí tự</string>
+    <string name="message_pwd_comfirm_empty">Vui lòng nhập vào xác nhận mật khẩu</string>
+    <string name="message_old_pwd_invlid">Mật khẩu cũ không đúng</string>
+    <string name="message_pwd_and_pwd_comfirm_not_same">Mật khẩu xác nhận không giống mật khẩu mới</string>
+    <string name="order_detail">Chi tiết đơn hàng</string>
+    <string name="order_id">Hóa đơn số:</string>
+    <string name="created_at">Ngày tạo:</string>
+    <string name="status">Trạng thái:</string>
+    <string name="profile">Thông tin cá nhân</string>
+    <string name="male">male</string>
+    <string name="female">female</string>
+    <string name="message_fullname_empty">Nhập vào họ và tên</string>
+    <string name="message_username_invalid">Tài khoản ít nhất 5 kí tự a-zA-Z0-9._-</string>
+    <string name="update_profile">Cập nhật thông tin cá nhân</string>
+    <string name="enter_fullname">Nhập họ và tên</string>
+    <string name="enter_email">Nhập địa chỉ email</string>
+    <string name="choose_gender">Chọn giới tính</string>
+    <string name="text_male">Nam</string>
+    <string name="text_female">Nữ</string>
+    <string name="require_camera_permission">Ứng dụng không có quyền mở máy ảnh</string>
+    <string name="require_store_permission">Ứng dụng không có quyền truy cập bộ nhớ</string>
+    <string name="message_province_empty">Vui lòng chọn tỉnh/thành phố trước.</string>
+    <string name="message_district_empty">Vui lòng chọn quận/huyện trước.</string>
+    <string name="message_data_not_change">Không có dữ liệu được thay đổi</string>
+    <string name="wrong">không đúng</string>
+    <string name="save_change">Lưu thay đổi?</string>
+    <string name="amount">Số lượng</string>
+    <string name="number_customer">Số khách</string>
+    <string name="seen_more">Xem thêm</string>
+    <string name="lower_product">sản phẩm</string>
+    <string name="camera">Máy ảnh</string>
+    <string name="album">Bộ sưu tập</string>
+    <string name="choose_image">Chọn Ảnh</string>
+    <string name="added">Đã thêm</string>
+    <string name="shopping_cart_empty">Giỏ hàng rỗng</string>
+    <string name="product_shoping_cart_empty">Không có sản phẩm nào được chọn</string>
+    <string name="service_shoping_cart_empty">Không có dịch vụ nào được chọn</string>
+    <string name="shipping_address">Địa chỉ nhận hàng</string>
+    <string name="booking_product">Sản phẩm đã đặt</string>
+    <string name="booking_service">Dịch vụ đã đặt</string>
+    <string name="tax">Thuế</string>
+    <string name="touch_to_change">Chạm để thay đổi</string>
+    <string name="order_empty">Không có hóa đơn nào được tạo</string>
+    <string name="scan_barcode">Quét QRCode</string>
+    <string name="message_respons_scan_qrcode_failed">Không tìm thấy sản phẩm</string>
+    <string name="scan_qrcode_failed">Không thể quét được code,vui lòng thử lại</string>
+    <string name="scan_qrcode">Tìm kiếm sản phẩm</string>
+    <string name="create_order">Tạo hóa đơn</string>
+    <string name="create_order_failed">Đặt hàng thất bại</string>
+    <string name="delivery_type_empty">Vui lòng chọn hình thức giao hàng</string>
+    <string name="payment_type_empty">Vui lòng chọn hình thức thanh toán</string>
+    <string name="message_phone_empty">Vui lòng nhập vào số điện thoại</string>
+    <string name="message_ward_empty">Vui lòng chọn phường/xã</string>
+    <string name="message_specific_address_empty">Vui lòng nhập địa chỉ cụ thể</string>
 
-    <string name="error_01">Lỗi không xác định</string>
-    <string name="error_02">merchant_id không tồn tại</string>
-    <string name="error_04">checksum không đúng</string>
-    <string name="error_05">Không ghi nhận được đơn hàng trên cổng thanh toán</string>
-    <string name="error_06">token_code không tồn tại hoặc không hợp lệ</string>
-    <string name="error_07">Đơn hàng chưa được thanh toán</string>
-    <string name="error_09">receiver_email không tồn tại</string>
-    <string name="error_11">receiver_email đang bị khóa hoặc phong tỏa không thể giao dịch</string>
-    <string name="error_20">function không đúng</string>
-    <string name="error_21">version không đúng hoặc không tồn tại</string>
-    <string name="error_22">Thiếu tham số đầu vào</string>
-    <string name="error_23">order_code mã đơn hàng không hợp lệ</string>
-    <string name="error_24">total_amount không hợp lệ</string>
-    <string name="error_25">currency không hợp lệ</string>
-    <string name="error_26">language không hợp lệ</string>
-    <string name="error_27">return_url không hợp lệ</string>
-    <string name="error_28">cancel_url không hợp lệ</string>
-    <string name="error_29">notify_url không hợp lệ</string>
-    <string name="error_30">buyer_fullname không hợp lệ</string>
-    <string name="error_31">buyer_email không hợp lệ</string>
-    <string name="error_32">buyer_mobile không hợp lệ</string>
-    <string name="error_33">buyer_address không hợp lệ</string>
 </resources>

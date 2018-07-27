@@ -3,7 +3,6 @@ package com.ptit.baobang.piospaapp.ui.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,7 +98,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
                     .apply(options)
                     .into(img);
             txtName.setText(product.getProductName());
-            txtPrice.setText(new StringBuilder("Giá: " + CommonUtils.formatToCurrency(product.getPrice())));
+            txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) +  ": " + CommonUtils.formatToCurrency(product.getPrice())));
             itemView.getLayoutParams().width = (ScreenUtils.getScreenWidth(mContext) - AppConstants.SPAN_COUNT * AppConstants.MARGIN) / AppConstants.SPAN_COUNT;
             if(itemView.getLayoutParams().height > ViewGroup.LayoutParams.WRAP_CONTENT){
 
@@ -123,9 +122,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             String filterSeq = constraint.toString().toLowerCase();
-            Log.e("mCus", mProducts.size() + "");
-            Log.e("mFil", mFilterProducts.size() + "");
-            Log.e("filterSeq", filterSeq);
             if (filterSeq.length() > 0) {
                 ArrayList<Product> filter = new ArrayList<>();
                 for (Product product : mProducts) {
@@ -144,7 +140,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
             FilterResults result = new FilterResults();
             result.values = mFilterProducts;
             result.count = mFilterProducts.size();
-            Log.e("result", result.count + "");
             return result;
         }
 

@@ -71,7 +71,7 @@ public class CartFragment extends BaseFragment<CartPresenter> implements ICartVi
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         mUnBinder = ButterKnife.bind(this, view);
-        mPresenter = new CartPresenter(this);
+        mPresenter = new CartPresenter(getContext(),this);
         return view;
     }
 

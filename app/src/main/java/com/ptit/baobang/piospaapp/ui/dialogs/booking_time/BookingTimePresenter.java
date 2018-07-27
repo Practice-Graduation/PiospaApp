@@ -1,8 +1,10 @@
 package com.ptit.baobang.piospaapp.ui.dialogs.booking_time;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.BookingDetail;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
@@ -22,26 +24,28 @@ import io.reactivex.schedulers.Schedulers;
 
 public class BookingTimePresenter extends BasePresenter implements IBookingTimePresenter {
     private IBookingTimeView mView;
-
+    private Context mContext;
     private ServicePrice servicePrice;
     private Date date;
 
-    public BookingTimePresenter(IBookingTimeView mView) {
+    public BookingTimePresenter(Context mContext, IBookingTimeView mView) {
+        this.mContext = mContext;
         this.mView = mView;
     }
+
     @Override
     public void loadData(ServicePrice servicePrice, Date date) {
         this.servicePrice = servicePrice;
         this.date = date;
-        mView.showLoading("Tải dữ liệu");
+        mView.showLoading(mContext.getString(R.string.loading));
         BookingDetailRequest request = new BookingDetailRequest();
         request.setDate(DateTimeUtils.formatDate(date, DateTimeUtils.DATE_PATTERN));
         getCompositeDisposable().add(
                 mApiService.getBookingDetailOnDayOfRoom(request)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io())
+                        .subscribe(this::handleResponse, this::handleError)
         );
     }
 
@@ -51,10 +55,10 @@ public class BookingTimePresenter extends BasePresenter implements IBookingTimeP
 
     private void handleResponse(EndPoint<List<BookingDetail>> listEndPoint) {
         List<BookingDetail> details = listEndPoint.getData();
-        if(details == null){
+        if (details == null) {
             details = new ArrayList<>();
         }
-        createBookingTimes(details,servicePrice , date);
+        createBookingTimes(details, servicePrice, date);
         mView.hideLoading();
     }
 
@@ -63,18 +67,18 @@ public class BookingTimePresenter extends BasePresenter implements IBookingTimeP
 
         Date timeEnd = CommonUtils.getDateTime(selectedDate, AppConstants.END_TIME);
         calendar.setTime(timeEnd);
-        calendar.add(Calendar.MINUTE, - getTimeService(servicePrice));
+        calendar.add(Calendar.MINUTE, -getTimeService(servicePrice));
         timeEnd = calendar.getTime();
         Date timeStart = CommonUtils.getDateTime(selectedDate, AppConstants.START_TIME);
         Date currentTime = new Date();
-        if(currentTime.getTime() > timeStart.getTime()){
+        if (currentTime.getTime() > timeStart.getTime()) {
             timeStart = currentTime;
         }
         calendar.setTime(timeStart);
-        if(calendar.get(Calendar.MINUTE) > 30){
+        if (calendar.get(Calendar.MINUTE) > 30) {
             calendar.set(Calendar.MINUTE, 0);
             calendar.add(Calendar.MINUTE, 60);
-        }else{
+        } else {
             calendar.set(Calendar.MINUTE, 30);
         }
 
@@ -82,14 +86,14 @@ public class BookingTimePresenter extends BasePresenter implements IBookingTimeP
         BookingDetail detail;
         while (calendar.getTime().getTime() <= timeEnd.getTime()) {
             detail = null;
-            if(details.size() > 0){
+            if (details.size() > 0) {
                 detail = details.get(0);
             }
 
-            if(detail != null){
+            if (detail != null) {
                 Date timeBookingStart = CommonUtils.getDateTime(selectedDate,
                         detail.getTimeStart());
-                if(calendar.getTime().getTime() >= timeBookingStart.getTime()){
+                if (calendar.getTime().getTime() >= timeBookingStart.getTime()) {
                     String timeDurian = detail.getServicePrice().getService().getServiceTime().getTime();
                     times.add(DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.TIME_PATTERN));
                     calendar.add(Calendar.MINUTE, Integer.parseInt(timeDurian));
@@ -106,9 +110,9 @@ public class BookingTimePresenter extends BasePresenter implements IBookingTimeP
     private int getTimeService(ServicePrice servicePrice) {
 
         int time = 0;
-        if(servicePrice.getService() != null){
+        if (servicePrice.getService() != null) {
             time = Integer.parseInt(servicePrice.getService().getServiceTime().getTime());
-        }else if(servicePrice.getServicePackage() != null){
+        } else if (servicePrice.getServicePackage() != null) {
             time = servicePrice.getServicePackage().getTime();
         }
 

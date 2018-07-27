@@ -71,7 +71,7 @@ public class ShoppingCartProductAdapter extends RecyclerView.Adapter<ShoppingCar
         void binView(CartProductItem cartItem) {
             Product product = cartItem.getProduct();
             txtName.setText(product.getProductName());
-            txtPrice.setText(new StringBuilder("Giá: " + CommonUtils.formatToCurrency(product.getPrice())));
+            txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) + ": " + CommonUtils.formatToCurrency(product.getPrice())));
             txtQuanlity.setText(new StringBuilder(cartItem.getQuanlity() + ""));
             txtTotal.setText(CommonUtils.formatToCurrency(cartItem.getTotalItem()));
             RequestOptions options = new RequestOptions().error(R.drawable.error).placeholder(R.drawable.paceholder);

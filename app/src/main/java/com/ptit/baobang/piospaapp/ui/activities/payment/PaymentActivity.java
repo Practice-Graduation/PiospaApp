@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ptit.baobang.piospaapp.R;
@@ -36,6 +37,8 @@ import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.shuhart.stepview.StepView;
 
+import net.cachapa.expandablelayout.ExpandableLayout;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,6 +48,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class PaymentActivity extends BaseActivity<PaymentPresenter> implements IPaymentView {
+
+    @BindView(R.id.root)
+    LinearLayout root;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -136,6 +142,16 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     @BindView(R.id.rvServices)
     RecyclerView rvServices;
 
+    @BindView(R.id.expandable_layout_payment_type)
+    ExpandableLayout eplPaymentType;
+    @BindView(R.id.expandable_layout_delivery_type)
+    ExpandableLayout eplDeliveryType;
+
+    @BindView(R.id.lbDeliveryType)
+    TextView lbDeliveryType;
+    @BindView(R.id.lbPaymentType)
+    TextView lbPaymentType;
+
     List<CartProductItem> mCartProductItems;
     ProductCartComfirmAdapter mProductCartComfirmAdapter;
 
@@ -159,6 +175,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_delivery_info);
+        hideKeyboardOutside(root);
         addControls();
         addEvents();
     }
@@ -171,7 +188,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
 
     }
 
-    @OnClick({R.id.btnNext, R.id.txtProvince, R.id.txtDistrict, R.id.txtWard})
+    @OnClick({R.id.btnNext, R.id.txtProvince, R.id.txtDistrict, R.id.txtWard, R.id.cvDeliveryType, R.id.cvPaymentType})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnNext:
@@ -195,6 +212,26 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
             case R.id.txtWard:
                 mPresenter.clickTextViewWard(mDistrict);
                 break;
+            case R.id.cvPaymentType:
+
+                if (eplPaymentType.isExpanded()) {
+                    eplPaymentType.collapse();
+                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(0 ,0, R.drawable.ic_arrow_down, 0);
+                } else {
+                    eplPaymentType.expand();
+                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(0 ,0, R.drawable.ic_arrow_up, 0);
+                }
+                break;
+            case R.id.cvDeliveryType:
+                if (eplDeliveryType.isExpanded()) {
+                    eplDeliveryType.collapse();
+                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(0 ,0, R.drawable.ic_arrow_down, 0);
+                } else {
+                    eplDeliveryType.expand();
+                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(0 ,0, R.drawable.ic_arrow_up, 0);
+                }
+                break;
+
         }
     }
 
@@ -244,7 +281,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Đặt Hàng          ");
+        toolbar.setTitle(getString(R.string.check_out) + "          ");
         centerToolbarTitle(toolbar, 0);
     }
 
@@ -258,6 +295,12 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     }
 
     private void bacToCart() {
+
+        if(stepView.getCurrentStep() > 0){
+            nextStep(stepView.getCurrentStep() - 1);
+            return;
+        }
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(AppConstants.FRAGMENT, AppConstants.CART_INDEX);
         startActivity(intent);
@@ -402,16 +445,16 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
             txtWard.setText(mWard.getName());
         }
 
-        if(mProvince == null){
+        if (mProvince == null) {
             txtProvince.setClickable(true);
             txtDistrict.setClickable(false);
             txtWard.setClickable(false);
-        }else{
+        } else {
             txtProvince.setClickable(true);
             txtDistrict.setClickable(false);
-            if(mDistrict == null){
+            if (mDistrict == null) {
                 txtWard.setClickable(false);
-            }else{
+            } else {
                 txtWard.setClickable(true);
             }
         }
@@ -449,9 +492,9 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     public void setTax(Tax data) {
         mTax = data;
         lbTax.setText(data.getName());
-        if(data.getType().equals("percent")){
+        if (data.getType().equals("percent")) {
             txtTax.setText(new StringBuilder(data.getValue() + "%"));
-        }else if(data.getType().equals("money")){
+        } else if (data.getType().equals("money")) {
             txtTax.setText(CommonUtils.formatToCurrency(data.getValue()));
         }
         mPresenter.computeTax(mDeliveryType, data);

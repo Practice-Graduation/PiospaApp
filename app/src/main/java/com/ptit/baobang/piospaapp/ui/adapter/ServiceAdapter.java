@@ -3,7 +3,6 @@ package com.ptit.baobang.piospaapp.ui.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +40,8 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
         this.mContext = mContext;
         this.resource = resource;
         this.mFilterServicePrices = mServicePrices;
-        mServicePrices = new ArrayList<>();
-        mServicePrices.addAll(mFilterServicePrices);
+        this.mServicePrices = new ArrayList<>();
+        this.mServicePrices.addAll(mFilterServicePrices);
     }
 
     @NonNull
@@ -132,9 +131,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             String filterSeq = constraint.toString().toLowerCase();
-            Log.e("mCus", mServicePrices.size() + "");
-            Log.e("mFil", mFilterServicePrices.size() + "");
-            Log.e("filterSeq", filterSeq);
             if (filterSeq.length() > 0) {
                 ArrayList<ServicePrice> filter = new ArrayList<>();
                 for (ServicePrice servicePrice : mServicePrices) {
@@ -153,7 +149,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
             FilterResults result = new FilterResults();
             result.values = mFilterServicePrices;
             result.count = mFilterServicePrices.size();
-            Log.e("result", result.count + "");
             return result;
         }
 

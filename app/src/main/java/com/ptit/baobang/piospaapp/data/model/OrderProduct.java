@@ -3,47 +3,79 @@ package com.ptit.baobang.piospaapp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
+
 public class OrderProduct {
 
+    @PrimaryKey
+    @RealmField(name = "order_product_id")
     @SerializedName("orderProductId")
     @Expose
     private int orderProductId;
+
+    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
+
+    @RealmField(name = "discount")
     @SerializedName("discount")
     @Expose
     private int discount;
+
+    @RealmField(name = "is_deleted")
     @SerializedName("isDeleted")
     @Expose
     private int isDeleted;
+
+    @RealmField(name = "number")
     @SerializedName("number")
     @Expose
     private int number;
+
+    @RealmField(name = "price")
     @SerializedName("price")
     @Expose
     private int price;
+
+    @RealmField(name = "total")
     @SerializedName("total")
     @Expose
     private int total;
+
+    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+    @RealmField(name = "voucher_id")
     @SerializedName("voucherId")
     @Expose
     private int voucherId;
+
+    @RealmField(name = "order")
     @SerializedName("order")
     @Expose
     private Order order;
+
+    @RealmField(name = "product")
     @SerializedName("product")
     @Expose
     private Product product;
+
+    public OrderProduct() {
+    }
 
     public int getOrderProductId() {
         return orderProductId;

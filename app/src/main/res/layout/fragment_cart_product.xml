@@ -24,7 +24,7 @@
           android:layout_weight="0.3"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Không có sản phẩm nào được chọn"/>
+          android:text="@string/product_shoping_cart_empty"/>
    </LinearLayout>
 
    <android.support.v7.widget.RecyclerView

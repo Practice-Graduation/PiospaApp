@@ -42,7 +42,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:text="Sản Phẩm      "
+                    android:text="@string/product"
+                    android:paddingRight="40dp"
+                    android:paddingEnd="40dp"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
             </android.support.v7.widget.Toolbar>
@@ -69,6 +71,7 @@
                 android:layout_marginLeft="@dimen/margin"
                 android:layout_marginRight="0dp"
                 android:layout_marginStart="@dimen/margin"
+                android:adjustViewBounds="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

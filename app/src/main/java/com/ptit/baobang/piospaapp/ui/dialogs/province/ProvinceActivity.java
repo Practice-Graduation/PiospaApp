@@ -1,12 +1,17 @@
 package com.ptit.baobang.piospaapp.ui.dialogs.province;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.ui.adapter.ProvinceAdapter;
@@ -15,30 +20,40 @@ import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProvinceActivity extends BaseActivity implements IProvinceView{
+public class ProvinceActivity extends BaseActivity implements IProvinceView {
 
     private ProvincePresenter mPresenter;
-
+    @BindView(R.id.toolbar)
+     Toolbar toolbar;
     private List<Province> mProvinces;
     private ProvinceAdapter mAdapter;
     @BindView(R.id.rvContent)
     RecyclerView rvContent;
 
-    @BindView(R.id.shimmerLayout)
-    ShimmerFrameLayout shimmerFrameLayout;
-
+    private SearchView searchView;
     private Province mProvinceSelected = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_province);
+        setSupportToolbar();
         addControls();
         addEvents();
+    }
+
+    private void setSupportToolbar() {
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitle(R.string.province);
+        centerToolbarTitle(toolbar, 0);
     }
 
     private void addEvents() {
@@ -49,7 +64,7 @@ public class ProvinceActivity extends BaseActivity implements IProvinceView{
 
     private void addControls() {
         setTitle(R.string.province);
-        mPresenter = new ProvincePresenter(this);
+        mPresenter = new ProvincePresenter(this, this);
         mUnbinder = ButterKnife.bind(this);
 
         mProvinces = new ArrayList<>();
@@ -60,13 +75,30 @@ public class ProvinceActivity extends BaseActivity implements IProvinceView{
         mProvinceSelected = mPresenter.getData(getIntent());
         mPresenter.loadData();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
 
+        SearchManager searchManager = (SearchManager)
+                getSystemService(Context.SEARCH_SERVICE);
+
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.
+                getSearchableInfo(getComponentName()));
+        searchView.setIconified(false);
+
+        mPresenter.filter(searchView);
+        return super.onCreateOptionsMenu(menu);
+    }
     @Override
     public void updateRecyleView(List<Province> provinces) {
-        mProvinces.clear();
-        mProvinces.addAll(provinces);
+        mProvinces = new ArrayList<>(provinces);
+        mAdapter = new ProvinceAdapter(this, mProvinces);
         mAdapter.setmProvinceSelected(mProvinceSelected);
-        mAdapter.notifyDataSetChanged();
+        rvContent.setLayoutManager(new LinearLayoutManager(this));
+        rvContent.setAdapter(mAdapter);
+        addEvents();
     }
 
     @Override
@@ -78,29 +110,26 @@ public class ProvinceActivity extends BaseActivity implements IProvinceView{
     }
 
     @Override
+    public ProvinceAdapter getProvinceAdapter() {
+        return mAdapter;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        startShimmerAnimation();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        stopShimmerAnimation();
     }
-
     @Override
-    public void startShimmerAnimation() {
-        if(shimmerFrameLayout != null){
-            shimmerFrameLayout.startShimmerAnimation();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
         }
-    }
-
-    @Override
-    public void stopShimmerAnimation() {
-        if(shimmerFrameLayout != null){
-            shimmerFrameLayout.stopShimmerAnimation();
-            shimmerFrameLayout.setVisibility(View.GONE);
-        }
+        return (super.onOptionsItemSelected(item));
     }
 }

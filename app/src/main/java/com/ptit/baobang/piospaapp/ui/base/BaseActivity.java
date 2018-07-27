@@ -93,7 +93,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             if (mSweetAlertDialog.isShowing()) {
                 mSweetAlertDialog.setCanceledOnTouchOutside(true);
                 mSweetAlertDialog.setTitleText(message);
-                mSweetAlertDialog.setConfirmText("OK");
+                mSweetAlertDialog.setConfirmText(getString(R.string.ok));
                 if (isSuccess) {
                     mSweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                 } else {
@@ -127,7 +127,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, messageType);
         sweetAlertDialog.setTitleText(title);
         sweetAlertDialog.setContentText(getString(message));
-        sweetAlertDialog.setConfirmText("OK");
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
         sweetAlertDialog.setCanceledOnTouchOutside(true);
         sweetAlertDialog.show();
     }
@@ -137,7 +137,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, messageType);
         sweetAlertDialog.setTitleText(title);
         sweetAlertDialog.setContentText(message);
-        sweetAlertDialog.setConfirmText("OK");
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
         sweetAlertDialog.setCanceledOnTouchOutside(true);
         sweetAlertDialog.show();
     }

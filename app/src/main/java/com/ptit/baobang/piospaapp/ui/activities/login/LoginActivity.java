@@ -41,7 +41,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mPresenter = new LoginPresenter(this);
+        mPresenter = new LoginPresenter(this, this);
         hideKeyboardOutside(root);
         slideDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.slide_down_animation);

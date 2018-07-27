@@ -5,31 +5,54 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ProductOrigin implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
+
+public class ProductOrigin extends RealmObject implements Serializable {
+    @PrimaryKey
+    @RealmField(name = "product_origin_id")
     @SerializedName("productOriginId")
     @Expose
     private int productOriginId;
+
+    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
+
+    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
+
+    @RealmField(name = "product_origin_description")
     @SerializedName("productOriginDescription")
     @Expose
     private String productOriginDescription;
+
+    @RealmField(name = "product_origin_name")
     @SerializedName("productOriginName")
     @Expose
     private String productOriginName;
+
+    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+    public ProductOrigin() {
+    }
 
     public int getProductOriginId() {
         return productOriginId;

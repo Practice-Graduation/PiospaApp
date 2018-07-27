@@ -33,7 +33,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ProdfileActivity extends BaseActivity<ProfilePresenter> implements IProfileView {
+public class ProfileActivity extends BaseActivity<ProfilePresenter> implements IProfileView {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -155,7 +155,7 @@ public class ProdfileActivity extends BaseActivity<ProfilePresenter> implements 
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setTitle("Thông Tin Cá Nhân");
+        mToolbar.setTitle(R.string.profile);
         centerToolbarTitle(mToolbar, 0);
     }
 

@@ -6,39 +6,65 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class BookingDetail implements Serializable{
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
 
+public class BookingDetail extends RealmObject implements Serializable {
+
+    @PrimaryKey
+    @RealmField(name = "booking_detail_id")
     @SerializedName("bookingDetailId")
     @Expose
     private int bookingDetailId;
+
+    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
+
+    @RealmField(name = "number")
     @SerializedName("number")
     @Expose
     private int number;
+
+    @RealmField(name = "date_booking")
     @SerializedName("dateBooking")
     @Expose
     private String dateBooking;
+
+    @RealmField(name = "time_start")
     @SerializedName("timeStart")
     @Expose
     private String timeStart;
+
+    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+    @RealmField(name = "booking")
     @SerializedName("booking")
     @Expose
     private Booking booking;
 
+    @RealmField(name = "service_price")
     @SerializedName("servicePrice")
     @Expose
     private ServicePrice servicePrice;
+
+    public BookingDetail() {
+    }
 
     public int getNumber() {
         return number;

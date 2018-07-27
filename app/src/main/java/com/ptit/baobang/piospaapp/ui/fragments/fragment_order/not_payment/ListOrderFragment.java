@@ -76,7 +76,7 @@ public class ListOrderFragment extends BaseFragment<ListOderPresenter> implement
 
     private void addControls(View view) {
         mUnBinder = ButterKnife.bind(this, view);
-        mPresenter = new ListOderPresenter(this);
+        mPresenter = new ListOderPresenter(getBaseContext(),this);
 
         mOrders = new ArrayList<>();
         mAdapter = new OrderAdapter<>(getBaseContext(), mOrders, mPresenter);

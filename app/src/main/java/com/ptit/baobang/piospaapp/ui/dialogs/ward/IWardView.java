@@ -1,6 +1,7 @@
 package com.ptit.baobang.piospaapp.ui.dialogs.ward;
 
 import com.ptit.baobang.piospaapp.data.model.Ward;
+import com.ptit.baobang.piospaapp.ui.adapter.WardAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseView;
 
 import java.util.List;
@@ -10,7 +11,5 @@ public interface IWardView extends BaseView{
 
     void backToPaymentActivity(Ward ward);
 
-    void startShimmerAnimation();
-
-    void stopShimmerAnimation();
+    WardAdapter getWardAdapter();
 }

@@ -7,70 +7,120 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Product implements Serializable, Comparable<Product>{
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
+
+public class Product extends RealmObject implements Serializable, Comparable<Product>{
+
+    @PrimaryKey
+    @RealmField(name = "product_id")
     @SerializedName("productId")
     @Expose
     private int productId;
+
+    @RealmField(name = "cost_price")
     @SerializedName("costPrice")
     @Expose
     private int costPrice;
+
+    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
+
+    @RealmField(name = "description")
     @SerializedName("description")
     @Expose
     private String description;
+
+    @RealmField(name = "image")
     @SerializedName("image")
     @Expose
     private String image;
+
+    @RealmField(name = "info")
     @SerializedName("info")
     @Expose
     private String info;
+
+    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
+
+    @RealmField(name = "price")
     @SerializedName("price")
     @Expose
     private int price;
+
+    @RealmField(name = "product_code")
     @SerializedName("productCode")
     @Expose
     private String productCode;
+
+    @RealmField(name = "product_name")
     @SerializedName("productName")
     @Expose
     private String productName;
+
+    @RealmField(name = "amount")
     @SerializedName("amount")
     @Expose
     private int amount;
+
+    @RealmField(name = "quantity")
     @SerializedName("quantity")
     @Expose
     private int quantity;
+
+    @RealmField(name = "quantity_value")
     @SerializedName("quantityValue")
     @Expose
     private String quantityValue;
+
+    @RealmField(name = "sku")
     @SerializedName("sku")
     @Expose
     private String sku;
+
+    @RealmField(name = "thumbnail")
     @SerializedName("thumbnail")
     @Expose
     private String thumbnail;
+
+    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+    @RealmField(name = "product_group")
     @SerializedName("productGroup")
     @Expose
     private ProductGroup productGroup;
+
+    @RealmField(name = "product_label")
     @SerializedName("productLabel")
     @Expose
     private ProductLabel productLabel;
+
+    @RealmField(name = "product_origin")
     @SerializedName("productOrigin")
     @Expose
     private ProductOrigin productOrigin;
+
+    public Product() {
+    }
 
     public int getProductId() {
         return productId;

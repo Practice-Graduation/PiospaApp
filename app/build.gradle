@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'realm-android'
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -56,7 +56,6 @@ dependencies {
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.4.0'
 
-    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
     implementation 'com.shuhart.stepview:stepview:1.2.7'
 
     //show hide layout
@@ -65,9 +64,6 @@ dependencies {
     // firebase
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-storage:16.0.1'
-
-
-    implementation 'uk.co.chrisjenx:calligraphy:2.2.0'
-    implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation 'me.dm7.barcodescanner:zbar:1.9.8'
 }
 apply plugin: 'com.google.gms.google-services'

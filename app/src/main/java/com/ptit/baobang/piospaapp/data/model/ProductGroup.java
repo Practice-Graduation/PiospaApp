@@ -5,35 +5,60 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ProductGroup implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
 
+public class ProductGroup extends RealmObject implements Serializable {
+
+    @PrimaryKey
+    @RealmField(name = "product_group_id")
     @SerializedName("productGroupId")
     @Expose
     private int productGroupId;
+
+    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
+
+    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
+
+    @RealmField(name = "product_group_code")
     @SerializedName("productGroupCode")
     @Expose
     private String productGroupCode;
+
+    @RealmField(name = "product_group_description")
     @SerializedName("productGroupDescription")
     @Expose
     private String productGroupDescription;
+
+    @RealmField(name = "product_group_name")
     @SerializedName("productGroupName")
     @Expose
     private String productGroupName;
+
+    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+    public ProductGroup() {
+    }
 
     public int getProductGroupId() {
         return productGroupId;

@@ -75,8 +75,10 @@ public class ServiceCartComfirmAdapter extends RecyclerView.Adapter<ServiceCartC
             }
 
             txtName.setText(name);
-            txtDate.setText(new StringBuilder(mContext.getString(R.string.date_booking) + ": " + DateTimeUtils.formatDate(cartServicePriceItem.getBookingItem().getSelectedDate(), DateTimeUtils.DATE_PATTERN_DDMMYY)));
-            txtTime.setText(new StringBuilder(mContext.getString(R.string.time_booking) + ": " + DateTimeUtils.formatDate(cartServicePriceItem.getBookingItem().getSelectedDate(), DateTimeUtils.TIME_PATTERN)));
+            if(cartServicePriceItem.getBookingItem().getSelectedDate() != null){
+                txtDate.setText(new StringBuilder(mContext.getString(R.string.date_booking) + ": " + DateTimeUtils.formatDate(cartServicePriceItem.getBookingItem().getSelectedDate(), DateTimeUtils.DATE_PATTERN_DDMMYY)));
+                txtTime.setText(new StringBuilder(mContext.getString(R.string.time_booking) + ": " + DateTimeUtils.formatDate(cartServicePriceItem.getBookingItem().getSelectedDate(), DateTimeUtils.TIME_PATTERN)));
+            }
             txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) + ": " + CommonUtils.formatToCurrency(servicePrice.getAllPrice())));
             txtQuanlity.setText(new StringBuilder(mContext.getString(R.string.quanlity)+": "+cartServicePriceItem.getNumberCustomer()));
             RequestOptions options = new RequestOptions().error(R.drawable.error).placeholder(R.drawable.paceholder);

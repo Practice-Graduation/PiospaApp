@@ -5,20 +5,35 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Province implements Serializable{
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
 
+public class Province extends RealmObject implements Serializable{
+
+    @PrimaryKey
+    @RealmField(name = "province_id")
     @SerializedName("provinceid")
     @Expose
     private int provinceid;
+
+    @RealmField(name = "location_id")
     @SerializedName("locationId")
     @Expose
     private int locationId;
+
+    @RealmField(name = "name")
     @SerializedName("name")
     @Expose
     private String name;
+
+    @RealmField(name = "province_id")
     @SerializedName("type")
     @Expose
     private String type;
+
+    public Province() {
+    }
 
     public int getProvinceid() {
         return provinceid;

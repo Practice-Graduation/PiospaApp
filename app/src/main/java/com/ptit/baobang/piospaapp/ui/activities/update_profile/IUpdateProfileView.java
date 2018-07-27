@@ -37,4 +37,6 @@ public interface IUpdateProfileView extends BaseView{
     void updateUIAvatar(Bitmap avatar);
 
     void setNullAvatar();
+
+    void loadAvatar(String customerAvatar);
 }

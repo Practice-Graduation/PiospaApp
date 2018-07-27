@@ -1,11 +1,17 @@
 package com.ptit.baobang.piospaapp.ui.fragments.fragment_service;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,7 +22,6 @@ import com.ptit.baobang.piospaapp.ui.activities.all_services.AllServiceActivity;
 import com.ptit.baobang.piospaapp.ui.activities.service_detail.ServiceDetailActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.ServiceGroupAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseFragment;
-import com.ptit.baobang.piospaapp.ui.listener.OnItemClickListener;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.util.ArrayList;
@@ -30,7 +35,9 @@ public class ServiceFragment extends BaseFragment<ServicePresenter> implements I
     @BindView(R.id.rvServiceGroups)
     RecyclerView rvServiceGroups;
     private List<ServiceGroup> mServiceGroups;
-    private ServiceGroupAdapter<ServicePresenter> mAdapter;
+    private ServiceGroupAdapter mAdapter;
+
+    private SearchView searchView;
 
     public ServiceFragment() {
         // Required empty public constructor
@@ -45,6 +52,27 @@ public class ServiceFragment extends BaseFragment<ServicePresenter> implements I
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_search, menu);
+        SearchManager searchManager = (SearchManager)
+                getBaseContext().getSystemService(Context.SEARCH_SERVICE);
+
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.
+                getSearchableInfo(getActivity().getComponentName()));
+        searchView.setIconified(false);
+
+        mPresenter.filter(searchView);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -56,28 +84,17 @@ public class ServiceFragment extends BaseFragment<ServicePresenter> implements I
     }
 
     private void addEvents() {
-        mAdapter.setmItemSelected(new ServiceGroupAdapter.OnSelectedItem() {
-            @Override
-            public void itemSelected(ServicePrice servicePrice) {
-                mPresenter.clickItem(servicePrice);
+        mAdapter.setmItemSelected(servicePrice -> mPresenter.clickItem(servicePrice));
 
-            }
-        });
-
-        mAdapter.setOnItemClickMoreListerner(new OnItemClickListener() {
-            @Override
-            public void onItemSelected(int position) {
-                mPresenter.onClickMore(mServiceGroups.get(position));
-            }
-        });
+        mAdapter.setOnItemClickMoreListerner(position -> mPresenter.onClickMore(mServiceGroups.get(position)));
     }
 
     private void addControls(View view) {
         mUnBinder = ButterKnife.bind(this, view);
-        mPresenter = new ServicePresenter(this);
+        mPresenter = new ServicePresenter(getBaseContext(), this);
 
         mServiceGroups = new ArrayList<>();
-        mAdapter = new ServiceGroupAdapter<>(getContext(), mServiceGroups, mPresenter, mPresenter.getmApiService());
+        mAdapter = new ServiceGroupAdapter(getContext(), mServiceGroups, this, mPresenter.getmApiService());
         rvServiceGroups.setLayoutManager(new LinearLayoutManager(getContext()));
         rvServiceGroups.setAdapter(mAdapter);
         mPresenter.loadData();
@@ -104,9 +121,16 @@ public class ServiceFragment extends BaseFragment<ServicePresenter> implements I
 
     @Override
     public void onUpdateRecycleView(List<ServiceGroup> serviceGroups) {
-        mServiceGroups.clear();
-        mServiceGroups.addAll(serviceGroups);
-        mAdapter.notifyDataSetChanged();
+        mServiceGroups = new ArrayList<>(serviceGroups);
+        mAdapter = new ServiceGroupAdapter(getContext(), mServiceGroups, this, mPresenter.getmApiService());
+        rvServiceGroups.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvServiceGroups.setAdapter(mAdapter);
+        addEvents();
+    }
+
+    @Override
+    public ServiceGroupAdapter getServiceGroupAdapter() {
+        return mAdapter;
     }
 
     @Override

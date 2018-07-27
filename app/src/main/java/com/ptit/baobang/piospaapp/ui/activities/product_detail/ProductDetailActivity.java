@@ -64,14 +64,12 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     }
 
     private void addControls() {
-        mPresenter = new ProductDetailPresenter(this);
+        mPresenter = new ProductDetailPresenter(this ,this);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Sản Phẩm      ");
-        centerToolbarTitle(toolbar, 40);
         product = mPresenter.getProductFromBundle(getIntent());
         mPresenter.loadData(product);
 
@@ -98,7 +96,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     @Override
     public void showProductDetail(Product product) {
         txtName.setText(product.getProductName());
-        txtPrice.setText(new StringBuilder("Giá: " + CommonUtils.formatToCurrency(product.getPrice())));
+        txtPrice.setText(new StringBuilder( getString(R.string.price) +": " + CommonUtils.formatToCurrency(product.getPrice())));
         txtInfo.setText(Html.fromHtml(product.getDescription()));
         txtAmount.setText("1");
         RequestOptions options = new RequestOptions().placeholder(R.drawable.paceholder).error(R.drawable.error);
@@ -110,7 +108,6 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     public void openFramentCart() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(AppConstants.FRAGMENT, AppConstants.CART_INDEX);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

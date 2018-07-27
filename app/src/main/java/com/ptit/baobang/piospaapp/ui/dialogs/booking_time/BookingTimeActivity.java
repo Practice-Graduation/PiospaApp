@@ -60,7 +60,7 @@ public class BookingTimeActivity extends BaseActivity implements IBookingTimeVie
     }
 
     private void addControls() {
-        mPresenter = new BookingTimePresenter(this);
+        mPresenter = new BookingTimePresenter(this,this);
         mUnbinder = ButterKnife.bind(this);
         setTitle(getString(R.string.pick_time));
 

@@ -5,36 +5,61 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class OrderDeliveryStatus implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
 
+public class OrderDeliveryStatus extends RealmObject implements Serializable {
 
+    @RealmField(name="created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @RealmField(name="created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
+
+
+    @RealmField(name="is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
+
+    @RealmField(name="is_delete")
     @SerializedName("isDelete")
     @Expose
     private int isDelete;
+
+    @RealmField(name="order_delivery_status_description")
     @SerializedName("orderDeliveryStatusDescription")
     @Expose
     private String orderDeliveryStatusDescription;
+
+    @PrimaryKey
+    @RealmField(name="order_delivery_status_id")
     @SerializedName("orderDeliveryStatusId")
     @Expose
     private int orderDeliveryStatusId;
+
+    @RealmField(name="order_delivery_status_name")
     @SerializedName("orderDeliveryStatusName")
     @Expose
     private String orderDeliveryStatusName;
+
+    @RealmField(name="updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name="updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+    public OrderDeliveryStatus() {
+    }
 
     public String getCreatedAt() {
         return createdAt;

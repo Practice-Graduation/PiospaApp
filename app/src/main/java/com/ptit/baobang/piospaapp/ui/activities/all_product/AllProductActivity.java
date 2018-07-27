@@ -52,7 +52,7 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
 
     private void addControls() {
 
-        mPresenter = new AllProductPresenter(this);
+        mPresenter = new AllProductPresenter(this, this);
 
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);

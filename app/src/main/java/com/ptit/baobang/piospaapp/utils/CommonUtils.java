@@ -50,14 +50,14 @@ public class CommonUtils {
         return convertString;
     }
     public static void openDialogChooseImage(Activity activity, CallBackChoosePhoto callBack) {
-        final CharSequence[] items = {"Máy ảnh", "Bộ sưu tập"};
+        final CharSequence[] items = {activity.getString(R.string.camera), activity.getString(R.string.album)};
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Chọn Ảnh");
+        builder.setTitle(R.string.choose_image);
         builder.setItems(items, (dialogInterface, i) -> {
-            if (items[i].equals("Máy ảnh")) {
+            if (items[i].equals(activity.getString(R.string.camera))) {
                 callBack.onCamera();
 
-            } else if (items[i].equals("Bộ sưu tập")) {
+            } else if (items[i].equals(activity.getString(R.string.album))) {
                 callBack.onGallery();
 
             }

@@ -1,8 +1,10 @@
 package com.ptit.baobang.piospaapp.ui.activities.service_detail;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Service;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
@@ -16,17 +18,18 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ServiceDetailPresenter extends BasePresenter implements ISeriviceDetailPresenter{
 
-    IServiceDetailView mView;
+    private IServiceDetailView mView;
+    private Context mContext;
 
 
-
-    public ServiceDetailPresenter(IServiceDetailView mView) {
+    public ServiceDetailPresenter(Context mContext, IServiceDetailView mView) {
         this.mView = mView;
+        this.mContext = mContext;
     }
 
     @Override
     public void loadData(ServicePrice servicePrice) {
-        mView.showLoading("Tải dữ liệu");
+        mView.showLoading(mContext.getString(R.string.loading));
         getCompositeDisposable().add(
                 mApiService.getServicePriceById(servicePrice.getServicePriceId()
                         )

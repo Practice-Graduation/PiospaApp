@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.BookingDetail;
 import com.ptit.baobang.piospaapp.data.model.Order;
@@ -66,8 +65,8 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.ViewHolder holder, int position) {
         holder.bindView(mItems.get(position));
-        holder.itemView.setOnClickListener(v->{
-            if(mListen != null){
+        holder.itemView.setOnClickListener(v -> {
+            if (mListen != null) {
                 mListen.onItemSelected(position);
             }
         });
@@ -83,7 +82,6 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
         ImageView img;
         TextView txtName, txtDate, txtTime, txtQuanlity, txtPrice, txtMore, txtTotal, txtStatus;
         LinearLayout layoutMore;
-        ShimmerFrameLayout shimmerFrameLayout;
 
         Order order;
 
@@ -98,7 +96,6 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
             txtMore = itemView.findViewById(R.id.txtMore);
             txtTotal = itemView.findViewById(R.id.txtTotal);
             layoutMore = itemView.findViewById(R.id.layoutMore);
-            shimmerFrameLayout = itemView.findViewById(R.id.shimmerLayout);
             layoutMore.setVisibility(View.GONE);
             txtStatus = itemView.findViewById(R.id.txtStatus);
 
@@ -108,10 +105,10 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
             this.order = order;
             mPresenter.getCompositeDisposable().add(
                     mApiService.getProductAndBookingDetail(order.getOrderId())
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .unsubscribeOn(Schedulers.io())
-                    .subscribe(this::handleResponse, this::handleError)
+                            .subscribeOn(Schedulers.computation())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .unsubscribeOn(Schedulers.io())
+                            .subscribe(this::handleResponse, this::handleError)
             );
         }
 
@@ -127,8 +124,8 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
 
         private void bindData(Order order, List<OrderProduct> orderProducts, List<BookingDetail> bookingDetails) {
             String name = "", imgStr = "", date = "",
-                    time = "", quanlity = "", price = "Đơn giá: ",
-                    more = "", total = "Tổng cộng: ";
+                    time = "", quanlity = "", price = context.getString(R.string.product) + ": ",
+                    more = "", total = context.getString(R.string.total) + ": ";
             if (orderProducts.size() > 0) {
                 OrderProduct orderProduct = orderProducts.get(0);
                 Product product = orderProduct.getProduct();
@@ -136,7 +133,7 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
                 imgStr = product.getImage();
                 txtDate.setVisibility(View.GONE);
                 txtTime.setVisibility(View.GONE);
-                quanlity = "Số lượng: "  + orderProduct.getNumber();
+                quanlity = context.getString(R.string.amount) + ": " + orderProduct.getNumber();
                 price += CommonUtils.formatToCurrency(orderProduct.getPrice());
             } else {
                 if (bookingDetails.size() > 0) {
@@ -153,7 +150,7 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
                     }
                     date = detail.getDateBooking();
                     time = detail.getTimeStart();
-                    quanlity = "Số khách: " + detail.getNumber() + "";
+                    quanlity = context.getString(R.string.number_customer) + ": " + detail.getNumber() + "";
                     price += CommonUtils.formatToCurrency(detail.getServicePrice().getAllPrice());
                 }
             }
@@ -162,10 +159,10 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
                 layoutMore.setVisibility(View.GONE);
             } else {
                 layoutMore.setVisibility(View.VISIBLE);
-                more = "Xem thêm " + (totalNumber - 1) + " sản phẩm";
+                more = context.getString(R.string.seen_more) + " " + (totalNumber - 1) + " " + context.getString(R.string.lower_product);
             }
 
-            total +=  CommonUtils.formatToCurrency(order.getTotal() + "");
+            total += CommonUtils.formatToCurrency(order.getTotal() + "");
 
             txtName.setText(name);
             txtTime.setText(time);
@@ -178,10 +175,7 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
 
             RequestOptions options = new RequestOptions().error(R.drawable.error).placeholder(R.drawable.paceholder);
             Glide.with(context).load(imgStr).apply(options).into(img);
-            if(shimmerFrameLayout != null){
-                shimmerFrameLayout.stopShimmerAnimation();
-                shimmerFrameLayout.setVisibility(View.GONE);
-            }
+
         }
     }
 }

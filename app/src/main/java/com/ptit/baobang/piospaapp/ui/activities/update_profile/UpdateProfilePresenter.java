@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Province;
@@ -60,7 +61,7 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
         if (gender == null || gender.trim().length() == 0) {
             gender = "";
         } else {
-            gender = gender.equalsIgnoreCase("male") ? "Nam" : "Nữ";
+            gender = gender.equalsIgnoreCase(mContext.getString(R.string.male)) ? mContext.getString(R.string.text_male) : mContext.getString(R.string.text_female);
         }
         String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
@@ -100,7 +101,7 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
     @Override
     public void clickDistrict(Province mProvince, District mDistrict) {
         if(mProvince == null){
-            mView.showMessage("Thông báo", "Vui lòng chọn tỉnh/thành phố trước.", SweetAlertDialog.ERROR_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_province_empty, SweetAlertDialog.ERROR_TYPE);
             return;
         }
         mView.onClickDistrict(mDistrict);
@@ -124,7 +125,7 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
     @Override
     public void clickWard(District mDistrict, Ward mWard) {
         if(mDistrict == null){
-            mView.showMessage("Thông báo", "Vui lòng chọn quận/huyện trước.", SweetAlertDialog.ERROR_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_district_empty, SweetAlertDialog.ERROR_TYPE);
             return;
         }
         mView.onClickWard(mWard);
@@ -150,20 +151,20 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
                           Province mProvince, District mDistrict, Ward mWard, String address) {
         Customer customer = SharedPreferenceUtils.getUser(mContext);
         if (!checkDataChange(avatar, customer, fullName, phone, email, birthday, gender, mProvince, mDistrict, mWard, address)) {
-            mView.showMessage("Thông báo", "Không có dữ liệu được thay đổi", SweetAlertDialog.NORMAL_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_data_not_change, SweetAlertDialog.NORMAL_TYPE);
             return;
         }
 
         if (phone.trim().length() > 0 && !InputUtils.isValidPhone(phone)) {
-            mView.showMessage("Thông báo", "Số điện thoại " + phone + " không đúng", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), mContext.getString(R.string.phone) + " " + phone + " " + mContext.getString(R.string.wrong), SweetAlertDialog.WARNING_TYPE);
             return;
         }
         if (email.trim().length() > 0 && !InputUtils.isValidEmail(email)) {
-            mView.showMessage("Thông báo", "Email " + email + " không đúng", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), mContext.getString(R.string.email) + " " + email + " " +  mContext.getString(R.string.wrong), SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
-        mView.showConfirm("Thông báo", "Lưu thay đổi", "Ok", "Hủy", SweetAlertDialog.NORMAL_TYPE, new CallBackConfirmDialog() {
+        mView.showConfirm(mContext.getString(R.string.message), mContext.getString(R.string.save_change), mContext.getString(R.string.ok), mContext.getString(R.string.cancel), SweetAlertDialog.NORMAL_TYPE, new CallBackConfirmDialog() {
             @Override
             public void DiaglogPositive() {
                 customer.setFullname(fullName);
@@ -181,7 +182,7 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
                 }
                 mView.showLoading("Upload...");
                 customer.setBirthday(DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ));
-                customer.setGender(gender.equalsIgnoreCase("Nam") ? "male" : "female");
+                customer.setGender(gender.equalsIgnoreCase(mContext.getString(R.string.text_male)) ? mContext.getString(R.string.male) : mContext.getString(R.string.female));
                 customer.setProvince(mProvince);
                 customer.setDistrict(mDistrict);
                 customer.setWard(mWard);
@@ -273,6 +274,7 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
         if (customerEndPoint.getStatusCode() == 200) {
             SharedPreferenceUtils.saveUser(mContext, customerEndPoint.getData());
             mView.setNullAvatar();
+            mView.loadAvatar(customerEndPoint.getData().getCustomerAvatar());
             mView.hideLoading("Lưu thành công", true);
         } else {
             mView.hideLoading("Có lỗi xảy ra " + customerEndPoint.getMessage(), false);
@@ -373,7 +375,7 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
         if (!cusBirth.trim().equalsIgnoreCase(birthday.trim())) {
             return true;
         }
-        String cusGender = customer.getGender().equals("male") ? "Nam" : "Nữ";
+        String cusGender = customer.getGender().equals(mContext.getString(R.string.male)) ? mContext.getString(R.string.text_male) : mContext.getString(R.string.text_female);
         if (!cusGender.trim().equalsIgnoreCase(gender.trim())) {
             return true;
         }

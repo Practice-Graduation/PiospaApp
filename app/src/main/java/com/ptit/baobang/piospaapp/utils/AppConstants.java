@@ -48,4 +48,10 @@ public interface AppConstants {
     int ORDER_STATUS_CANCLE = 3;
     int ORDER_REASON_CANCEL = 1;
     int TAX_ID = 1;
+
+
+    String PECENT = "percent";
+    String MONEY = "money";
+    int SECOND_ACTIVITY_REQUEST_CODE = 100;
+    int ZBAR_CAMERA_PERMISSION = 200;
 }

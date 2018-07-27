@@ -45,13 +45,13 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
     }
 
     private void addControls() {
-        mPresenter = new OrderPresenter(this);
+        mPresenter = new OrderPresenter(this, this);
         selectedTab = mPresenter.getSelectedTab(getIntent());
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Đơn Hàng      ");
+        toolbar.setTitle(getString(R.string.order) + "      ");
         centerToolbarTitle(toolbar, 20);
         mTabOrder.setTabGravity(TabLayout.GRAVITY_FILL);
         mPresenter.loadData(getBaseContext());

@@ -10,7 +10,10 @@ public class DateTimeUtils {
     public static String DATE_PATTERN = "yyyy-MM-dd";
     public static String DATE_PATTERN_DDMMYY = "dd/MM/yyyy";
     public static String DATE_PATTERN_DDMMYYTHHMMSSSSSZ =  "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public static String DATE_PATTERN_DDMMYYTHHMMSS =  "yyyy-MM-dd'T'HH:mm:ss";
     public static String TIME_PATTERN = "HH:mm";
+
+    public static String DATETIME_PATTERN = "yyyy-MM-dd HH:mm";
 
     private static Locale locale = new Locale("vi", "VN");
 
@@ -25,14 +28,20 @@ public class DateTimeUtils {
     public static Date getDateFromString(String date, String time){
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = getDateFormat(DATE_PATTERN_DDMMYYTHHMMSSSSSZ);
+
+        String s = date;
         try {
-            String s = date;
             if(time.length() > 0){
                 s += "'T'"+time;
             }
             calendar.setTime(sdf.parse(s));// all done
         } catch (ParseException e) {
-            e.printStackTrace();
+            sdf = getDateFormat(DATE_PATTERN_DDMMYYTHHMMSS);
+            try {
+                calendar.setTime(sdf.parse(s));
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
         }
         return calendar.getTime();
     }

@@ -19,6 +19,7 @@ import com.ptit.baobang.piospaapp.data.model.Tax;
 import com.ptit.baobang.piospaapp.ui.adapter.ProductCartComfirmAdapter;
 import com.ptit.baobang.piospaapp.ui.adapter.ServiceCartComfirmAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -93,6 +94,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     @BindView(R.id.btnCancel)
     Button btnCancel;
 
+    @BindView(R.id.lbTax)
     TextView lbTax;
     @BindView(R.id.txtTax)
     TextView txtTax;
@@ -119,7 +121,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     }
 
     private void init() {
-        mPresenter = new OrderDetailPresenter(this);
+        mPresenter = new OrderDetailPresenter(this, this);
         setToolbar();
         order = mPresenter.getDate(getIntent());
         mPresenter.loadData(order);
@@ -149,7 +151,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Chi tiết đơn hàng     ");
+        toolbar.setTitle(getString(R.string.order_detail) + "     ");
         centerToolbarTitle(toolbar, 0);
     }
 
@@ -183,9 +185,9 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 break;
         }
 
-        txtOrderId.setText("Hóa đơn số: " + code);
-        txtCreatedAt.setText("Ngày tạo: " + createdAt);
-        txtStatus.setText("Trạng thái: " + orderStatusName);
+        txtOrderId.setText(getString(R.string.order_id) + code);
+        txtCreatedAt.setText(getString(R.string.created_at) + createdAt);
+        txtStatus.setText(getString(R.string.status) + orderStatusName);
         txtFullName.setText(new StringBuilder(fullName + "\t" + phone));
         txtAddressComfirm.setText(address);
         txtWardComfirm.setText(ward);
@@ -246,15 +248,15 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
                 btnCancel.setVisibility(View.GONE);
                 break;
         }
-        txtStatus.setText("Trạng thái: " + orderStatusName);
+        txtStatus.setText(getString(R.string.status) + orderStatusName);
     }
 
     @Override
     public void setTax(Tax tax) {
         lbTax.setText(tax.getName());
-        if(tax.getType().equals("percent")){
+        if(tax.getType().equals(AppConstants.PECENT)){
             txtTax.setText(new StringBuilder(tax.getValue() + "%"));
-        }else if(tax.getType().equals("money")){
+        }else if(tax.getType().equals(AppConstants.MONEY)){
             txtTax.setText(CommonUtils.formatToCurrency(tax.getValue()));
         }
     }

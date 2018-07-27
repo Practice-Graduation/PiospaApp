@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/D:/IDE/Android/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_search_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/D:/IDE/Android/plugins/android/lib/android.jar!/images/material_design_icons/hardware/ic_keyboard_arrow_up_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -33,10 +33,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="imageAsset" value="C:\Users\BaoBang\Desktop\ic_edit.png" />
-                                      <entry key="outputName" value="ic_search" />
-                                      <entry key="theme" value="HOLO_DARK" />
-                                      <entry key="themeColor" value="00ff00" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="C:\Users\BaoBang\Desktop\view-qr-code-scan-quick-response-512.png" />
+                                      <entry key="outputName" value="ic_scancode" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -63,7 +62,6 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="ffffff" />
                                       <entry key="foregroundImage" value="C:\Users\BaoBang\Desktop\logo.jpg" />
                                     </map>
                                   </option>

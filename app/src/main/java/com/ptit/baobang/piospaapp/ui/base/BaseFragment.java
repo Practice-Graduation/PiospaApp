@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackConfirmDialog;
 import com.ptit.baobang.piospaapp.utils.NetworkUtils;
 
@@ -76,7 +77,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
             if (mSweetAlertDialog.isShowing()) {
                 mSweetAlertDialog.setCanceledOnTouchOutside(true);
                 mSweetAlertDialog.setTitleText(message);
-                mSweetAlertDialog.setConfirmText("OK");
+                mSweetAlertDialog.setConfirmText(getString(R.string.ok));
                 if (isSuccess) {
                     mSweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                 } else {
@@ -125,7 +126,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(),messageType);
         sweetAlertDialog.setTitleText(title);
         sweetAlertDialog.setContentText(getString(message));
-        sweetAlertDialog.setConfirmText("OK");
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
         sweetAlertDialog.setCanceledOnTouchOutside(true);
         sweetAlertDialog.show();
     }
@@ -135,7 +136,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(),messageType);
         sweetAlertDialog.setTitleText(title);
         sweetAlertDialog.setContentText(message);
-        sweetAlertDialog.setConfirmText("OK");
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
         sweetAlertDialog.setCanceledOnTouchOutside(true);
         sweetAlertDialog.show();
     }

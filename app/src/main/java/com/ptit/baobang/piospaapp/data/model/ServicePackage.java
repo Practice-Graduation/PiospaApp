@@ -5,34 +5,59 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ServicePackage implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
+
+public class ServicePackage extends RealmObject implements Serializable {
+    @PrimaryKey
+    @RealmField(name = "service_package_id")
     @SerializedName("servicePackageId")
     @Expose
     private int servicePackageId;
+
+    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
+
+    @RealmField(name = "image")
     @SerializedName("image")
     @Expose
     private String image;
+
+    @RealmField(name = "time")
     @SerializedName("time")
     @Expose
     private int time;
+
+    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
+
+    @RealmField(name = "service_package_name")
     @SerializedName("servicePackageName")
     @Expose
     private String servicePackageName;
+
+    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+    public ServicePackage() {
+    }
 
     public int getServicePackageId() {
         return servicePackageId;

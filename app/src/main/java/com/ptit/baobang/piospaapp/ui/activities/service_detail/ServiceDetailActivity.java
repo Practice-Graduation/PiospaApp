@@ -19,6 +19,8 @@ import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -26,6 +28,8 @@ public class ServiceDetailActivity extends BaseActivity<ServiceDetailPresenter> 
 
     @BindView(R.id.img)
     ImageView img;
+    @BindView(R.id.imgSmallImage)
+    ImageView imgSmallImage;
     @BindView(R.id.txtName)
     TextView txtName;
     @BindView(R.id.txtPrice)
@@ -47,15 +51,19 @@ public class ServiceDetailActivity extends BaseActivity<ServiceDetailPresenter> 
 
     @OnClick(R.id.btnBooking)
     void onClick(View view) {
-        mPresenter.onClickAddBooking(mServicePrice);
+        switch (view.getId()){
+            case R.id.btnBooking:
+                mPresenter.onClickAddBooking(mServicePrice);
+                break;
+        }
     }
 
     private void addControls() {
-        mPresenter = new ServiceDetailPresenter(this);
+        mPresenter = new ServiceDetailPresenter(this, this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("Dịch vụ      ");
+        toolbar.setTitle(getString(R.string.service) + "     ");
         centerToolbarTitle(toolbar, 20);
         mServicePrice = mPresenter.getDataFromBundle(getIntent());
         mPresenter.loadData(mServicePrice);
@@ -64,7 +72,7 @@ public class ServiceDetailActivity extends BaseActivity<ServiceDetailPresenter> 
     @Override
     public void showServiceDetail(ServicePrice servicePrice) {
 
-        String image = "", name = "", price = "", info = "";
+        String image = "", name = "", price = "", info;
 
         if (servicePrice.getService() != null) {
             Service service = servicePrice.getService();
@@ -83,10 +91,12 @@ public class ServiceDetailActivity extends BaseActivity<ServiceDetailPresenter> 
 
 
         txtName.setText(name);
-        txtPrice.setText(new StringBuilder("Giá: " + price));
+        txtPrice.setText(new StringBuilder(getString(R.string.price) + ": " + price));
         RequestOptions options = new RequestOptions().placeholder(R.drawable.paceholder).error(R.drawable.error);
         Glide.with(this).load(image)
                 .apply(options).into(img);
+        Glide.with(this).load(image)
+                .apply(options).into(imgSmallImage);
     }
 
     @Override
@@ -115,7 +125,7 @@ public class ServiceDetailActivity extends BaseActivity<ServiceDetailPresenter> 
 
     @Override
     public void addServicePackageTime(String time) {
-        txtPrice.setText(txtPrice.getText().toString() + " - " + time + " phút");
+        txtPrice.setText(new StringBuilder(txtPrice.getText().toString() + " - " + time + " " + getString(R.string.minute)));
     }
 
 

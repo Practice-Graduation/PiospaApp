@@ -1,7 +1,9 @@
 package com.ptit.baobang.piospaapp.ui.activities.login;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.data.network.model_request.LoginRequest;
@@ -16,24 +18,25 @@ import retrofit2.Response;
 public class LoginPresenter extends BasePresenter implements ILoginPresenter {
 
     private ILoginView mILoginView;
-
-    LoginPresenter(ILoginView mILoginView) {
+    private Context mContext;
+    LoginPresenter(Context mContext, ILoginView mILoginView) {
         super();
+        this.mContext = mContext;
         this.mILoginView = mILoginView;
     }
 
     @Override
     public void onClickLogin(String username, String password) {
         if (username.trim().length() == 0) {
-            mILoginView.showMessage("Thông báo", "Vui lòng nhập vào tên đăng nhập", SweetAlertDialog.WARNING_TYPE);
+            mILoginView.showMessage(mContext.getString(R.string.message), R.string.message_username_empty, SweetAlertDialog.WARNING_TYPE);
             return;
         }
         if (password.trim().length() == 0) {
-            mILoginView.showMessage("Thông báo", "Vui lòng nhập vào mật khẩu", SweetAlertDialog.WARNING_TYPE);
+            mILoginView.showMessage(mContext.getString(R.string.message), mContext.getString(R.string.message_pwd_empty), SweetAlertDialog.WARNING_TYPE);
             return;
         }
         LoginRequest request = new LoginRequest(username, password);
-        mILoginView.showLoading("Đăng nhập");
+        mILoginView.showLoading(mContext.getString(R.string.login));
 
         mApiService.login(request).enqueue(new Callback<EndPoint<Customer>>() {
             @Override
@@ -56,22 +59,6 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
             }
         });
     }
-
-//    private void handleError(Throwable throwable) {
-//        mILoginView.hideLoading(throwable.getMessage(), false);
-//    }
-//
-//    private void handleResponseLogin(EndPoint<Customer> customerEndPoint) {
-//        if (customerEndPoint.getStatusCode() == 200) {
-//            mILoginView.hideLoading();
-//            Customer customer = customerEndPoint.getData();
-//            SharedPreferenceUtils.saveUser(mILoginView.getBaseContext(), customer);
-//            mILoginView.openMainActivity();
-//
-//        } else {
-//            mILoginView.hideLoading(customerEndPoint.getMessage(), false);
-//        }
-//    }
 
     @Override
     public void onClickRegister() {

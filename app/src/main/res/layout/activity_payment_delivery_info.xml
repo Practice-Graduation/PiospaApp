@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
+    android:id="@+id/root"
     tools:context=".ui.activities.payment.PaymentActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -204,6 +205,7 @@
                                 android:gravity="center|end"
                                 android:hint="@string/enter_province"
                                 android:textAlignment="textEnd"
+                                android:textColor="@android:color/black"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/lbProvince"
@@ -246,6 +248,7 @@
                                 android:drawableRight="@drawable/ic_arrow_right_dark"
                                 android:gravity="center|end"
                                 android:hint="@string/enter_district"
+                                android:textColor="@android:color/black"
                                 android:textAlignment="textEnd"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -290,6 +293,7 @@
                                 android:gravity="center|end"
                                 android:hint="@string/enter_ward"
                                 android:textAlignment="textEnd"
+                                android:textColor="@android:color/black"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/lbWard"
@@ -345,6 +349,7 @@
                                 android:paddingBottom="@dimen/padding"
                                 android:paddingTop="@dimen/padding"
                                 android:textSize="@dimen/body_text_size"
+                                android:textColor="@android:color/black"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -378,10 +383,11 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
+                            android:id="@+id/lbDeliveryType"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:drawableEnd="@drawable/ic_arrow_right_dark"
-                            android:drawableRight="@drawable/ic_arrow_right_dark"
+                            android:drawableEnd="@drawable/ic_arrow_up"
+                            android:drawableRight="@drawable/ic_arrow_up"
                             android:gravity="center|start"
                             android:paddingBottom="@dimen/padding"
                             android:paddingTop="@dimen/padding"
@@ -389,26 +395,37 @@
                             android:textSize="@dimen/subheading_size" />
                     </android.support.v7.widget.CardView>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvDeliveryType"
+                    <net.cachapa.expandablelayout.ExpandableLayout
+                        android:id="@+id/expandable_layout_delivery_type"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/cvDeliveryType">
+                        app:layout_constraintTop_toBottomOf="@+id/cvDeliveryType"
+                        app:el_duration="500"
+                        app:el_expanded="true"
+                        app:el_parallax="0">
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rvDeliveryType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                    </android.support.v7.widget.RecyclerView>
+                        </android.support.v7.widget.RecyclerView>
+
+                    </net.cachapa.expandablelayout.ExpandableLayout>
+
 
                     <android.support.v7.widget.CardView
                         android:id="@+id/cvPaymentType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin"
-                        app:layout_constraintTop_toBottomOf="@+id/rvDeliveryType">
+                        app:layout_constraintTop_toBottomOf="@+id/expandable_layout_delivery_type">
 
                         <TextView
+                            android:id="@+id/lbPaymentType"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawableEnd="@drawable/ic_arrow_right_dark"
-                            android:drawableRight="@drawable/ic_arrow_right_dark"
+                            android:drawableEnd="@drawable/ic_arrow_up"
+                            android:drawableRight="@drawable/ic_arrow_up"
                             android:gravity="center|start"
                             android:paddingBottom="@dimen/padding"
                             android:paddingTop="@dimen/padding"
@@ -416,13 +433,24 @@
                             android:textSize="@dimen/subheading_size" />
                     </android.support.v7.widget.CardView>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvPaymentType"
+                    <net.cachapa.expandablelayout.ExpandableLayout
+                        android:id="@+id/expandable_layout_payment_type"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/cvPaymentType">
+                        app:layout_constraintTop_toBottomOf="@+id/cvPaymentType"
+                        app:el_duration="500"
+                        app:el_expanded="true"
+                        app:el_parallax="0">
 
-                    </android.support.v7.widget.RecyclerView>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rvPaymentType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        </android.support.v7.widget.RecyclerView>
+                    </net.cachapa.expandablelayout.ExpandableLayout>
+
                 </android.support.constraint.ConstraintLayout>
             </android.support.v4.widget.NestedScrollView>
 
@@ -457,7 +485,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/margin"
-                                android:text="Địa chỉ nhận hàng"
+                                android:text="@string/shipping_address"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/subheading_size"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -531,7 +559,7 @@
                                 android:id="@+id/titleProduct"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Sản phẩm đã đặt"
+                                android:text="@string/booking_product"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/subheading_size"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -548,7 +576,7 @@
                                 android:id="@+id/titleServices"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Dịch vụ đã đặt"
+                                android:text="@string/booking_service"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/subheading_size"
                                 app:layout_constraintTop_toBottomOf="@+id/rvProducts" />
@@ -581,7 +609,7 @@
                                 android:id="@+id/titleDeliveryType"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Hình thức Giao hàng"
+                                android:text="@string/delivery_type"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/subheading_size"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -590,7 +618,6 @@
                                 android:id="@+id/txtDeliveryType"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Giao hành nhanh"
                                 app:layout_constraintTop_toBottomOf="@+id/titleDeliveryType" />
 
                         </android.support.constraint.ConstraintLayout>
@@ -613,7 +640,7 @@
                                 android:id="@+id/titlePaymentType"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Hình thức thanh toán"
+                                android:text="@string/payment_type"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/subheading_size"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -622,14 +649,12 @@
                                 android:id="@+id/txtPaymentType"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Giao hàng khi nhận"
                                 app:layout_constraintTop_toBottomOf="@+id/titlePaymentType" />
 
                             <TextView
                                 android:id="@+id/txtPaymentTypeDescription"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="(Thanh toán sau khi sử dụng dịch vụ)"
                                 android:textSize="@dimen/caption_text_size"
                                 app:layout_constraintTop_toBottomOf="@+id/txtPaymentType" />
 
@@ -683,7 +708,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingBottom="@dimen/padding"
                                 android:paddingTop="@dimen/padding"
-                                android:text="Thuế"
+                                android:text="@string/tax"
                                 app:layout_constraintEnd_toStartOf="@id/txtTax"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/lbTotal" />
@@ -727,7 +752,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingBottom="@dimen/padding"
                                 android:paddingTop="@dimen/padding"
-                                android:text="Thành tiền"
+                                android:text="@string/total"
                                 app:layout_constraintEnd_toStartOf="@id/txtPayment"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/lbShip" />

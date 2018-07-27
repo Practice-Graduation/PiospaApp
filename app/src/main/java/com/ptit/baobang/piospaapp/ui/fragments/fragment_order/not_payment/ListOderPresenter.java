@@ -2,6 +2,7 @@ package com.ptit.baobang.piospaapp.ui.fragments.fragment_order.not_payment;
 
 import android.content.Context;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.Order;
 import com.ptit.baobang.piospaapp.data.model.OrderStatus;
@@ -19,8 +20,9 @@ import io.reactivex.schedulers.Schedulers;
 public class ListOderPresenter extends BasePresenter implements IListOrdePresenter {
 
     private IListOrderView mView;
-
-    ListOderPresenter(IListOrderView mView) {
+    private Context mContext;
+    ListOderPresenter(Context mContext, IListOrderView mView) {
+        this.mContext = mContext;
         this.mView = mView;
     }
 
@@ -38,7 +40,7 @@ public class ListOderPresenter extends BasePresenter implements IListOrdePresent
     }
 
     private void handleError(Throwable throwable) {
-        mView.showMessage("Thông báo", throwable.getMessage(), SweetAlertDialog.ERROR_TYPE);
+        mView.showMessage(mContext.getString(R.string.message), throwable.getMessage(), SweetAlertDialog.ERROR_TYPE);
     }
 
     private void handleResponse(EndPoint<List<Order>> listEndPoint) {

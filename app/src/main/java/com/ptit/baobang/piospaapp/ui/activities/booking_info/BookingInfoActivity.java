@@ -3,6 +3,7 @@ package com.ptit.baobang.piospaapp.ui.activities.booking_info;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -32,6 +33,8 @@ import butterknife.OnClick;
 
 public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> implements IBookingInfoView {
 
+    @BindView(R.id.root)
+    CoordinatorLayout root;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.img)
@@ -56,11 +59,13 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
 
     private ServicePrice mServicePrice;
     private Date mSelectedDate;
+    private String mTimeSelected = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_info);
+        hideKeyboardOutside(root);
         addControls();
         addEvents();
     }
@@ -84,7 +89,7 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
                 mPresenter.clickRemove(txtAmount.getText().toString());
                 break;
             case R.id.btnComfirm:
-                mPresenter.clickConfirm(mServicePrice, mSelectedDate, txtAmount.getText().toString());
+                mPresenter.clickConfirm(mServicePrice, mSelectedDate, mTimeSelected, txtAmount.getText().toString());
                 break;
             case R.id.txtDate:
                 mPresenter.clickSelectDate();
@@ -96,12 +101,12 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
     }
 
     private void addControls() {
-        mPresenter = new BookingInfoPresenter(this);
+        mPresenter = new BookingInfoPresenter(this, this);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Đặt Hẹn       ");
+        toolbar.setTitle(getString(R.string.booking) + "       ");
         centerToolbarTitle(toolbar, 40);
         mPresenter.loadDataFromBunble(getIntent());
     }
@@ -128,7 +133,7 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
                 .into(img);
 
         txtServiceName.setText(name);
-        String s = getString(R.string.price) + CommonUtils.formatToCurrency(servicePrice.getRetailPrice()) + " - " + time + " phút";
+        String s = getString(R.string.price) + ": " + CommonUtils.formatToCurrency(servicePrice.getRetailPrice()) + " - " + time + " " + getString(R.string.minute);
         txtPriceAndTime.setText(s);
         txtAmount.setText("1");
     }
@@ -184,9 +189,9 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConstants.REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                String timeStart = data.getStringExtra(AppConstants.TIME_SELECRED);
-                txtTimeStart.setText(new StringBuilder(getString(R.string.time_booking) + ": " + timeStart));
-                mSelectedDate = CommonUtils.getDateTime(mSelectedDate, timeStart);
+                mTimeSelected = data.getStringExtra(AppConstants.TIME_SELECRED);
+                txtTimeStart.setText(new StringBuilder(getString(R.string.time_booking) + ": " + mTimeSelected));
+                mSelectedDate = CommonUtils.getDateTime(mSelectedDate, mTimeSelected);
             }
         }
     }

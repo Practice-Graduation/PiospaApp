@@ -51,7 +51,7 @@ public interface APIService {
     Observable<EndPoint<List<ServiceGroup>>> getAllServiceGroup();
 
     @GET("service/price/group/{groupId}")
-    Observable<EndPoint<List<ServicePrice>>> getServicePriceByGroupId(@Path("groupId") int groupId);
+    Call<EndPoint<List<ServicePrice>>> getServicePriceByGroupId(@Path("groupId") int groupId);
 
     @GET("service/{serviceId}")
     Call<EndPoint<Service>> getServiceById(@Path("serviceId") int serviceId);
@@ -115,4 +115,7 @@ public interface APIService {
     // ------------------------------TAX---------------------------
     @GET("tax/{taxId}")
     Observable<EndPoint<Tax>>getTax(@Path("taxId") int taxId);
+
+    @GET("product/code/{productCode}")
+    Observable<EndPoint<Product>> getProductByCode(@Path("productCode")String returnString);
 }

@@ -25,7 +25,7 @@
             android:layout_weight="0.3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Giỏ hàng rỗng"/>
+            android:text="@string/shopping_cart_empty"/>
     </LinearLayout>
 
     <LinearLayout

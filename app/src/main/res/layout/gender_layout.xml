@@ -14,13 +14,13 @@
             android:id="@+id/rbMale"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nam"
+            android:text="@string/text_male"
             android:checked="true"/>
         <RadioButton
             android:id="@+id/rbFeMale"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nữ"/>
+            android:text="@string/text_female"/>
     </RadioGroup>
 
 
@@ -34,7 +34,7 @@
             android:id="@+id/btnOk"
             android:layout_marginRight="@dimen/margin_20"
             android:textColor="@android:color/white"
-            android:text="Ok"
+            android:text="@string/ok"
             android:textAllCaps="false"
             android:background="@drawable/button_selector_none_radius"
             android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
             android:id="@+id/btnCancel"
             android:layout_marginLeft="@dimen/margin_20"
             android:textColor="@android:color/white"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textAllCaps="false"
             android:background="@drawable/button_selector_none_radius"
             android:layout_width="wrap_content"

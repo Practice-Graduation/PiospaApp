@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.BookingItem;
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
@@ -89,9 +90,9 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             Cart cart = CartHelper.getCart();
 
             BigDecimal total = cart.getTotalPrice();
-            if (mTax.getType().equals("percent")) {
+            if (mTax.getType().equals(AppConstants.PECENT)) {
                 total = total.add(total.multiply(BigDecimal.valueOf(10)).divide(BigDecimal.valueOf(100)));
-            } else if (mTax.getType().equals("money")) {
+            } else if (mTax.getType().equals(AppConstants.MONEY)) {
                 total = total.add(new BigDecimal(mTax.getValue()));
             }
             int intShip = 0;
@@ -140,7 +141,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         orderBodyRequest.setCartShopping(cartShopping);
         Gson gson = new Gson();
         Log.e("JSON", gson.toJson(orderBodyRequest));
-        mView.showLoading("Tạo hóa đơn");
+        mView.showLoading(mContext.getString(R.string.create_order));
         getCompositeDisposable().add(
                 mApiService.createOrder(orderBodyRequest)
                         .subscribeOn(Schedulers.computation())
@@ -161,7 +162,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             cart.clear();
             mView.openOrderActivity();
         } else {
-            mView.hideLoading("Đặt hàng thất bại", false);
+            mView.hideLoading(mContext.getString(R.string.create_order_failed), false);
             Log.e("Loi", orderEndPoint.getMessage());
         }
     }
@@ -169,11 +170,11 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
     private boolean checkPaymentInput(OrderDeliveryType mDeliveryType,
                                       OrderPaymentType mPaymentType) {
         if (mDeliveryType == null) {
-            mView.showMessage("Thông báo", "Vui lòng chọn hình thức giao hàng", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.delivery_type_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (mPaymentType == null) {
-            mView.showMessage("Thông báo", "Vui lòng chọn hình thức thanh toán", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.payment_type_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         return true;
@@ -181,31 +182,31 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
 
     private boolean checkDeliveryInfoInput(String name, String phone, Province mProvince, District mDistrict, Ward mWard, String address) {
         if (name == null || name.isEmpty()) {
-            mView.showMessage("Thông báo", "Vui lòng nhập vào họ và tên", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_fullname_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (phone == null || phone.isEmpty()) {
-            mView.showMessage("Thông báo", "Vui lòng nhập vào số điện thoại", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_phone_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (!InputUtils.isValidPhone(phone)) {
-            mView.showMessage("Thông báo", "Số điện thoại " + phone + " không đúng", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message),  mContext.getString(R.string.phone) +" " + phone + " " + mContext.getString(R.string.wrong), SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (mProvince == null) {
-            mView.showMessage("Thông báo", "Vui lòng chọn tỉnh/thành phố", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_province_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (mDistrict == null) {
-            mView.showMessage("Thông báo", "Vui lòng chọn quận/huyện", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_district_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (mWard == null) {
-            mView.showMessage("Thông báo", "Vui lòng chọn phường/xã", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_ward_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (address == null || address.isEmpty()) {
-            mView.showMessage("Thông báo", "Vui lòng nhập địa chỉ cụ thể", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_specific_address_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         return true;

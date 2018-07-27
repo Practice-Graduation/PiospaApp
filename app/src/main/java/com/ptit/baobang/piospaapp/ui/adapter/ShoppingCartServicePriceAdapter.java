@@ -88,7 +88,7 @@ public class ShoppingCartServicePriceAdapter extends RecyclerView.Adapter<Shoppi
             }
 
             txtName.setText(name);
-            txtPrice.setText(new StringBuilder("Giá: " + CommonUtils.formatToCurrency(servicePrice.getAllPrice())));
+            txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) + ": " + CommonUtils.formatToCurrency(servicePrice.getAllPrice())));
             txtDate.setText(new StringBuilder(DateTimeUtils.formatDate(selectedDate, DateTimeUtils.DATE_PATTERN_DDMMYY)));
             txtTime.setText(new StringBuilder(DateTimeUtils.formatDate(selectedDate, DateTimeUtils.TIME_PATTERN)));
             txtQuanlity.setText(new StringBuilder(cartServicePriveItem.getNumberCustomer() + ""));

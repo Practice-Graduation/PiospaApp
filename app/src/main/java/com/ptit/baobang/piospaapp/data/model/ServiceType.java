@@ -6,32 +6,55 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ServiceType implements Serializable{
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
 
+public class ServiceType extends RealmObject implements Serializable{
+
+    @PrimaryKey
+    @RealmField(name = "service_type_id")
     @SerializedName("serviceTypeId")
     @Expose
     private int serviceTypeId;
+
+    @RealmField(name = "code")
     @SerializedName("code")
     @Expose
     private String code;
+
+    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
+
+    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
+
+    @RealmField(name = "service_type_name")
     @SerializedName("serviceTypeName")
     @Expose
     private String serviceTypeName;
+
+    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+    public ServiceType() {
+    }
 
     public int getServiceTypeId() {
         return serviceTypeId;

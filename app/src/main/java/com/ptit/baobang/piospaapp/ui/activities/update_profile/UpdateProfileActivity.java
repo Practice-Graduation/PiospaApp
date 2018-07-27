@@ -186,7 +186,7 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setTitle("Cập Nhật Thông Tin Cá Nhân");
+        mToolbar.setTitle(R.string.update_profile);
         centerToolbarTitle(mToolbar, 0);
     }
 
@@ -256,7 +256,7 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
 
     @Override
     public void onClickAddress(String s) {
-        showEnterTextDialog("Nhập dịa chỉ", s, "Ok", "Hủy", new CallBackDialog() {
+        showEnterTextDialog(getString(R.string.enter_address), s, getString(R.string.ok), getString(R.string.cancel), new CallBackDialog() {
             @Override
             public void diaglogPositive(AlertDialog b, String s) {
                 txtAddress.setText(s);
@@ -272,7 +272,7 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
 
     @Override
     public void onClickFullName(String s) {
-        showEnterTextDialog("Nhập họ và tên", s, "Ok", "Hủy", new CallBackDialog() {
+        showEnterTextDialog(getString(R.string.enter_fullname), s,  getString(R.string.ok),  getString(R.string.cancel), new CallBackDialog() {
             @Override
             public void diaglogPositive(AlertDialog b, String s) {
                 txtFullName.setText(s);
@@ -288,7 +288,7 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
 
     @Override
     public void onClickEmail(String s) {
-        showEnterTextDialog("Nhập địa chỉ email", s, "Ok", "Hủy", new CallBackDialog() {
+        showEnterTextDialog(getString(R.string.enter_email), s, getString(R.string.ok), getString(R.string.cancel), new CallBackDialog() {
             @Override
             public void diaglogPositive(AlertDialog b, String s) {
                 txtEmail.setText(s);
@@ -312,7 +312,7 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
 
     @Override
     public void onClickPhone(String s) {
-        showEnterTextDialog("Nhập số điện thoại", s, "Ok", "Hủy", new CallBackDialog() {
+        showEnterTextDialog(getString(R.string.enter_phone), s, getString(R.string.ok), getString(R.string.cancel), new CallBackDialog() {
             @Override
             public void diaglogPositive(AlertDialog b, String s) {
                 txtPhone.setText(s);
@@ -328,9 +328,9 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
 
     @Override
     public void onClickGender(String s) {
-        boolean isMale = s.trim().toLowerCase().equalsIgnoreCase("nam");
+        boolean isMale = s.trim().toLowerCase().equalsIgnoreCase(getString(R.string.text_male));
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setTitle("Chọn giới tính");
+        dialogBuilder.setTitle(R.string.choose_gender);
 
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.gender_layout, null);
@@ -345,8 +345,8 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
         } else {
             rbFeMale.setChecked(true);
         }
-        btnOk.setText("Ok");
-        btnCancel.setText("Hủy");
+        btnOk.setText(getString(R.string.ok));
+        btnCancel.setText(getString(R.string.cancel));
 
         dialogBuilder.setView(dialogView);
         AlertDialog b = dialogBuilder.create();
@@ -354,10 +354,10 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
         btnOk.setOnClickListener(
                 v -> {
                     if (rbMale.isChecked()) {
-                        txtGender.setText("Nam");
+                        txtGender.setText(R.string.text_male);
                     } else {
 
-                        txtGender.setText("Nữ");
+                        txtGender.setText(R.string.text_female);
                     }
                     b.dismiss();
                 }
@@ -420,6 +420,17 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
         avatar = null;
     }
 
+    @Override
+    public void loadAvatar(String customerAvatar) {
+        if(customerAvatar.trim().length() > 0){
+            RequestOptions options = new RequestOptions().placeholder(R.drawable.paceholder).error(R.drawable.error);
+                Glide.with(this).load(customerAvatar).apply(options).into(imgAvatarBackground);
+                Glide.with(this).load(customerAvatar)
+                        .apply(RequestOptions.centerCropTransform().circleCrop())
+                        .into(imgAvatar);
+        }
+    }
+
     public static Bitmap getBitmapFromUri(Activity activity, Uri uri) throws IOException {
 
         ParcelFileDescriptor parcelFileDescriptor = activity
@@ -449,14 +460,14 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
                         mPresenter.cameraIntent(this);
                     }
                 } else {
-                    showMessage("Thông báo", "Ứng dụng không có quyền mở máy ảnh", SweetAlertDialog.WARNING_TYPE);
+                    showMessage(getString(R.string.message), getString(R.string.require_camera_permission), SweetAlertDialog.WARNING_TYPE);
                 }
                 break;
             case AppConstants.REQUEST_SELECT_FILE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mPresenter.galleryIntent(this);
                 } else {
-                    showMessage("Thông báo", "Ứng dụng không có quyền truy cập bộ nhớ", SweetAlertDialog.WARNING_TYPE);
+                    showMessage(getString(R.string.message), getString(R.string.require_store_permission), SweetAlertDialog.WARNING_TYPE);
                 }
                 break;
         }

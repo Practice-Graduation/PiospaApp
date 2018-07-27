@@ -6,56 +6,80 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Booking implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
 
+public class Booking extends RealmObject implements Serializable {
+
+    @PrimaryKey
+    @RealmField(name = "booking_id")
     @SerializedName("bookingId")
     @Expose
     private int bookingId;
+
+    @RealmField(name = "code")
     @SerializedName("code")
     @Expose
     private String code;
+
+    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
-    @SerializedName("date")
-    @Expose
-    private String date;
+
+    @RealmField(name = "discount")
     @SerializedName("discount")
     @Expose
     private int discount;
+
+    @RealmField(name = "number")
     @SerializedName("number")
     @Expose
     private int number;
+
+    @RealmField(name = "price")
     @SerializedName("price")
     @Expose
     private int price;
-    @SerializedName("timeEnd")
-    @Expose
-    private String timeEnd;
-    @SerializedName("timeStart")
-    @Expose
-    private String timeStart;
+
+    @RealmField(name = "total")
     @SerializedName("total")
     @Expose
     private int total;
+
+    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+    @RealmField(name = "voucherId")
     @SerializedName("voucherId")
     @Expose
     private int voucherId;
+
+    @RealmField(name = "customer")
     @SerializedName("customer")
     @Expose
     private Customer customer;
+
+    @RealmField(name = "order")
     @SerializedName("order")
     @Expose
     private Order order;
+
+    public Booking() {
+    }
 
     public int getBookingId() {
         return bookingId;
@@ -89,13 +113,6 @@ public class Booking implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public int getDiscount() {
         return discount;
@@ -119,22 +136,6 @@ public class Booking implements Serializable {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public String getTimeEnd() {
-        return timeEnd;
-    }
-
-    public void setTimeEnd(String timeEnd) {
-        this.timeEnd = timeEnd;
-    }
-
-    public String getTimeStart() {
-        return timeStart;
-    }
-
-    public void setTimeStart(String timeStart) {
-        this.timeStart = timeStart;
     }
 
     public int getTotal() {

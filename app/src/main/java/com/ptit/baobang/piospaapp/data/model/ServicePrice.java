@@ -8,44 +8,75 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ServicePrice implements Serializable, Comparable<ServicePrice> {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
 
+public class ServicePrice extends RealmObject implements Serializable, Comparable<ServicePrice> {
+
+    @PrimaryKey
+    @RealmField(name = "service_price_id")
     @SerializedName("servicePriceId")
     @Expose
     private int servicePriceId;
+
+    @RealmField(name = "all_price")
     @SerializedName("allPrice")
     @Expose
     private int allPrice;
+
+    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
+
+    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive;
+
+    @RealmField(name = "retail_price")
     @SerializedName("retailPrice")
     @Expose
     private int retailPrice;
+
+    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+    @RealmField(name = "service_group")
     @SerializedName("serviceGroup")
     @Expose
     private ServiceGroup serviceGroup;
+
+    @RealmField(name = "service_package")
     @SerializedName("servicePackage")
     @Expose
     private ServicePackage servicePackage;
+
+    @RealmField(name = "service_type")
     @SerializedName("serviceType")
     @Expose
     private ServiceType serviceType;
+
+    @RealmField(name = "service")
     @SerializedName("service")
     @Expose
     private Service service;
+
+    public ServicePrice() {
+    }
 
     public int getServicePriceId() {
         return servicePriceId;

@@ -42,6 +42,7 @@ public class CartProductFragmentPresenter extends BasePresenter implements ICart
         mView.showCartItemList(getCartItems());
     }
 
+
     private List<CartProductItem> getCartItems() {
 
         List<CartProductItem> cartItems = new ArrayList<>();

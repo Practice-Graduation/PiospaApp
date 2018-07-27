@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart.CartFragment;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_product.CartProductFragment;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart_service.CartServiceFragment;
@@ -44,11 +45,11 @@ public class CartTabPagerApdater extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Sản phẩm";
+                return mCartFragment.getContext().getString(R.string.product);
             case 1:
-                return "Dịch vụ";
+                return mCartFragment.getContext().getString(R.string.service);
             default:
-                return "Sản phẩm";
+                return mCartFragment.getContext().getString(R.string.product);
         }
     }
 }

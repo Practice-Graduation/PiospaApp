@@ -2,6 +2,7 @@ package com.ptit.baobang.piospaapp.ui.activities.profile;
 
 import android.content.Context;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
@@ -31,7 +32,7 @@ public class ProfilePresenter extends BasePresenter implements IProfilePresenter
         if(gender == null || gender.trim().length() == 0){
             gender = "";
         }else{
-            gender = gender.equalsIgnoreCase("male") ? "Nam" : "Nữ";
+            gender = gender.equalsIgnoreCase(mContext.getString(R.string.male)) ? mContext.getString(R.string.text_male) : mContext.getString(R.string.text_female);
         }
         String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 

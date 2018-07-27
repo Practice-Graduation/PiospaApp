@@ -2,6 +2,7 @@ package com.ptit.baobang.piospaapp.ui.activities.change_password;
 
 import android.content.Context;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
@@ -29,38 +30,38 @@ public class ChangePasswordPresenter extends BasePresenter implements IChangePas
     @Override
     public void clickChangePassword(String oldPassword, String newPassword, String passwordConfirm) {
         if (oldPassword.trim().length() == 0) {
-            mView.showMessage("Thông báo", "Vui lòng nhập vào mật khẩu cũ", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_old_password_empty, SweetAlertDialog.WARNING_TYPE);
             return;
         }
         if (newPassword.trim().length() == 0) {
-            mView.showMessage("Thông báo", "Vui lòng nhập vào mật khẩu mới", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_new_pwd_empty, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
         if(!InputUtils.isValidPassword(newPassword.trim())){
-            mView.showMessage("Thông báo","Mật khẩu ít nhất 5 kí tự", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_invalid, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
         if (passwordConfirm.trim().length() == 0) {
-            mView.showMessage("Thông báo", "Vui lòng nhập vào xác nhận mật khẩu", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_comfirm_empty, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
         Customer customer = SharedPreferenceUtils.getUser(mContext);
 
         if (!customer.getPassword().trim().equals(oldPassword)) {
-            mView.showMessage("Thông báo", "Mật khẩu cũ không đúng", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_old_pwd_invlid, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
         if (!newPassword.trim().equals(passwordConfirm.trim())) {
-            mView.showMessage("Thông báo", "Mật khẩu xác nhận không giống mật khẩu mới", SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_and_pwd_comfirm_not_same, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
         customer.setPassword(newPassword);
-        mView.showLoading("Đổi mật khẩu");
+        mView.showLoading(mContext.getString(R.string.change_password));
         getCompositeDisposable()
                 .add(mApiService.updateCustomer(customer.getCustomerId(), customer)
                         .subscribeOn(Schedulers.computation())
@@ -77,7 +78,7 @@ public class ChangePasswordPresenter extends BasePresenter implements IChangePas
         if (customerEndPoint.getStatusCode() == 200) {
             SharedPreferenceUtils.saveUser(mContext, customerEndPoint.getData());
             mView.clearData();
-            mView.hideLoading("Đổi mật khẩu thành công", true);
+            mView.hideLoading(mContext.getString(R.string.message_change_pwd_success), true);
         } else {
             mView.hideLoading(customerEndPoint.getMessage(), false);
         }

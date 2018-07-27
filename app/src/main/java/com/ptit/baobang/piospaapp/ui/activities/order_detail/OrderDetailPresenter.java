@@ -1,9 +1,11 @@
 package com.ptit.baobang.piospaapp.ui.activities.order_detail;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.BookingItem;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
 import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
@@ -27,16 +29,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
-
 public class OrderDetailPresenter extends BasePresenter implements IOrderDetailPresenter {
 
     private String TAG = "OrderDetailPresenter";
 
     private IOrderDetailView mView;
-
+    private Context mContext;
     private Order mOrder;
 
-    public OrderDetailPresenter(IOrderDetailView mView) {
+    public OrderDetailPresenter(Context mContext, IOrderDetailView mView) {
+        this.mContext = mContext;
         this.mView = mView;
     }
 
@@ -49,7 +51,7 @@ public class OrderDetailPresenter extends BasePresenter implements IOrderDetailP
 
     @Override
     public void loadData(Order order) {
-        mView.showLoading("Tải dữ liệu");
+        mView.showLoading(mContext.getString(R.string.loading));
         getCompositeDisposable().add(mApiService.getProductAndBookingDetail(order.getOrderId())
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -69,7 +71,7 @@ public class OrderDetailPresenter extends BasePresenter implements IOrderDetailP
         order.setOrderStatus(status);
         order.setOrderReasonCancel(reasonCancel);
 
-        mView.showLoading("Hủy đơn hàng");
+        mView.showLoading(mContext.getString(R.string.loading_cacel_order));
         getCompositeDisposable().add(mApiService.updateOrder(order.getOrderId(), order)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -79,12 +81,12 @@ public class OrderDetailPresenter extends BasePresenter implements IOrderDetailP
     }
 
     private void handlerResponseCancleOrder(EndPoint<Order> orderEndPoint) {
-        if(orderEndPoint.getStatusCode() == 200){
+        if (orderEndPoint.getStatusCode() == 200) {
             mView.hideLoading();
             mOrder = orderEndPoint.getData();
             mView.setView(mOrder.getOrderStatus().getOrderStatusName());
-        }else{
-            mView.showLoading("Hủy thất bại");
+        } else {
+            mView.showLoading(mContext.getString(R.string.loading_cacel_order_failed));
             Log.e(TAG, orderEndPoint.getMessage());
         }
     }
@@ -100,7 +102,7 @@ public class OrderDetailPresenter extends BasePresenter implements IOrderDetailP
         String[] address = mOrder.getAddressDelivery().split(",");
 
         mView.setView(mOrder.getCode(),
-              DateTimeUtils.formatDate( DateTimeUtils.getDateFromString( mOrder.getCreatedAt(), DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ), DateTimeUtils.DATE_PATTERN_DDMMYY),
+                DateTimeUtils.formatDate(DateTimeUtils.getDateFromString(mOrder.getCreatedAt(), DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ), DateTimeUtils.DATE_PATTERN_DDMMYY),
                 mOrder.getOrderStatus().getOrderStatusName(),
                 mOrder.getFullName(), address[0], address[1],
                 address[2], address[3], mOrder.getPhone(),

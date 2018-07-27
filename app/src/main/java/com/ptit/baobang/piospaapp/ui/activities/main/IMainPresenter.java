@@ -9,4 +9,8 @@ public interface IMainPresenter {
     void clickNavLogout();
 
     void loadUserInfo(Context context);
+
+    void clickScanBarcode();
+
+    void getProductByCode(String returnString);
 }

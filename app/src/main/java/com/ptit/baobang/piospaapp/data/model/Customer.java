@@ -6,98 +6,165 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Customer implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
 
+public class Customer extends RealmObject implements Serializable {
+
+    @PrimaryKey
+    @RealmField(name = "customer_id")
     @SerializedName("customerId")
     @Expose
     private int customerId;
+
+    @RealmField(name = "account")
     @SerializedName("account")
     @Expose
     private String account = "";
+
+    @RealmField(name = "address")
     @SerializedName("address")
     @Expose
     private String address = "";
+
+    @RealmField(name = "birthday")
     @SerializedName("birthday")
     @Expose
     private String birthday = "";
+
+    @RealmField(name = "cmnd")
     @SerializedName("cmnd")
     @Expose
     private String cmnd = "";
+
+    @RealmField(name = "code")
     @SerializedName("code")
     @Expose
     private String code = "";
+
+    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt = "";
+
+    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
+
+    @RealmField(name = "cusomer_refer_id")
     @SerializedName("cusomerReferId")
     @Expose
     private int cusomerReferId;
+
+    @RealmField(name = "customer_avatar")
     @SerializedName("customerAvatar")
     @Expose
     private String customerAvatar = "";
+
+    @RealmField(name = "date_last_login")
     @SerializedName("dateLastLogin")
     @Expose
     private String dateLastLogin = "";
+
+    @RealmField(name = "district")
     @SerializedName("district")
     @Expose
     private District district;
+
+    @RealmField(name = "email")
     @SerializedName("email")
     @Expose
     private String email = "";
+
+    @RealmField(name = "facebook")
     @SerializedName("facebook")
     @Expose
     private String facebook = "";
+
+    @RealmField(name = "facebook_id")
     @SerializedName("facebookId")
     @Expose
     private int facebookId = 0;
+
+    @RealmField(name = "fullname")
     @SerializedName("fullname")
     @Expose
     private String fullname = "";
+
+    @RealmField(name = "gender")
     @SerializedName("gender")
     @Expose
     private String gender = "male";
+
+    @RealmField(name = "is_active")
     @SerializedName("isActive")
     @Expose
     private int isActive = 1;
+
+    @RealmField(name = "is_member")
     @SerializedName("isMember")
     @Expose
     private int isMember = 0;
+
+    @RealmField(name = "member_code")
     @SerializedName("memberCode")
     @Expose
     private String memberCode = "";
+
+    @RealmField(name = "password")
     @SerializedName("password")
     @Expose
     private String password = "";
+
+    @RealmField(name = "phone")
     @SerializedName("phone")
     @Expose
     private String phone = "";
+
+    @RealmField(name = "point")
     @SerializedName("point")
     @Expose
     private int point = 0;
+
+    @RealmField(name = "point_used")
     @SerializedName("pointUsed")
     @Expose
     private int pointUsed = 0;
+
+    @RealmField(name = "province")
     @SerializedName("province")
     @Expose
     private Province province;
+
+    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+    @RealmField(name = "ward")
     @SerializedName("ward")
     @Expose
     private Ward ward;
+
+    @RealmField(name = "zalo")
     @SerializedName("zalo")
     @Expose
     private String zalo = "";
+
+    @RealmField(name = "customer_source")
     @SerializedName("customerSource")
     @Expose
     private int customerSource;
+
+    public Customer() {
+    }
 
     public int getCustomerId() {
         return customerId;

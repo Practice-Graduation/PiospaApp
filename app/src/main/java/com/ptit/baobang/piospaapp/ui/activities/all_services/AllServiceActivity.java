@@ -52,7 +52,7 @@ public class AllServiceActivity extends BaseActivity<AllServicePresenter> implem
 
     private void addControls() {
 
-        mPresenter = new AllServicePresenter(this);
+        mPresenter = new AllServicePresenter(this, this);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

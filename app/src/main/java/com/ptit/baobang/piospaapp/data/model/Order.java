@@ -6,89 +6,167 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Order implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
 
+public class Order extends RealmObject implements Serializable {
+
+    @PrimaryKey
+    @RealmField(name = "order_id")
     @SerializedName("orderId")
     @Expose
     private int orderId;
+
+    @RealmField(name = "address")
     @SerializedName("address")
     @Expose
     private String address;
+
+
+    @RealmField(name = "address_delivery")
     @SerializedName("addressDelivery")
     @Expose
     private String addressDelivery;
+
+
+    @RealmField(name = "code")
     @SerializedName("code")
     @Expose
     private String code;
+
+
+    @RealmField(name = "full_name")
     @SerializedName("fullName")
     @Expose
     private String fullName;
+
+
+    @RealmField(name = "phone")
     @SerializedName("phone")
     @Expose
     private String phone;
+
+
+    @RealmField(name = "created_at")
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+
+    @RealmField(name = "created_by")
     @SerializedName("createdBy")
     @Expose
     private int createdBy;
+
+
+    @RealmField(name = "date_delivery")
     @SerializedName("dateDelivery")
     @Expose
     private String dateDelivery;
+
+
+    @RealmField(name = "delivery_code")
     @SerializedName("deliveryCode")
     @Expose
     private String deliveryCode;
+
+
+    @RealmField(name = "delivery_cost")
     @SerializedName("deliveryCost")
     @Expose
     private int deliveryCost;
+
+
+    @RealmField(name = "discount")
     @SerializedName("discount")
     @Expose
     private int discount;
+
+
+    @RealmField(name = "email")
     @SerializedName("email")
     @Expose
     private String email;
+
+    @RealmField(name = "note")
     @SerializedName("note")
     @Expose
     private String note;
+
+
+    @RealmField(name = "staff_id")
     @SerializedName("staffId")
     @Expose
     private int staffId;
+
+
+    @RealmField(name = "sub_total")
     @SerializedName("subTotal")
     @Expose
     private int subTotal;
+
+
+    @RealmField(name = "tax")
     @SerializedName("tax")
     @Expose
     private Tax tax;
+
+
+    @RealmField(name = "total")
     @SerializedName("total")
     @Expose
     private int total;
+
+    @RealmField(name = "updated_at")
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
+
+    @RealmField(name = "updated_by")
     @SerializedName("updatedBy")
     @Expose
     private int updatedBy;
+
+
+    @RealmField(name = "voucher_id")
     @SerializedName("voucherId")
     @Expose
     private int voucherId;
+
+    @RealmField(name = "custommer")
     @SerializedName("customer")
     @Expose
     private Customer customer;
+
+
+    @RealmField(name = "order_delivery_status")
     @SerializedName("orderDeliveryStatus")
     @Expose
     private OrderDeliveryStatus orderDeliveryStatus;
+
+    @RealmField(name = "order_delivery_type")
     @SerializedName("orderDeliveryType")
     @Expose
     private OrderDeliveryType orderDeliveryType;
+
+    @RealmField(name = "order_payment_type")
     @SerializedName("orderPaymentType")
     @Expose
     private OrderPaymentType orderPaymentType;
+
+    @RealmField(name = "order_reason_cancel")
     @SerializedName("orderReasonCancel")
     @Expose
     private OrderReasonCancel orderReasonCancel;
+
+    @RealmField(name = "order_status")
     @SerializedName("orderStatus")
     @Expose
     private OrderStatus orderStatus;
+
+    public Order() {
+    }
 
     public int getOrderId() {
         return orderId;
