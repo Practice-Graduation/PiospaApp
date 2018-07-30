@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.model.Order;
+import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
 import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.ui.activities.order_detail.OrderDetailActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.OrderAdapter;
@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 public class ListOrderFragment extends BaseFragment<ListOderPresenter> implements IListOrderView {
 
     private OrderStatus orderStatus;
-    List<Order> mOrders;
+    List<OrderRealm> mOrders;
 
     @BindView(R.id.layout_order_empty)
     LinearLayout layoutOrderEmpty;
@@ -79,7 +79,7 @@ public class ListOrderFragment extends BaseFragment<ListOderPresenter> implement
         mPresenter = new ListOderPresenter(getBaseContext(),this);
 
         mOrders = new ArrayList<>();
-        mAdapter = new OrderAdapter<>(getBaseContext(), mOrders, mPresenter);
+        mAdapter = new OrderAdapter<>(getBaseContext(), mOrders);
         rvOrders.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         rvOrders.setAdapter(mAdapter);
 
@@ -94,7 +94,7 @@ public class ListOrderFragment extends BaseFragment<ListOderPresenter> implement
     }
 
     @Override
-    public void updateRecycleView(List<Order> orders) {
+    public void updateRecycleView(List<OrderRealm> orders) {
         mOrders.clear();
         mOrders.addAll(orders);
         mAdapter.notifyDataSetChanged();
@@ -106,9 +106,9 @@ public class ListOrderFragment extends BaseFragment<ListOderPresenter> implement
     }
 
     @Override
-    public void openOrderDetail(Order order) {
+    public void openOrderDetail(OrderRealm order) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(AppConstants.ORDER, order);
+        bundle.putSerializable(AppConstants.ORDER, order.getOrderId());
         Intent intent = new Intent(getBaseContext(), OrderDetailActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);

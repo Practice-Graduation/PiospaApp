@@ -45,6 +45,8 @@ public interface AppConstants {
     String SERVICE_GROUP_ID = "SERVICE_GROUP_ID";
     String TOOL_BAR_TITLE = "TOOL_BAR_TITLE";
 
+    int ORDER_STATUS_NOT_PAYMENT = 1;
+    int ORDER_STATUS_PAYMENT = 2;
     int ORDER_STATUS_CANCLE = 3;
     int ORDER_REASON_CANCEL = 1;
     int TAX_ID = 1;

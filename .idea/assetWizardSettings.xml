@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/D:/IDE/Android/plugins/android/lib/android.jar!/images/material_design_icons/hardware/ic_keyboard_arrow_up_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/D:/IDE/Android/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_notifications_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -33,9 +33,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="assetType" value="IMAGE" />
                                       <entry key="imageAsset" value="C:\Users\BaoBang\Desktop\view-qr-code-scan-quick-response-512.png" />
-                                      <entry key="outputName" value="ic_scancode" />
+                                      <entry key="outputName" value="ic_notify" />
                                     </map>
                                   </option>
                                 </PersistentState>

@@ -10,7 +10,8 @@ import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
 import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
-import com.ptit.baobang.piospaapp.data.local.OrderHelper;
+import com.ptit.baobang.piospaapp.data.local.helper.OrderHelper;
+import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Order;
@@ -49,6 +50,8 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
 
     private IPaymentView mView;
     private Context mContext;
+    List<CartProductItem> cartProductItems;
+    List<CartServicePriceItem> cartServicePriceItems;
 
     PaymentPresenter(IPaymentView mView, Context context) {
         this.mView = mView;
@@ -117,7 +120,6 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
 
         Customer customer = SharedPreferenceUtils.getUser(mContext);
         Order order = new Order();
-
         order.setFullName(name);
         order.setPhone(phone);
         order.setCustomer(customer);
@@ -130,6 +132,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         // to get default value was define on database
         order.setOrderStatus(new OrderStatus());
         order.setOrderDeliveryStatus(new OrderDeliveryStatus());
+
 
         List<CartItemProduct> itemProducts = getCartItemProducts();
         List<CartItemService> itemServices = getCartItemServices();
@@ -162,13 +165,20 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             Cart cart = CartHelper.getCart();
             cart.clear();
 
-            OrderHelper.saveOrder(orderEndPoint.getData());
+            saveOrderLocal(orderEndPoint.getData());
+
 
             mView.openOrderActivity();
         } else {
             mView.hideLoading(mContext.getString(R.string.create_order_failed), false);
             Log.e("Loi", orderEndPoint.getMessage());
         }
+    }
+
+    private void saveOrderLocal(Order data) {
+
+        OrderRealm orderRealm = new OrderRealm(data, cartProductItems, cartServicePriceItems);
+        OrderHelper.saveOrder(orderRealm);
     }
 
     private boolean checkPaymentInput(OrderDeliveryType mDeliveryType,
@@ -194,7 +204,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             return false;
         }
         if (!InputUtils.isValidPhone(phone)) {
-            mView.showMessage(mContext.getString(R.string.message),  mContext.getString(R.string.phone) +" " + phone + " " + mContext.getString(R.string.wrong), SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), mContext.getString(R.string.phone) + " " + phone + " " + mContext.getString(R.string.wrong), SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         if (mProvince == null) {
@@ -280,8 +290,8 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
 
     @Override
     public void loadCartItem() {
-        List<CartProductItem> cartProductItems = getCartProductItems();
-        List<CartServicePriceItem> cartServicePriceItems = getCartServiceItems();
+        cartProductItems = getCartProductItems();
+        cartServicePriceItems = getCartServiceItems();
         mView.updateRVProduct(cartProductItems);
         mView.updateRVService(cartServicePriceItems);
     }

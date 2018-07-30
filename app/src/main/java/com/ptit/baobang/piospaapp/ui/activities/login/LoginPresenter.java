@@ -2,11 +2,13 @@ package com.ptit.baobang.piospaapp.ui.activities.login;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.data.network.model_request.LoginRequest;
+import com.ptit.baobang.piospaapp.services.FCMUtils;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
@@ -46,6 +48,8 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
                         mILoginView.hideLoading();
                         Customer customer = response.body().getData();
                         SharedPreferenceUtils.saveUser(mILoginView.getBaseContext(), customer);
+                        FCMUtils.subscribeTopicFCM(mContext, customer.getAccount());
+                        Log.e("subscribeTopicFCM" , customer.getAccount());
                         mILoginView.openMainActivity();
 
                     } else {
@@ -59,6 +63,8 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
             }
         });
     }
+
+
 
     @Override
     public void onClickRegister() {

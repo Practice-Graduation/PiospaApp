@@ -46,7 +46,7 @@
             android:textColor="@color/white"
             android:layout_marginEnd="@dimen/margin"
             android:layout_marginStart="@dimen/margin"
-            android:background="@color/colorAccent"
+            android:background="@drawable/button_selector_none_radius"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

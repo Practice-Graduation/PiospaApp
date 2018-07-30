@@ -1,5 +1,6 @@
 package com.ptit.baobang.piospaapp.ui.activities.order_detail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,15 +13,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
-import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
-import com.ptit.baobang.piospaapp.data.model.Order;
-import com.ptit.baobang.piospaapp.data.model.Tax;
-import com.ptit.baobang.piospaapp.ui.adapter.ProductCartComfirmAdapter;
-import com.ptit.baobang.piospaapp.ui.adapter.ServiceCartComfirmAdapter;
+import com.ptit.baobang.piospaapp.data.local.db_realm.BookingDetailRealm;
+import com.ptit.baobang.piospaapp.data.local.db_realm.OrderProductRealm;
+import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
+import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
+import com.ptit.baobang.piospaapp.ui.adapter.OrderProductAdapter;
+import com.ptit.baobang.piospaapp.ui.adapter.OrderServiceAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
+import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -98,18 +100,18 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     TextView lbTax;
     @BindView(R.id.txtTax)
     TextView txtTax;
-    private Order order;
+    private OrderRealm order;
 
 
     @BindView(R.id.rvProducts)
     RecyclerView rvProducts;
-    List<CartProductItem> mProduct;
-    ProductCartComfirmAdapter mProductAdapter;
+    List<OrderProductRealm> mProduct;
+    OrderProductAdapter mProductAdapter;
 
     @BindView(R.id.rvServices)
     RecyclerView rvServices;
-    List<CartServicePriceItem> mServices;
-    ServiceCartComfirmAdapter mServiceAdapter;
+    List<BookingDetailRealm> mServices;
+    OrderServiceAdapter mServiceAdapter;
 
 
 
@@ -117,24 +119,33 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
+        setUpStackMainScreen();
         init();
     }
-
+    private void setUpStackMainScreen() {
+        int current = android.os.Process.myPid();
+        if (current != SharedPreferenceUtils.getProcessID(this)){
+            SharedPreferenceUtils.saveCurrentProcessID(this);
+            SharedPreferenceUtils.saveCount(this, 0);
+        }
+    }
     private void init() {
         mPresenter = new OrderDetailPresenter(this, this);
         setToolbar();
-        order = mPresenter.getDate(getIntent());
-        mPresenter.loadData(order);
+
 
         mProduct = new ArrayList<>();
-        mProductAdapter = new ProductCartComfirmAdapter(this, mProduct);
+        mProductAdapter = new OrderProductAdapter(this, mProduct);
         rvProducts.setLayoutManager(new LinearLayoutManager(this));
         rvProducts.setAdapter(mProductAdapter);
 
         mServices = new ArrayList<>();
-        mServiceAdapter = new ServiceCartComfirmAdapter(this, mServices);
+        mServiceAdapter = new OrderServiceAdapter(this, mServices);
         rvServices.setLayoutManager(new LinearLayoutManager(this));
         rvServices.setAdapter(mServiceAdapter);
+
+        order = mPresenter.getDate(getIntent());
+        mPresenter.loadData(order);
     }
 
     @OnClick(R.id.btnCancel)
@@ -165,8 +176,21 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     }
 
     @Override
+    public void onBackPressed() {
+        int count = SharedPreferenceUtils.getCount(this);
+        if(count == 0){
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else{
+            finish();
+        }
+    }
+
+    @Override
     public void setView(String code, String createdAt, String orderStatusName, String fullName, String address, String ward, String district,
-                        String province, String phone, List<CartProductItem> productItems, List<CartServicePriceItem> priceItems, String orderDeliveryTypeName,
+                        String province, String phone, List<OrderProductRealm> productItems, List<BookingDetailRealm> priceItems, String orderDeliveryTypeName,
                         String orderPaymentTypeName, String orderPaymentTypeDescription,
                         String total, String ship, String subtotal) {
 
@@ -219,14 +243,14 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
 
 
     @Override
-    public void updateRecycleProducts(List<CartProductItem> productItems) {
+    public void updateRecycleProducts(List<OrderProductRealm> productItems) {
         mProduct.clear();
         mProduct.addAll(productItems);
         mProductAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void updateRecycleServices(List<CartServicePriceItem> priceItems) {
+    public void updateRecycleServices(List<BookingDetailRealm> priceItems) {
         mServices.clear();
         mServices.addAll(priceItems);
         mServiceAdapter.notifyDataSetChanged();
@@ -251,13 +275,14 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         txtStatus.setText(getString(R.string.status) + orderStatusName);
     }
 
+
     @Override
-    public void setTax(Tax tax) {
-        lbTax.setText(tax.getName());
-        if(tax.getType().equals(AppConstants.PECENT)){
-            txtTax.setText(new StringBuilder(tax.getValue() + "%"));
-        }else if(tax.getType().equals(AppConstants.MONEY)){
-            txtTax.setText(CommonUtils.formatToCurrency(tax.getValue()));
+    public void setTax(String taxName, int taxValue, String taxUnit) {
+        lbTax.setText(taxName);
+        if(taxUnit.equals(AppConstants.PECENT)){
+            txtTax.setText(new StringBuilder(taxValue + "%"));
+        }else if(taxUnit.equals(AppConstants.MONEY)){
+            txtTax.setText(CommonUtils.formatToCurrency(taxValue));
         }
     }
 

@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
@@ -17,10 +17,10 @@ import com.ptit.baobang.piospaapp.utils.AppConstants;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class BookingTimeActivity extends BaseActivity implements IBookingTimeView {
 
@@ -31,6 +31,8 @@ public class BookingTimeActivity extends BaseActivity implements IBookingTimeVie
     private ServicePrice mServicePrice;
 
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.rvTimes)
     RecyclerView rvTimes;
     List<String> mTimes;
@@ -41,13 +43,18 @@ public class BookingTimeActivity extends BaseActivity implements IBookingTimeVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_time);
+        setSupportToolbar();
         addControls();
         addEvents();
     }
 
-    @OnClick(R.id.btnCancel)
-    void onClick(View view){
-        finish();
+    private void setSupportToolbar() {
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(R.string.pick_time);
+        centerToolbarTitle(toolbar, 30);
     }
 
     private void addEvents() {
@@ -60,9 +67,8 @@ public class BookingTimeActivity extends BaseActivity implements IBookingTimeVie
     }
 
     private void addControls() {
-        mPresenter = new BookingTimePresenter(this,this);
+        mPresenter = new BookingTimePresenter(this, this);
         mUnbinder = ButterKnife.bind(this);
-        setTitle(getString(R.string.pick_time));
 
         mSelectedDate = mPresenter.getSelectedDateFromIntent(getIntent());
         mServicePrice = mPresenter.getServicePriceFromIntent(getIntent());
@@ -109,7 +115,7 @@ public class BookingTimeActivity extends BaseActivity implements IBookingTimeVie
     }
 
     @Override
-    public void backToBookingActivity(String  timeStart) {
+    public void backToBookingActivity(String timeStart) {
         Intent intent = new Intent();
         intent.putExtra(AppConstants.TIME_SELECRED, timeStart);
         setResult(RESULT_OK, intent);

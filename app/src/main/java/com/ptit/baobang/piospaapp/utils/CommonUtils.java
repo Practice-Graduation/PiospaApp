@@ -159,4 +159,18 @@ public class CommonUtils {
         return Bitmap.createBitmap(
                 bitmap, 0, 0, width, height, matrix, false);
     }
+
+    public static void setUpStackMainScreen(Context context) {
+
+        int current = android.os.Process.myPid();
+
+        if (current == SharedPreferenceUtils.getProcessID(context)) {
+            int count = SharedPreferenceUtils.getCount(context);
+            SharedPreferenceUtils.saveCount(context, count + 1);
+        } else {
+            SharedPreferenceUtils.saveCurrentProcessID(context);
+            SharedPreferenceUtils.saveCount(context, 1);
+        }
+
+    }
 }

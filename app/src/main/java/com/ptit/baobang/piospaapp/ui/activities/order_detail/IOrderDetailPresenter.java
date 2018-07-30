@@ -2,12 +2,12 @@ package com.ptit.baobang.piospaapp.ui.activities.order_detail;
 
 import android.content.Intent;
 
-import com.ptit.baobang.piospaapp.data.model.Order;
+import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
 
 public interface IOrderDetailPresenter {
-    Order getDate(Intent intent);
+    OrderRealm getDate(Intent intent);
 
-    void loadData(Order order);
+    void loadData(OrderRealm order);
 
-    void clickCancelOrder(Order order);
+    void clickCancelOrder(OrderRealm order);
 }

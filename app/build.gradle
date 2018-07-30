@@ -63,7 +63,12 @@ dependencies {
 
     // firebase
     implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-storage:16.0.1'
+    implementation 'com.google.firebase:firebase-messaging:17.1.0'
+
+    implementation 'com.google.firebase:firebase-iid:16.2.0'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+
+
     implementation 'me.dm7.barcodescanner:zbar:1.9.8'
 }
 apply plugin: 'com.google.gms.google-services'

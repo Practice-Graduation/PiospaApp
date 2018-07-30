@@ -105,16 +105,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/padding">
+
                     <TextView
                         android:id="@+id/lbFullName"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/full_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
                         android:gravity="center|start"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:text="@string/full_name"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/txtFullName"/>
+                        app:layout_constraintEnd_toStartOf="@+id/txtFullName"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                     <TextView
                         android:id="@+id/txtFullName"
                         android:layout_width="0dp"
@@ -144,7 +145,7 @@
                     android:padding="@dimen/padding">
                     <TextView
                         android:id="@+id/lbPhone"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/phone"
                         android:gravity="center|start"
@@ -181,7 +182,7 @@
                     android:padding="@dimen/padding">
                     <TextView
                         android:id="@+id/lbEmail"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/email"
                         android:gravity="center|start"
@@ -218,7 +219,7 @@
                     android:padding="@dimen/padding">
                     <TextView
                         android:id="@+id/lbBirthDay"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/birth_day"
                         android:gravity="center|start"
@@ -255,7 +256,7 @@
                     android:padding="@dimen/padding">
                     <TextView
                         android:id="@+id/lbGender"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/gender"
                         android:gravity="center|start"
@@ -308,7 +309,7 @@
 
                     <TextView
                         android:id="@+id/lbProvince"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:text="@string/province"
                         android:gravity="center|start"
@@ -344,7 +345,7 @@
 
                     <TextView
                         android:id="@+id/lbDistrict"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:text="@string/district"
                         android:gravity="center|start"
@@ -380,7 +381,7 @@
 
                     <TextView
                         android:id="@+id/lbWard"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:hint="@string/ward"
                         android:gravity="center|start"

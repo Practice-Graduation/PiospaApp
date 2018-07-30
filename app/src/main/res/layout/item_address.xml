@@ -22,11 +22,14 @@
         android:textSize="@dimen/body_text_size"
         android:text="Khánh Hòa"
         android:gravity="center|start"
-        android:padding="@dimen/padding"
+        android:paddingLeft="@dimen/padding"
+        android:paddingStart="@dimen/padding"
+        android:paddingTop="20dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/imgStatus"/>
+        app:layout_constraintEnd_toStartOf="@id/imgStatus" />
 
     <ImageView
         android:id="@+id/imgStatus"

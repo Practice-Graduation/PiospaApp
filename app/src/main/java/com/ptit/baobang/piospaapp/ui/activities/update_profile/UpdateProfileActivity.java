@@ -28,9 +28,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.data.model.Ward;
+import com.ptit.baobang.piospaapp.services.FCMUtils;
 import com.ptit.baobang.piospaapp.ui.activities.login.LoginActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.ui.dialogs.district.DistrictActivity;
@@ -233,7 +235,9 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
 
     @Override
     public void logOut() {
-        SharedPreferenceUtils.saveUser(this, null);
+        Customer customer = SharedPreferenceUtils.getUser(this);
+        FCMUtils.unsubscribeTopicFCM(this, customer.getAccount());
+        SharedPreferenceUtils.clearAll(this);
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();

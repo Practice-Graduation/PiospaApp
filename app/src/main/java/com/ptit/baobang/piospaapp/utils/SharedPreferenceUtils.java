@@ -12,20 +12,34 @@ public class SharedPreferenceUtils {
     private static final String CUSTOMER = "CUSTOMER";
     private static final String COUNT = "COUNT";
     private static final String APP_PROCESS_ID = "APP_PROCESS_ID";
-    public static void saveUser(Context context, Customer customer){
+    private static final String IS_UPDATE_ORDER = "IS_UPDATE_ORDER";
+
+    public static void clearAll(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor myEditor = sharedPreferences.edit();
+        myEditor.clear();
+        myEditor.apply();;
+    }
+
+    public static void saveUser(Context context, Customer customer) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor myEditor = sharedPreferences.edit();
 
         Gson gson = new Gson();
-        String json = gson.toJson(customer);
-        myEditor.putString("CUSTOMER", json);
+        String json;
+        if (customer == null) {
+            json = "";
+        } else {
+            json = gson.toJson(customer);
+        }
+        myEditor.putString(CUSTOMER, json);
         myEditor.apply();
     }
 
-    public static Customer getUser(Context context){
+    public static Customer getUser(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
-        String json =  sharedPreferences.getString("CUSTOMER", "");
+        String json = sharedPreferences.getString(CUSTOMER, "");
         return gson.fromJson(json, Customer.class);
     }
 
@@ -34,14 +48,14 @@ public class SharedPreferenceUtils {
         return sharedPreferences.getInt(COUNT, 0);
     }
 
-    public static void saveCount(Context context, int count){
+    public static void saveCount(Context context, int count) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor myEditor = sharedPreferences.edit();
         myEditor.putInt(COUNT, count);
         myEditor.apply();
     }
 
-    public static void saveCurrentProcessID(Context context){
+    public static void saveCurrentProcessID(Context context) {
         int currentProcessID = android.os.Process.myPid();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor myEditor = sharedPreferences.edit();
@@ -49,8 +63,20 @@ public class SharedPreferenceUtils {
         myEditor.apply();
     }
 
-    public static int getProcessID(Context context){
+    public static int getProcessID(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getInt(APP_PROCESS_ID, 0);
+    }
+
+    public static void saveIsUpdateOrder(Context context, boolean isUpdate){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor myEditor = sharedPreferences.edit();
+        myEditor.putBoolean(IS_UPDATE_ORDER, isUpdate);
+        myEditor.apply();
+    }
+
+    public static boolean getIsUpdateOrder(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(IS_UPDATE_ORDER, false);
     }
 }

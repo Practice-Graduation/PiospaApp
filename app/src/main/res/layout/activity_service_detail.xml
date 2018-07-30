@@ -132,7 +132,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button_selector_none_radius"
         android:text="@string/booking"
         android:textColor="@color/white"
         android:textSize="@dimen/button_text_size"

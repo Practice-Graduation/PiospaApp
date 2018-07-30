@@ -38,15 +38,15 @@ public class PiospaAppication extends Application {
         RealmConfiguration config = new RealmConfiguration.Builder().name("piospa.realm").build();
         Realm.setDefaultConfiguration(config);
 
-        try{
-            Realm realm = Realm.getDefaultInstance();
-            realm.close();
+        try( Realm realm = Realm.getDefaultInstance()){
+
         }catch (Exception e){
             Realm.deleteRealm(config);
             Realm.setDefaultConfiguration(config);
-            SharedPreferenceUtils.saveUser(this, null);
+            SharedPreferenceUtils.clearAll(this);
             e.printStackTrace();
         }
+
     }
 
 }

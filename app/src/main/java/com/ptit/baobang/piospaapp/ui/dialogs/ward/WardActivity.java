@@ -60,11 +60,10 @@ public class WardActivity extends BaseActivity implements IWardView {
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle(R.string.ward);
+        setTitle(R.string.ward);
         centerToolbarTitle(toolbar, 0);
     }
     private void addControls() {
-        setTitle(R.string.ward);
         mPresenter = new WardPresenter(this, this);
         mUnbinder = ButterKnife.bind(this);
 

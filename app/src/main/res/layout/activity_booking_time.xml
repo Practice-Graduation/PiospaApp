@@ -8,6 +8,14 @@
     android:background="@color/background"
     tools:context=".ui.dialogs.booking_time.BookingTimeActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextColor="@color/white" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvTimes"
         android:layout_width="match_parent"
@@ -15,13 +23,4 @@
         android:layout_weight="1">
 
     </android.support.v7.widget.RecyclerView>
-
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin"
-        android:textColor="@color/white"
-        android:background="@drawable/button_selector_none_radius"
-        android:text="@string/cancel"/>
 </LinearLayout>

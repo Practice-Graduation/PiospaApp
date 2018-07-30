@@ -23,7 +23,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.Product;
+import com.ptit.baobang.piospaapp.services.FCMUtils;
 import com.ptit.baobang.piospaapp.ui.activities.change_password.ChangePasswordActivity;
 import com.ptit.baobang.piospaapp.ui.activities.login.LoginActivity;
 import com.ptit.baobang.piospaapp.ui.activities.order.OrderActivity;
@@ -73,26 +75,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
 
-        setUpStackMainScreen();
+        CommonUtils.setUpStackMainScreen(this);
 
         addControls();
         addEvents();
         addSelectedFragment();
     }
 
-    private void setUpStackMainScreen() {
 
-        int current = android.os.Process.myPid();
-
-        if(current == SharedPreferenceUtils.getProcessID(this)){
-            int count = SharedPreferenceUtils.getCount(this);
-            SharedPreferenceUtils.saveCount(this, count + 1);
-        }else{
-            SharedPreferenceUtils.saveCurrentProcessID(this);
-            SharedPreferenceUtils.saveCount(this, 1);
-        }
-
-    }
 
     @Override
     protected void onResume() {
@@ -115,7 +105,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     }
 
     private void addControls() {
-        mPresenter = new MainPresenter(this,this);
+        mPresenter = new MainPresenter(this, this);
 //        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mNavigation.getLayoutParams();
 //        layoutParams.setBehavior(new BottomNavigationViewBehavior());
         CommonUtils.disableShiftMode(mNavigation);
@@ -225,6 +215,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             }
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
 
@@ -232,14 +223,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         switch (requestCode) {
             case AppConstants.ZBAR_CAMERA_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        Intent intent = new Intent(this, ScanCodeActivity.class);
-                        startActivity(intent);
+                    Intent intent = new Intent(this, ScanCodeActivity.class);
+                    startActivity(intent);
                 } else {
                     showMessage(getString(R.string.message), "Please grant camera permission to use the QR Scanner", SweetAlertDialog.ERROR_TYPE);
                 }
                 return;
         }
     }
+
     @Override
     public void onBackPressed() {
 
@@ -250,10 +242,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         }
 
         int count = SharedPreferenceUtils.getCount(this);
-        if(count > 1){
+        if (count > 1) {
             SharedPreferenceUtils.saveCount(this, count - 1);
             finish();
-        }else{
+        } else {
             showConfirm(getString(R.string.message), getString(R.string.message_quit_app), getString(R.string.ok), getString(R.string.cancel), SweetAlertDialog.WARNING_TYPE, new CallBackConfirmDialog() {
                 @Override
                 public void DiaglogPositive() {
@@ -313,7 +305,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     public void logOut() {
-        SharedPreferenceUtils.saveUser(this, null);
+        Customer customer = SharedPreferenceUtils.getUser(this);
+        FCMUtils.unsubscribeTopicFCM(this, customer.getAccount());
+        SharedPreferenceUtils.clearAll(this);
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
@@ -338,14 +332,17 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         Glide.with(this).load(image)
                 .apply(RequestOptions.centerCropTransform().circleCrop().error(R.drawable.user))
                 .into(imgAvatar);
+//        Glide.with(this).load(customerAvatar)
+//                .apply(RequestOptions.centerCropTransform().circleCrop().error(circularBitmapDrawable))
+//                .into(imgAvatar);
     }
 
     @Override
     public void openScanBarcodeActivity() {
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, AppConstants.ZBAR_CAMERA_PERMISSION);
+                == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, AppConstants.ZBAR_CAMERA_PERMISSION);
         } else {
             Intent intent = new Intent(this, ScanCodeActivity.class);
             startActivityForResult(intent, AppConstants.SECOND_ACTIVITY_REQUEST_CODE);

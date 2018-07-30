@@ -52,7 +52,7 @@ public class ProvinceActivity extends BaseActivity implements IProvinceView {
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle(R.string.province);
+        setTitle(R.string.province);
         centerToolbarTitle(toolbar, 0);
     }
 
@@ -63,7 +63,6 @@ public class ProvinceActivity extends BaseActivity implements IProvinceView {
     }
 
     private void addControls() {
-        setTitle(R.string.province);
         mPresenter = new ProvincePresenter(this, this);
         mUnbinder = ButterKnife.bind(this);
 

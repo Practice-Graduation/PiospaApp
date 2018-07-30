@@ -129,7 +129,7 @@
     <string name="female">female</string>
     <string name="message_fullname_empty">Nhập vào họ và tên</string>
     <string name="message_username_invalid">Tài khoản ít nhất 5 kí tự a-zA-Z0-9._-</string>
-    <string name="update_profile">Cập nhật thông tin cá nhân</string>
+    <string name="update_profile">Cập nhật thông tin</string>
     <string name="enter_fullname">Nhập họ và tên</string>
     <string name="enter_email">Nhập địa chỉ email</string>
     <string name="choose_gender">Chọn giới tính</string>
@@ -170,5 +170,18 @@
     <string name="message_phone_empty">Vui lòng nhập vào số điện thoại</string>
     <string name="message_ward_empty">Vui lòng chọn phường/xã</string>
     <string name="message_specific_address_empty">Vui lòng nhập địa chỉ cụ thể</string>
+
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
+    <string name="default_notification_channel_name" translatable="true">News</string>
+    <string name="msg_subscribe_failed">Failed to subscribe to news topic</string>
+    <string name="msg_subscribed">Subscribed to news topic</string>
+    <string name="msg_unsubscribe_failed">Failed to unsubscribe to the topic</string>
+    <string name="msg_unsubscribed">Unsubscribed to the topic</string>
+
 
 </resources>

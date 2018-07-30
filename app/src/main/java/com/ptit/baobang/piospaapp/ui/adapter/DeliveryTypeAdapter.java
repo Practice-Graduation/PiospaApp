@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.OrderDeliveryType;
 import com.ptit.baobang.piospaapp.ui.listener.OnItemClickListener;
+import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class DeliveryTypeAdapter  extends RecyclerView.Adapter<DeliveryTypeAdapt
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setText(mItems.get(position).getOrderDeliveryTypeName());
+        holder.setText(mItems.get(position).getOrderDeliveryTypeName() + " - " + CommonUtils.formatToCurrency(mItems.get(position).getPrice()));
         holder.rbOption.setChecked(mSelectedItem == position);
     }
 

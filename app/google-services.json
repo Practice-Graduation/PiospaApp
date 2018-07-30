@@ -59,6 +59,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "326186784266-5cctmajpm12afhk9tbfika2qj5j11fo6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ptit.baobang.piospaapp",
+            "certificate_hash": "2f8a86466526acfcb9723cf7d3a3e6bffe0bf3bc"
+          }
+        },
+        {
           "client_id": "326186784266-ueegmnefgur65ep2s6mkamb4g23q0mui.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -73,8 +81,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "326186784266-ueegmnefgur65ep2s6mkamb4g23q0mui.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

@@ -20,6 +20,7 @@ import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.data.model.Ward;
+import com.ptit.baobang.piospaapp.services.FCMUtils;
 import com.ptit.baobang.piospaapp.ui.activities.change_password.ChangePasswordActivity;
 import com.ptit.baobang.piospaapp.ui.activities.login.LoginActivity;
 import com.ptit.baobang.piospaapp.ui.activities.order.OrderActivity;
@@ -211,7 +212,9 @@ public class ProfileActivity extends BaseActivity<ProfilePresenter> implements I
 
     @Override
     public void logOut() {
-        SharedPreferenceUtils.saveUser(this, null);
+        Customer customer = SharedPreferenceUtils.getUser(this);
+        FCMUtils.unsubscribeTopicFCM(this, customer.getAccount());
+        SharedPreferenceUtils.clearAll(this);
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();

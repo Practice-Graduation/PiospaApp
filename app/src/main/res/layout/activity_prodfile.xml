@@ -215,7 +215,7 @@
 
                     <TextView
                         android:id="@+id/lbFullName"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center|start"
                         android:text="@string/full_name"
@@ -254,7 +254,7 @@
 
                     <TextView
                         android:id="@+id/lbPhone"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center|start"
                         android:text="@string/phone"
@@ -293,12 +293,13 @@
 
                     <TextView
                         android:id="@+id/lbEmail"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center|start"
                         android:text="@string/email"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/txtEmail"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -332,7 +333,7 @@
 
                     <TextView
                         android:id="@+id/lbBirthDay"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center|start"
                         android:text="@string/birth_day"
@@ -371,7 +372,7 @@
 
                     <TextView
                         android:id="@+id/lbGender"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center|start"
                         android:text="@string/gender"
@@ -424,7 +425,7 @@
 
                     <TextView
                         android:id="@+id/lbProvince"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginBottom="@dimen/margin"
                         android:layout_marginTop="@dimen/margin"
@@ -460,7 +461,7 @@
 
                     <TextView
                         android:id="@+id/lbDistrict"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginBottom="@dimen/margin"
                         android:layout_marginTop="@dimen/margin"
@@ -496,7 +497,7 @@
 
                     <TextView
                         android:id="@+id/lbWard"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginBottom="@dimen/margin"
                         android:layout_marginTop="@dimen/margin"

@@ -5,6 +5,7 @@ import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Order;
 import com.ptit.baobang.piospaapp.data.model.OrderDeliveryType;
+import com.ptit.baobang.piospaapp.data.model.OrderObject;
 import com.ptit.baobang.piospaapp.data.model.OrderPaymentType;
 import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.data.model.Product;
@@ -16,6 +17,7 @@ import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.data.model.Tax;
 import com.ptit.baobang.piospaapp.data.model.Ward;
 import com.ptit.baobang.piospaapp.data.network.model_request.BookingDetailRequest;
+import com.ptit.baobang.piospaapp.data.network.model_request.CancelOrderRequest;
 import com.ptit.baobang.piospaapp.data.network.model_request.LoginRequest;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderBodyRequest;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderCustomerBody;
@@ -102,11 +104,20 @@ public interface APIService {
     @PUT("order/{orderId}")
     Observable<EndPoint<Order>>updateOrder(@Path("orderId") int orderId, @Body Order order);
 
+    @PUT("order/cancel")
+    Observable<EndPoint<Order>>cancelOrder(@Body CancelOrderRequest body);
+
     @POST("order/customer-order-status")
     Observable<EndPoint<List<Order>>> getOrderByStatus(@Body OrderCustomerBody orderCustomerBody);
 
     @GET("order/{orderId}/order-product-service-price")
     Observable<EndPoint<OrderResponse>> getProductAndBookingDetail(@Path("orderId") int orderId);
+
+    @GET("order/code/{orderCode}")
+    Call<EndPoint<Order>> getOrderByCode(@Path("orderCode") String orderCode);
+
+    @GET("order/customer/{customerId}")
+    Observable<EndPoint<List<OrderObject>>> getOrderByCustomerId(@Path("customerId") int customerId);
 
     // ----------------------------UPLOAD FILE -----------------------------
     @POST("upload-api/")

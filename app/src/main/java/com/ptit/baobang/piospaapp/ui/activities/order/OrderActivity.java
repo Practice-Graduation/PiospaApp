@@ -1,5 +1,6 @@
 package com.ptit.baobang.piospaapp.ui.activities.order;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -9,9 +10,11 @@ import android.view.MenuItem;
 
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.OrderStatus;
+import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.PagerApdater;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_order.not_payment.ListOrderFragment;
+import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -36,8 +39,17 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
+        setUpStackMainScreen();
         addControls();
         addEvents();
+    }
+
+    private void setUpStackMainScreen() {
+        int current = android.os.Process.myPid();
+        if (current != SharedPreferenceUtils.getProcessID(this)){
+            SharedPreferenceUtils.saveCurrentProcessID(this);
+            SharedPreferenceUtils.saveCount(this, 0);
+        }
     }
 
     private void addEvents() {
@@ -64,6 +76,19 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
                 onBackPressed();
         }
         return (super.onOptionsItemSelected(item));
+    }
+
+    @Override
+    public void onBackPressed() {
+        int count = SharedPreferenceUtils.getCount(this);
+        if(count == 0){
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else{
+            finish();
+        }
     }
 
     @Override

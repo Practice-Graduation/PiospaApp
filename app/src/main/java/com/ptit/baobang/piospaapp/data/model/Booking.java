@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Booking   implements Serializable {
+public class Booking implements Serializable {
 
     @SerializedName("bookingId")
     @Expose
