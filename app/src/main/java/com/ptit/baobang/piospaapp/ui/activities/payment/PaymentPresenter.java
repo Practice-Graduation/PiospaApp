@@ -371,7 +371,8 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             CartItemService cartItem = new CartItemService();
             cartItem.setProductId(entry.getKey().getServicePrice().getServicePriceId());
             //
-            cartItem.setDateBooking(DateTimeUtils.formatDate(entry.getKey().getSelectedDate(), DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ));
+            cartItem.setDateBooking(DateTimeUtils.formatDate(entry.getKey().getSelectedDate(), DateTimeUtils.DATE_PATTERN_DDMMYY));
+            cartItem.setTimeBooking(DateTimeUtils.formatDate(entry.getKey().getSelectedDate(), DateTimeUtils.TIME_PATTERN));
             cartItem.setNumber(entry.getValue());
             cartItems.add(cartItem);
         }

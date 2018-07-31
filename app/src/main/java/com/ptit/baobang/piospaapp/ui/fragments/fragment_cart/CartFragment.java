@@ -86,14 +86,13 @@ public class CartFragment extends BaseFragment<CartPresenter> implements ICartVi
         super.onResume();
     }
 
-    @OnClick(R.id.txtPayment)
+    @OnClick(R.id.layout_payment)
     void onClick(View view) {
         mPresenter.clickPayment();
     }
 
     private void addControls() {
         updateUI();
-
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         CartTabPagerApdater adapter = new CartTabPagerApdater(fragmentManager, this);

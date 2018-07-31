@@ -451,7 +451,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
             txtWard.setClickable(false);
         } else {
             txtProvince.setClickable(true);
-            txtDistrict.setClickable(false);
+            txtDistrict.setClickable(true);
             if (mDistrict == null) {
                 txtWard.setClickable(false);
             } else {

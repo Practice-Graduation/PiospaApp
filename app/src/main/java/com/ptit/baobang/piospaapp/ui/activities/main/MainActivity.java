@@ -3,6 +3,8 @@ package com.ptit.baobang.piospaapp.ui.activities.main;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,6 +13,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -106,8 +110,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     private void addControls() {
         mPresenter = new MainPresenter(this, this);
-//        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mNavigation.getLayoutParams();
-//        layoutParams.setBehavior(new BottomNavigationViewBehavior());
         CommonUtils.disableShiftMode(mNavigation);
         addToolBar();
         addDrawerLayout();
@@ -329,12 +331,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     public void loadUserInfo(String image, String username, String email) {
         txtUsername.setText(username);
         txtEmai.setText(email);
+
+        Bitmap error = BitmapFactory.decodeResource(getResources(), R.drawable.user);
+        RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), error);
+        circularBitmapDrawable.setCircular(true);
+
         Glide.with(this).load(image)
-                .apply(RequestOptions.centerCropTransform().circleCrop().error(R.drawable.user))
+                .apply(RequestOptions.centerCropTransform().circleCrop().error(circularBitmapDrawable))
                 .into(imgAvatar);
-//        Glide.with(this).load(customerAvatar)
-//                .apply(RequestOptions.centerCropTransform().circleCrop().error(circularBitmapDrawable))
-//                .into(imgAvatar);
     }
 
     @Override

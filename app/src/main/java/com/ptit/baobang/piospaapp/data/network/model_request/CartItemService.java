@@ -4,6 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class CartItemService {
+
+    @SerializedName("timeBooking")
+    @Expose
+    private String timeBooking;
     @SerializedName("dateBooking")
     @Expose
     private String dateBooking;
@@ -36,5 +40,13 @@ public class CartItemService {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    public String getTimeBooking() {
+        return timeBooking;
+    }
+
+    public void setTimeBooking(String timeBooking) {
+        this.timeBooking = timeBooking;
     }
 }
