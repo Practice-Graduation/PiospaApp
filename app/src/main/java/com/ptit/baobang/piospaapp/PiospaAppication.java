@@ -3,8 +3,10 @@ package com.ptit.baobang.piospaapp;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
+import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -32,6 +34,7 @@ public class PiospaAppication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         setInstance(this);
         //init realm
         Realm.init(this);

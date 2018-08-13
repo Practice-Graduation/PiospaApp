@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackConfirmDialog;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackDialog;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.fabric.sdk.android.Fabric;
 
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements BaseView {
 
@@ -52,6 +54,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         mUnbinder = ButterKnife.bind(this);
+        Fabric.with(this, new Crashlytics());
     }
 
     @TargetApi(Build.VERSION_CODES.M)
