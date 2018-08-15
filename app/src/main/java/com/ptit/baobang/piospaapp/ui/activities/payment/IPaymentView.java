@@ -27,8 +27,7 @@ public interface IPaymentView extends BaseView{
 
     void showData(String name, String phone, String provinceName,
                   String districtName, String wardName, String address,
-                  String orderDeliveryTypeName, String orderPaymentTypeName,
-                  String orderPaymentTypeDescription);
+                  String orderDeliveryTypeName, String orderPaymentTypeName);
 
     void updateRVProduct(List<CartProductItem> mItems);
     void updateRVService(List<CartServicePriceItem> mItems);

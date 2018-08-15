@@ -101,7 +101,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
                 Service service = servicePrice.getService();
                 image = service.getImage();
                 name = service.getServiceName();
-                price = CommonUtils.formatToCurrency(servicePrice.getRetailPrice());
+                price = CommonUtils.formatToCurrency(servicePrice.getAllPrice());
             } else if (servicePrice.getServicePackage() != null) {
                 ServicePackage servicePackage = servicePrice.getServicePackage();
                 image = servicePackage.getImage();
@@ -172,7 +172,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceH
             if (String.valueOf(servicePrice.getAllPrice()).trim().toLowerCase().contains(filterSeq.trim())) {
                 return true;
             }
-            if (String.valueOf(servicePrice.getRetailPrice()).trim().toLowerCase().contains(filterSeq.trim())) {
+            if (String.valueOf(servicePrice.getAllPrice()).trim().toLowerCase().contains(filterSeq.trim())) {
                 return true;
             }
 

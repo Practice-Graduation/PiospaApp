@@ -12,11 +12,6 @@ public class BookingDetail  implements Serializable {
     @Expose
     private int bookingDetailId;
 
-    @SerializedName("createdAt")
-    @Expose
-    private String createdAt;
-
-    @SerializedName("createdBy")
     @Expose
     private int createdBy;
 
@@ -31,14 +26,6 @@ public class BookingDetail  implements Serializable {
     @SerializedName("timeStart")
     @Expose
     private String timeStart;
-
-    @SerializedName("updatedAt")
-    @Expose
-    private String updatedAt;
-
-    @SerializedName("updatedBy")
-    @Expose
-    private int updatedBy;
 
     @SerializedName("booking")
     @Expose
@@ -67,14 +54,6 @@ public class BookingDetail  implements Serializable {
         this.bookingDetailId = bookingDetailId;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public int getCreatedBy() {
         return createdBy;
     }
@@ -97,22 +76,6 @@ public class BookingDetail  implements Serializable {
 
     public void setTimeStart(String timeStart) {
         this.timeStart = timeStart;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public int getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(int updatedBy) {
-        this.updatedBy = updatedBy;
     }
 
     public Booking getBooking() {

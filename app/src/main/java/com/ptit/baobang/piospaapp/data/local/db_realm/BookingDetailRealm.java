@@ -31,13 +31,13 @@ public class BookingDetailRealm extends RealmObject {
     }
 
     public BookingDetailRealm(CartServicePriceItem item) {
-        if(item.getBookingItem().getServicePrice().getService() != null){
+        if (item.getBookingItem().getServicePrice().getService() != null) {
             serviceName = item.getBookingItem().getServicePrice().getService().getServiceName();
             serviceImage = item.getBookingItem().getServicePrice().getService().getImage();
-        }else if(item.getBookingItem().getServicePrice().getServicePackage() != null){
+        } else if (item.getBookingItem().getServicePrice().getServicePackage() != null) {
             serviceName = item.getBookingItem().getServicePrice().getServicePackage().getServicePackageName();
             serviceImage = item.getBookingItem().getServicePrice().getServicePackage().getImage();
-        }else{
+        } else {
             serviceName = "";
         }
         dateBooking = DateTimeUtils.formatDate(item.getBookingItem().getSelectedDate(), DateTimeUtils.DATE_PATTERN_DDMMYY);
@@ -47,7 +47,7 @@ public class BookingDetailRealm extends RealmObject {
     }
 
     public BookingDetailRealm(BookingDetailObject bookingDetailObject) {
-        serviceImage = bookingDetailObject.getServiceName();
+        serviceName = bookingDetailObject.getServiceName();
         serviceImage = bookingDetailObject.getServiceImage();
         dateBooking = bookingDetailObject.getDateBooking();
         timeBooking = bookingDetailObject.getTimeBooking();

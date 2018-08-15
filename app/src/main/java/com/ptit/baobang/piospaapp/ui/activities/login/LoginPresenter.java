@@ -47,7 +47,8 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
                     if (response.body().getStatusCode() == 200) {
                         mILoginView.hideLoading();
                         Customer customer = response.body().getData();
-                        SharedPreferenceUtils.saveUser(mILoginView.getBaseContext(), customer);
+                        SharedPreferenceUtils.saveUser(mContext, customer);
+                        SharedPreferenceUtils.saveIsLogin(mContext, true);
                         FCMUtils.subscribeTopicFCM(mContext, customer.getAccount());
                         Log.e("subscribeTopicFCM" , customer.getAccount());
                         mILoginView.openMainActivity();

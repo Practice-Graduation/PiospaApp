@@ -24,33 +24,13 @@ public class Customer  implements Serializable {
     @Expose
     private String birthday = "";
 
-    @SerializedName("cmnd")
-    @Expose
-    private String cmnd = "";
-
-    @SerializedName("code")
-    @Expose
-    private String code = "";
-
     @SerializedName("createdAt")
     @Expose
     private String createdAt = "";
 
-    @SerializedName("createdBy")
-    @Expose
-    private int createdBy;
-
-    @SerializedName("cusomerReferId")
-    @Expose
-    private int cusomerReferId;
-
     @SerializedName("customerAvatar")
     @Expose
     private String customerAvatar = "";
-
-    @SerializedName("dateLastLogin")
-    @Expose
-    private String dateLastLogin = "";
 
     @SerializedName("district")
     @Expose
@@ -59,14 +39,6 @@ public class Customer  implements Serializable {
     @SerializedName("email")
     @Expose
     private String email = "";
-
-    @SerializedName("facebook")
-    @Expose
-    private String facebook = "";
-
-    @SerializedName("facebookId")
-    @Expose
-    private int facebookId = 0;
 
     @SerializedName("fullname")
     @Expose
@@ -80,14 +52,6 @@ public class Customer  implements Serializable {
     @Expose
     private int isActive = 1;
 
-    @SerializedName("isMember")
-    @Expose
-    private int isMember = 0;
-
-    @SerializedName("memberCode")
-    @Expose
-    private String memberCode = "";
-
     @SerializedName("password")
     @Expose
     private String password = "";
@@ -96,37 +60,13 @@ public class Customer  implements Serializable {
     @Expose
     private String phone = "";
 
-    @SerializedName("point")
-    @Expose
-    private int point = 0;
-
-    @SerializedName("pointUsed")
-    @Expose
-    private int pointUsed = 0;
-
     @SerializedName("province")
     @Expose
     private Province province;
 
-    @SerializedName("updatedAt")
-    @Expose
-    private String updatedAt;
-
-    @SerializedName("updatedBy")
-    @Expose
-    private int updatedBy;
-
     @SerializedName("ward")
     @Expose
     private Ward ward;
-
-    @SerializedName("zalo")
-    @Expose
-    private String zalo = "";
-
-    @SerializedName("customerSource")
-    @Expose
-    private int customerSource;
 
     public Customer() {
     }
@@ -163,22 +103,6 @@ public class Customer  implements Serializable {
         this.birthday = birthday;
     }
 
-    public String getCmnd() {
-        return cmnd;
-    }
-
-    public void setCmnd(String cmnd) {
-        this.cmnd = cmnd;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getCreatedAt() {
         return createdAt;
     }
@@ -187,36 +111,12 @@ public class Customer  implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public int getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public int getCusomerReferId() {
-        return cusomerReferId;
-    }
-
-    public void setCusomerReferId(int cusomerReferId) {
-        this.cusomerReferId = cusomerReferId;
-    }
-
     public String getCustomerAvatar() {
         return customerAvatar;
     }
 
     public void setCustomerAvatar(String customerAvatar) {
         this.customerAvatar = customerAvatar;
-    }
-
-    public String getDateLastLogin() {
-        return dateLastLogin;
-    }
-
-    public void setDateLastLogin(String dateLastLogin) {
-        this.dateLastLogin = dateLastLogin;
     }
 
     public District getDistrict() {
@@ -233,22 +133,6 @@ public class Customer  implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getFacebook() {
-        return facebook;
-    }
-
-    public void setFacebook(String facebook) {
-        this.facebook = facebook;
-    }
-
-    public int getFacebookId() {
-        return facebookId;
-    }
-
-    public void setFacebookId(int facebookId) {
-        this.facebookId = facebookId;
     }
 
     public String getFullname() {
@@ -275,22 +159,6 @@ public class Customer  implements Serializable {
         this.isActive = isActive;
     }
 
-    public int getIsMember() {
-        return isMember;
-    }
-
-    public void setIsMember(int isMember) {
-        this.isMember = isMember;
-    }
-
-    public String getMemberCode() {
-        return memberCode;
-    }
-
-    public void setMemberCode(String memberCode) {
-        this.memberCode = memberCode;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -307,22 +175,6 @@ public class Customer  implements Serializable {
         this.phone = phone;
     }
 
-    public int getPoint() {
-        return point;
-    }
-
-    public void setPoint(int point) {
-        this.point = point;
-    }
-
-    public int getPointUsed() {
-        return pointUsed;
-    }
-
-    public void setPointUsed(int pointUsed) {
-        this.pointUsed = pointUsed;
-    }
-
     public Province getProvince() {
         return province;
     }
@@ -331,44 +183,12 @@ public class Customer  implements Serializable {
         this.province = province;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public int getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(int updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
     public Ward getWard() {
         return ward;
     }
 
     public void setWard(Ward ward) {
         this.ward = ward;
-    }
-
-    public String getZalo() {
-        return zalo;
-    }
-
-    public void setZalo(String zalo) {
-        this.zalo = zalo;
-    }
-
-    public int getCustomerSource() {
-        return customerSource;
-    }
-
-    public void setCustomerSource(int customerSource) {
-        this.customerSource = customerSource;
     }
 
     public String getFullAddress(){

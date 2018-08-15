@@ -47,7 +47,6 @@ public class PaymentTypeAdapter extends RecyclerView.Adapter<PaymentTypeAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setText(mItems.get(position).getOrderPaymentTypeName());
-        holder.setNote(mItems.get(position).getOrderPaymentTypeDescription());
         holder.rbOption.setChecked(mSelectedItem == position);
     }
 

@@ -10,8 +10,8 @@ import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
 import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
-import com.ptit.baobang.piospaapp.data.local.helper.OrderHelper;
 import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
+import com.ptit.baobang.piospaapp.data.local.helper.OrderHelper;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Order;
@@ -81,7 +81,12 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
                         address, mDeliveryType, mPaymentType, mTax);
                 break;
         }
-        currentStep++;
+        Cart cart = CartHelper.getCart();
+        if (currentStep == 0 && cart.getProducts().size() == 0) {
+            currentStep += 2;
+        } else {
+            currentStep++;
+        }
         if (currentStep == 2) {
             computeTax(mDeliveryType, mTax);
         }
@@ -90,7 +95,12 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
 
     public void computeTax(OrderDeliveryType mDeliveryType, Tax mTax) {
 
-        if (mDeliveryType != null && mTax != null) {
+        int shipInt = 0;
+        if (mDeliveryType != null) {
+            shipInt = mDeliveryType.getPrice();
+        }
+
+        if (mTax != null) {
             Cart cart = CartHelper.getCart();
 
             BigDecimal total = cart.getTotalPrice();
@@ -99,11 +109,9 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             } else if (mTax.getType().equals(AppConstants.MONEY)) {
                 total = total.add(new BigDecimal(mTax.getValue()));
             }
-            int intShip = 0;
-            intShip = mDeliveryType.getPrice();
             String totalPrice = CommonUtils.formatToCurrency(cart.getTotalPrice());
-            String ship = CommonUtils.formatToCurrency(intShip);
-            String payment = CommonUtils.formatToCurrency(total.add(BigDecimal.valueOf(intShip)));
+            String ship = CommonUtils.formatToCurrency(shipInt);
+            String payment = CommonUtils.formatToCurrency(total.add(BigDecimal.valueOf(shipInt)));
             mView.updateUIPaymentInfo(totalPrice, ship, payment);
         }
 
@@ -127,7 +135,13 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         order.setAddressDelivery(deliveyAddress);
         order.setOrderPaymentType(mPaymentType);
         order.setOrderDeliveryType(mDeliveryType);
-        order.setDeliveryCost(mDeliveryType.getPrice());
+        if (mDeliveryType == null) {
+
+            order.setDeliveryCost(0);
+        } else {
+
+            order.setDeliveryCost(mDeliveryType.getPrice());
+        }
         order.setTax(mTax);
         // to get default value was define on database
         order.setOrderStatus(new OrderStatus());
@@ -284,8 +298,9 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
                            OrderDeliveryType mDeliveryType,
                            OrderPaymentType mPaymentType) {
         mView.showData(name, phone, mProvince.getName(), mDistrict.getName(),
-                mWard.getName(), address, mDeliveryType.getOrderDeliveryTypeName(),
-                mPaymentType.getOrderPaymentTypeName(), mPaymentType.getOrderPaymentTypeDescription());
+                mWard.getName(), address,
+                mDeliveryType == null ? "" : mDeliveryType.getOrderDeliveryTypeName(),
+                mPaymentType == null ? "" : mPaymentType.getOrderPaymentTypeName());
     }
 
     @Override

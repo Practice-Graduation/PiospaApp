@@ -13,6 +13,8 @@ public class SharedPreferenceUtils {
     private static final String COUNT = "COUNT";
     private static final String APP_PROCESS_ID = "APP_PROCESS_ID";
     private static final String IS_UPDATE_ORDER = "IS_UPDATE_ORDER";
+    private static final String FIRST_INIT = "FIRST_INIT";
+    private static final String IS_LOGIN = "IS_LOGIN";
 
     public static void clearAll(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -78,5 +80,29 @@ public class SharedPreferenceUtils {
     public static boolean getIsUpdateOrder(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(IS_UPDATE_ORDER, false);
+    }
+
+    public static void saveFirstInit(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor myEditor = sharedPreferences.edit();
+        myEditor.putBoolean(FIRST_INIT, true);
+        myEditor.apply();
+    }
+
+    public static boolean getFirstInit(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(FIRST_INIT, false);
+    }
+
+    public static void saveIsLogin(Context context, boolean isLogin){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor myEditor = sharedPreferences.edit();
+        myEditor.putBoolean(IS_LOGIN, isLogin);
+        myEditor.apply();
+    }
+
+    public static boolean getIsLogin(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(IS_LOGIN, false);
     }
 }

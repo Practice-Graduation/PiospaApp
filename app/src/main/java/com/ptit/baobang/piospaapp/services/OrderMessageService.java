@@ -43,7 +43,7 @@ public class OrderMessageService extends FirebaseMessagingService {
             showMessage(remoteMessage.getNotification().getBody());
         }
         if (remoteMessage.getData().size() > 0) {
-            String orderId = remoteMessage.getData().get("message");
+            int orderId = Integer.parseInt(remoteMessage.getData().get("message"));
             updateOrder(orderId, new OrderCallBack() {
                 @Override
                 public void onSuccess(Order order) {
@@ -108,9 +108,10 @@ public class OrderMessageService extends FirebaseMessagingService {
         showMessage(body, getString(R.string.message), intent);
     }
 
-    private void updateOrder(String orderId, OrderCallBack orderCallBack) {
+    private void updateOrder(int orderId, OrderCallBack orderCallBack) {
         apiService = ApiUtils.getAPIService();
-        apiService.getOrderByCode(orderId).enqueue(new Callback<EndPoint<Order>>() {
+        // ddienj thoại get lại bằng hàm này
+        apiService.getOrderByCode(orderId+"").enqueue(new Callback<EndPoint<Order>>() {
             @Override
             public void onResponse(Call<EndPoint<Order>> call, Response<EndPoint<Order>> response) {
                 orderCallBack.onSuccess(response.body().getData());

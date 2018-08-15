@@ -153,7 +153,7 @@
     <string name="shopping_cart_empty">Giỏ hàng rỗng</string>
     <string name="product_shoping_cart_empty">Không có sản phẩm nào được chọn</string>
     <string name="service_shoping_cart_empty">Không có dịch vụ nào được chọn</string>
-    <string name="shipping_address">Địa chỉ nhận hàng</string>
+    <string name="shipping_address">Thông tin khách hàng</string>
     <string name="booking_product">Sản phẩm đã đặt</string>
     <string name="booking_service">Dịch vụ đã đặt</string>
     <string name="tax">Thuế</string>

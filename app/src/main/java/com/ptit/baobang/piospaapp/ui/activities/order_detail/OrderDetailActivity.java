@@ -113,6 +113,13 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     List<BookingDetailRealm> mServices;
     OrderServiceAdapter mServiceAdapter;
 
+    @BindView(R.id.cvDeliveyType)
+    CardView cvDeliveyType;
+    @BindView(R.id.cvPaymentTypeComfirm)
+    CardView cvPaymentTypeComfirm;
+    @BindView(R.id.lbShip)
+    TextView lbShip;
+
 
 
     @Override
@@ -217,9 +224,24 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         txtWardComfirm.setText(ward);
         txtDistrictComfirm.setText(district);
         txtProvinceComfirm.setText(province);
-        txtDeliveryType.setText(orderDeliveryTypeName);
-        txtPaymentType.setText(orderPaymentTypeName);
-        txtPaymentTypeDescription.setText(orderPaymentTypeDescription);
+
+        if(orderDeliveryTypeName.equals("")){
+            cvDeliveyType.setVisibility(View.GONE);
+            lbShip.setVisibility(View.GONE);
+            txtShip.setVisibility(View.GONE);
+        }else{
+            txtDeliveryType.setText(orderDeliveryTypeName);
+        }
+
+        if(orderPaymentTypeName.equals("")){
+            cvPaymentTypeComfirm.setVisibility(View.GONE);
+        }else{
+
+
+            txtPaymentType.setText(orderPaymentTypeName);
+            txtPaymentTypeDescription.setText(orderPaymentTypeDescription);
+        }
+
         txtTotal.setText(total);
         txtShip.setText(ship);
         txtPayment.setText(subtotal);

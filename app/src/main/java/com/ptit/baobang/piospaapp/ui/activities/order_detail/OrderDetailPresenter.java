@@ -9,7 +9,6 @@ import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.local.helper.OrderHelper;
 import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
 import com.ptit.baobang.piospaapp.data.model.Order;
-import com.ptit.baobang.piospaapp.data.model.OrderReasonCancel;
 import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.data.network.model_request.CancelOrderRequest;
@@ -53,8 +52,6 @@ public class OrderDetailPresenter extends BasePresenter implements IOrderDetailP
 
         OrderStatus status = new OrderStatus();
         status.setOrderStatusId(AppConstants.ORDER_STATUS_CANCLE);
-        OrderReasonCancel reasonCancel = new OrderReasonCancel();
-        reasonCancel.setOrderReasonCancelId(AppConstants.ORDER_REASON_CANCEL);
 
 
         mView.showLoading(mContext.getString(R.string.loading_cacel_order));
@@ -88,7 +85,7 @@ public class OrderDetailPresenter extends BasePresenter implements IOrderDetailP
 
         String[] address = orderRealm.getShippingAddress().split(",");
 
-        mView.setView(orderRealm.getCode(),
+        mView.setView(orderRealm.getOrderId()+"",
                 DateTimeUtils.formatDate(DateTimeUtils.getDateFromString(orderRealm.getCreatedAt(), DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ), DateTimeUtils.DATE_PATTERN_DDMMYY),
                 orderRealm.getOrderStatusName(),
                 orderRealm.getCustomerName(), address[0], address[1],

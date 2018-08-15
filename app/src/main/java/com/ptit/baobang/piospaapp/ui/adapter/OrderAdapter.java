@@ -119,7 +119,7 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
                 more = context.getString(R.string.seen_more) + " " + (totalNumber - 1) + " " + context.getString(R.string.lower_product);
             }
 
-            total += CommonUtils.formatToCurrency(order.getTotal() + "");
+            total += CommonUtils.formatToCurrency(order.getPayment() + "");
 
             txtName.setText(name);
             txtTime.setText(time);

@@ -12,21 +12,9 @@ public class Service  implements Serializable{
     @Expose
     private int serviceId;
 
-    @SerializedName("createdAt")
-    @Expose
-    private String createdAt;
-
-    @SerializedName("createdBy")
-    @Expose
-    private int createdBy;
-
     @SerializedName("description")
     @Expose
     private String description;
-
-    @SerializedName("detail")
-    @Expose
-    private String detail;
 
     @SerializedName("image")
     @Expose
@@ -36,21 +24,9 @@ public class Service  implements Serializable{
     @Expose
     private int isActive;
 
-    @SerializedName("serviceCode")
-    @Expose
-    private String serviceCode;
-
     @SerializedName("serviceName")
     @Expose
     private String serviceName;
-
-    @SerializedName("updatedAt")
-    @Expose
-    private String updatedAt;
-
-    @SerializedName("updatedBy")
-    @Expose
-    private int updatedBy;
 
     @SerializedName("serviceTime")
     @Expose
@@ -67,36 +43,12 @@ public class Service  implements Serializable{
         this.serviceId = serviceId;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public int getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
     }
 
     public String getImage() {
@@ -115,36 +67,12 @@ public class Service  implements Serializable{
         this.isActive = isActive;
     }
 
-    public String getServiceCode() {
-        return serviceCode;
-    }
-
-    public void setServiceCode(String serviceCode) {
-        this.serviceCode = serviceCode;
-    }
-
     public String getServiceName() {
         return serviceName;
     }
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public int getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(int updatedBy) {
-        this.updatedBy = updatedBy;
     }
 
     public ServiceTime getServiceTime() {

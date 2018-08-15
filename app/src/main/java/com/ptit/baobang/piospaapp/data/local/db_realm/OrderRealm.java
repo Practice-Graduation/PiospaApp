@@ -17,9 +17,6 @@ public class OrderRealm extends RealmObject implements Serializable {
     @RealmField(name = "order_id")
     private int orderId;
 
-    @RealmField(name = "code")
-    private String code;
-
     @RealmField(name = "created_at")
     private String createdAt;
 
@@ -79,14 +76,24 @@ public class OrderRealm extends RealmObject implements Serializable {
 
     public OrderRealm(Order order, RealmList<BookingDetailRealm> bookingDetails, RealmList<OrderProductRealm> orderProductRealms) {
         orderId = order.getOrderId();
-        code = order.getCode();
         createdAt = order.getCreatedAt();
         orderStatusId = order.getOrderStatus().getOrderStatusId();
         orderStatusName = order.getOrderStatus().getOrderStatusName();
         shippingAddress = order.getAddressDelivery();
-        deliveryType = order.getOrderDeliveryType().getOrderDeliveryTypeName();
-        paymentType = order.getOrderPaymentType().getOrderPaymentTypeName();
-        paymentTypeDescription = order.getOrderPaymentType().getOrderPaymentTypeDescription();
+
+        if(order.getOrderDeliveryType() != null){
+            deliveryType = order.getOrderDeliveryType().getOrderDeliveryTypeName();
+        }else{
+            deliveryType = "";
+        }
+
+        if(order.getOrderPaymentType() != null){
+            paymentType = order.getOrderPaymentType().getOrderPaymentTypeName();
+        }else{
+            paymentType = "";
+            paymentTypeDescription = "";
+        }
+
         total = order.getTotal();
         taxName = order.getTax().getName();
         taxValue = order.getTax().getValue();
@@ -103,14 +110,22 @@ public class OrderRealm extends RealmObject implements Serializable {
 
     public OrderRealm(Order order, List<CartProductItem> cartProductItems, List<CartServicePriceItem> cartServicePriceItems) {
         orderId = order.getOrderId();
-        code = order.getCode();
         createdAt = order.getCreatedAt();
         orderStatusId = order.getOrderStatus().getOrderStatusId();
         orderStatusName = order.getOrderStatus().getOrderStatusName();
         shippingAddress = order.getAddressDelivery();
-        deliveryType = order.getOrderDeliveryType().getOrderDeliveryTypeName();
-        paymentType = order.getOrderPaymentType().getOrderPaymentTypeName();
-        paymentTypeDescription = order.getOrderPaymentType().getOrderPaymentTypeDescription();
+        if (order.getOrderDeliveryType() != null) {
+            deliveryType = order.getOrderDeliveryType().getOrderDeliveryTypeName();
+        }else{
+            deliveryType = "";
+        }
+        if(order.getOrderPaymentType() != null){
+            paymentType = order.getOrderPaymentType().getOrderPaymentTypeName();
+        }else{
+            paymentType = "";
+            paymentTypeDescription = "";
+        }
+
         total = order.getTotal();
         taxName = order.getTax().getName();
         taxValue = order.getTax().getValue();
@@ -122,20 +137,12 @@ public class OrderRealm extends RealmObject implements Serializable {
         customerPhone = order.getPhone();
         orderProductRealms = new RealmList<>();
         bookingDetails = new RealmList<>();
-        for(CartProductItem cpi : cartProductItems){
+        for (CartProductItem cpi : cartProductItems) {
             orderProductRealms.add(new OrderProductRealm(cpi));
         }
-        for(CartServicePriceItem cspi : cartServicePriceItems){
+        for (CartServicePriceItem cspi : cartServicePriceItems) {
             bookingDetails.add(new BookingDetailRealm(cspi));
         }
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getTaxUnit() {

@@ -11,10 +11,6 @@ public class Province  implements Serializable{
     @Expose
     private int provinceid;
 
-    @SerializedName("locationId")
-    @Expose
-    private int locationId;
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -32,14 +28,6 @@ public class Province  implements Serializable{
 
     public void setProvinceid(int provinceid) {
         this.provinceid = provinceid;
-    }
-
-    public int getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
     }
 
     public String getName() {

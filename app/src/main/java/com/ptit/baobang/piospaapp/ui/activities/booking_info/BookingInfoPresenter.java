@@ -11,7 +11,9 @@ import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -85,6 +87,17 @@ public class BookingInfoPresenter extends BasePresenter implements IBookingInfoP
             mView.showMessage(mContext.getString(R.string.message), R.string.message_booking_date_empty, SweetAlertDialog.WARNING_TYPE);
             return;
         }
+        Calendar calendar = Calendar.getInstance();
+        if(isSameDate(calendar.getTime(), date) &&calendar.get(Calendar.HOUR_OF_DAY) >= 22){
+            mView.showMessage(mContext.getString(R.string.message), "Trung tâm đã đóng cửa, vui lòng chọn ngày khác", SweetAlertDialog.WARNING_TYPE);
+            return;
+        }
         mView.openTimePicker(date);
+    }
+
+    private boolean isSameDate(Date time, Date date) {
+        String dateSystem = DateTimeUtils.formatDate(time, DateTimeUtils.DATE_PATTERN_DDMMYY);
+        String dateSelected = DateTimeUtils.formatDate(date, DateTimeUtils.DATE_PATTERN_DDMMYY);
+        return dateSelected.equals(dateSystem);
     }
 }

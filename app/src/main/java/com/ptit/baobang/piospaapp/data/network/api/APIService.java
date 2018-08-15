@@ -55,6 +55,9 @@ public interface APIService {
     @GET("service/price/group/{groupId}")
     Call<EndPoint<List<ServicePrice>>> getServicePriceByGroupId(@Path("groupId") int groupId);
 
+    @GET("/service/price/group/{groupId}/top-ten")
+    Call<EndPoint<List<ServicePrice>>> getTopTenServicePriceByGroupId(@Path("groupId") int groupId);
+
     @GET("service/{serviceId}")
     Call<EndPoint<Service>> getServiceById(@Path("serviceId") int serviceId);
 

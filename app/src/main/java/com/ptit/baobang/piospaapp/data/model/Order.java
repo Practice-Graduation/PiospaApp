@@ -21,12 +21,6 @@ public class Order  implements Serializable {
     @Expose
     private String addressDelivery;
 
-
-    @SerializedName("code")
-    @Expose
-    private String code;
-
-
     @SerializedName("fullName")
     @Expose
     private String fullName;
@@ -41,22 +35,6 @@ public class Order  implements Serializable {
     @Expose
     private String createdAt;
 
-
-    @SerializedName("createdBy")
-    @Expose
-    private int createdBy;
-
-
-    @SerializedName("dateDelivery")
-    @Expose
-    private String dateDelivery;
-
-
-    @SerializedName("deliveryCode")
-    @Expose
-    private String deliveryCode;
-
-
     @SerializedName("deliveryCost")
     @Expose
     private int deliveryCost;
@@ -66,19 +44,9 @@ public class Order  implements Serializable {
     @Expose
     private int discount;
 
-
     @SerializedName("email")
     @Expose
     private String email;
-
-    @SerializedName("note")
-    @Expose
-    private String note;
-
-
-    @SerializedName("staffId")
-    @Expose
-    private int staffId;
 
 
     @SerializedName("subTotal")
@@ -99,15 +67,6 @@ public class Order  implements Serializable {
     @Expose
     private String updatedAt;
 
-    @SerializedName("updatedBy")
-    @Expose
-    private int updatedBy;
-
-
-    @SerializedName("voucherId")
-    @Expose
-    private int voucherId;
-
     @SerializedName("customer")
     @Expose
     private Customer customer;
@@ -124,10 +83,6 @@ public class Order  implements Serializable {
     @SerializedName("orderPaymentType")
     @Expose
     private OrderPaymentType orderPaymentType;
-
-    @SerializedName("orderReasonCancel")
-    @Expose
-    private OrderReasonCancel orderReasonCancel;
 
     @SerializedName("orderStatus")
     @Expose
@@ -160,44 +115,12 @@ public class Order  implements Serializable {
         this.addressDelivery = addressDelivery;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public int getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getDateDelivery() {
-        return dateDelivery;
-    }
-
-    public void setDateDelivery(String dateDelivery) {
-        this.dateDelivery = dateDelivery;
-    }
-
-    public String getDeliveryCode() {
-        return deliveryCode;
-    }
-
-    public void setDeliveryCode(String deliveryCode) {
-        this.deliveryCode = deliveryCode;
     }
 
     public int getDeliveryCost() {
@@ -222,22 +145,6 @@ public class Order  implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public int getStaffId() {
-        return staffId;
-    }
-
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
     }
 
     public int getSubTotal() {
@@ -272,22 +179,6 @@ public class Order  implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public int getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(int updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public int getVoucherId() {
-        return voucherId;
-    }
-
-    public void setVoucherId(int voucherId) {
-        this.voucherId = voucherId;
-    }
-
     public Customer getCustomer() {
         return customer;
     }
@@ -319,15 +210,6 @@ public class Order  implements Serializable {
     public void setOrderPaymentType(OrderPaymentType orderPaymentType) {
         this.orderPaymentType = orderPaymentType;
     }
-
-    public OrderReasonCancel getOrderReasonCancel() {
-        return orderReasonCancel;
-    }
-
-    public void setOrderReasonCancel(OrderReasonCancel orderReasonCancel) {
-        this.orderReasonCancel = orderReasonCancel;
-    }
-
     public OrderStatus getOrderStatus() {
         return orderStatus;
     }

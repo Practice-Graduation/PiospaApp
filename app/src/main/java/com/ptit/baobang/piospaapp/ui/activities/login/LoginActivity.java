@@ -10,7 +10,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.activities.register.RegisterActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
@@ -51,8 +50,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     protected void onStart() {
         super.onStart();
-        Customer customer = SharedPreferenceUtils.getUser(this);
-        if(customer != null){
+        boolean isLogin = SharedPreferenceUtils.getIsLogin(this);
+        if(isLogin){
             openMainActivity();
         }
     }

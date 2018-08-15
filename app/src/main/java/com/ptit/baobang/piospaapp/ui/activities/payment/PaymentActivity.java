@@ -3,6 +3,7 @@ package com.ptit.baobang.piospaapp.ui.activities.payment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.data.cart.Cart;
+import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
 import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
 import com.ptit.baobang.piospaapp.data.model.Customer;
@@ -151,6 +154,13 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     TextView lbDeliveryType;
     @BindView(R.id.lbPaymentType)
     TextView lbPaymentType;
+    @BindView(R.id.cvPaymentTypeComfirm)
+    CardView cvPaymentTypeComfirm;
+    @BindView(R.id.cvDeliveyTypeConfirm)
+    CardView cvDeliveyTypeConfirm;
+    @BindView(R.id.lbShip)
+    TextView lbShip;
+
 
     List<CartProductItem> mCartProductItems;
     ProductCartComfirmAdapter mProductCartComfirmAdapter;
@@ -216,19 +226,19 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
 
                 if (eplPaymentType.isExpanded()) {
                     eplPaymentType.collapse();
-                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(0 ,0, R.drawable.ic_arrow_down, 0);
+                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0);
                 } else {
                     eplPaymentType.expand();
-                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(0 ,0, R.drawable.ic_arrow_up, 0);
+                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0);
                 }
                 break;
             case R.id.cvDeliveryType:
                 if (eplDeliveryType.isExpanded()) {
                     eplDeliveryType.collapse();
-                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(0 ,0, R.drawable.ic_arrow_down, 0);
+                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0);
                 } else {
                     eplDeliveryType.expand();
-                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(0 ,0, R.drawable.ic_arrow_up, 0);
+                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0);
                 }
                 break;
 
@@ -296,8 +306,15 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
 
     private void bacToCart() {
 
-        if(stepView.getCurrentStep() > 0){
-            nextStep(stepView.getCurrentStep() - 1);
+        if (stepView.getCurrentStep() > 0) {
+            Cart cart = CartHelper.getCart();
+            if (stepView.getCurrentStep() == 2 && cart.getProducts().size() == 0) {
+
+                nextStep(stepView.getCurrentStep() - 2);
+            } else {
+
+                nextStep(stepView.getCurrentStep() - 1);
+            }
             return;
         }
 
@@ -335,6 +352,14 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
                         txtAddress.getText().toString(),
                         mDeliveryType,
                         mPaymentType);
+                if (mDeliveryType == null) {
+                    cvDeliveyTypeConfirm.setVisibility(View.GONE);
+                    lbShip.setVisibility(View.GONE);
+                    txtShip.setVisibility(View.GONE);
+                }
+                if (mPaymentType == null) {
+                    cvPaymentTypeComfirm.setVisibility(View.GONE);
+                }
                 mPresenter.loadCartItem();
                 btnNext.setText(R.string.comfirm);
                 nsvDeliveryInfo.setVisibility(View.GONE);
@@ -385,8 +410,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     @Override
     public void showData(String name, String phone, String provinceName,
                          String districtName, String wardName, String address,
-                         String orderDeliveryTypeName, String orderPaymentTypeName,
-                         String orderPaymentTypeDescription) {
+                         String orderDeliveryTypeName, String orderPaymentTypeName) {
 
         txtFullName.setText(new StringBuilder(name + "\t" + phone));
         txtAddressComfirm.setText(address);
@@ -395,7 +419,6 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         txtProvinceComfirm.setText(provinceName);
         txtDeliveryType.setText(orderDeliveryTypeName);
         txtPaymentType.setText(orderPaymentTypeName);
-        txtPaymentTypeDescription.setText(orderPaymentTypeDescription);
 
     }
 

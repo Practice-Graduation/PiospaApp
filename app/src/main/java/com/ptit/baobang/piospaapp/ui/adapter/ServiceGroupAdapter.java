@@ -88,7 +88,7 @@ public class ServiceGroupAdapter extends RecyclerView.Adapter<ServiceGroupAdapte
         for (int i = 0; i < mServiceGroups.size(); i++) {
             int index = i;
 
-            mApiService.getServicePriceByGroupId(mServiceGroups.get(index).getServiceGroupId()).enqueue(new Callback<EndPoint<List<ServicePrice>>>() {
+            mApiService.getTopTenServicePriceByGroupId(mServiceGroups.get(index).getServiceGroupId()).enqueue(new Callback<EndPoint<List<ServicePrice>>>() {
                 @Override
                 public void onResponse(Call<EndPoint<List<ServicePrice>>> call, Response<EndPoint<List<ServicePrice>>> response) {
                     hanleRespone(index, response.body());

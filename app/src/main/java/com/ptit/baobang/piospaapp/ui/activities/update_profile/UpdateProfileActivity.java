@@ -238,6 +238,7 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
         Customer customer = SharedPreferenceUtils.getUser(this);
         FCMUtils.unsubscribeTopicFCM(this, customer.getAccount());
         SharedPreferenceUtils.clearAll(this);
+        SharedPreferenceUtils.saveFirstInit(this);
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();

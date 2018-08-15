@@ -21,10 +21,6 @@ public class Product  implements Serializable, Comparable<Product>{
     @Expose
     private String createdAt;
 
-    @SerializedName("createdBy")
-    @Expose
-    private int createdBy;
-
     @SerializedName("description")
     @Expose
     private String description;
@@ -33,10 +29,6 @@ public class Product  implements Serializable, Comparable<Product>{
     @Expose
     private String image;
 
-    @SerializedName("info")
-    @Expose
-    private String info;
-
     @SerializedName("isActive")
     @Expose
     private int isActive;
@@ -44,10 +36,6 @@ public class Product  implements Serializable, Comparable<Product>{
     @SerializedName("price")
     @Expose
     private int price;
-
-    @SerializedName("productCode")
-    @Expose
-    private String productCode;
 
     @SerializedName("productName")
     @Expose
@@ -65,21 +53,9 @@ public class Product  implements Serializable, Comparable<Product>{
     @Expose
     private String quantityValue;
 
-    @SerializedName("sku")
-    @Expose
-    private String sku;
-
-    @SerializedName("thumbnail")
-    @Expose
-    private String thumbnail;
-
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
-
-    @SerializedName("updatedBy")
-    @Expose
-    private int updatedBy;
 
     @SerializedName("productGroup")
     @Expose
@@ -120,14 +96,6 @@ public class Product  implements Serializable, Comparable<Product>{
         this.createdAt = createdAt;
     }
 
-    public int getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -144,14 +112,6 @@ public class Product  implements Serializable, Comparable<Product>{
         this.image = image;
     }
 
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
     public int getIsActive() {
         return isActive;
     }
@@ -166,14 +126,6 @@ public class Product  implements Serializable, Comparable<Product>{
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public String getProductCode() {
-        return productCode;
-    }
-
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
     }
 
     public String getProductName() {
@@ -200,36 +152,12 @@ public class Product  implements Serializable, Comparable<Product>{
         this.quantityValue = quantityValue;
     }
 
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
     public String getUpdatedAt() {
         return updatedAt;
     }
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public int getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(int updatedBy) {
-        this.updatedBy = updatedBy;
     }
 
     public ProductGroup getProductGroup() {

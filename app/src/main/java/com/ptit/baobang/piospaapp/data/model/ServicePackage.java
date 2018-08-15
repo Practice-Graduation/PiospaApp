@@ -10,14 +10,6 @@ public class ServicePackage  implements Serializable {
     @Expose
     private int servicePackageId;
 
-    @SerializedName("createdAt")
-    @Expose
-    private String createdAt;
-
-    @SerializedName("createdBy")
-    @Expose
-    private int createdBy;
-
     @SerializedName("image")
     @Expose
     private String image;
@@ -33,14 +25,6 @@ public class ServicePackage  implements Serializable {
     @SerializedName("servicePackageName")
     @Expose
     private String servicePackageName;
-
-    @SerializedName("updatedAt")
-    @Expose
-    private String updatedAt;
-
-    @SerializedName("updatedBy")
-    @Expose
-    private int updatedBy;
 
     public ServicePackage() {
     }
@@ -59,36 +43,12 @@ public class ServicePackage  implements Serializable {
         this.time = time;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public int getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public int getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(int isActive) {
-        this.isActive = isActive;
     }
 
     public String getServicePackageName() {
@@ -99,19 +59,15 @@ public class ServicePackage  implements Serializable {
         this.servicePackageName = servicePackageName;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
+    public void setServicePackageId(int servicePackageId) {
+        this.servicePackageId = servicePackageId;
     }
 
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    public int getIsActive() {
+        return isActive;
     }
 
-    public int getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(int updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 }

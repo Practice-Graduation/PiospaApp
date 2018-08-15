@@ -10,11 +10,6 @@ public class District  implements Serializable{
     @SerializedName("districtid")
     @Expose
     private int districtid;
-
-    @SerializedName("location")
-    @Expose
-    private String location;
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -36,14 +31,6 @@ public class District  implements Serializable{
 
     public void setDistrictid(int districtid) {
         this.districtid = districtid;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public String getName() {

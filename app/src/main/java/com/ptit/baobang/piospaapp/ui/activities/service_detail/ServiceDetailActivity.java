@@ -78,7 +78,7 @@ public class ServiceDetailActivity extends BaseActivity<ServiceDetailPresenter> 
             Service service = servicePrice.getService();
             image = service.getImage();
             name = service.getServiceName();
-            price = CommonUtils.formatToCurrency(servicePrice.getRetailPrice());
+            price = CommonUtils.formatToCurrency(servicePrice.getAllPrice());
             info = service.getDescription();
             txtInfo.setText(info);
         } else if (servicePrice.getServicePackage() != null) {

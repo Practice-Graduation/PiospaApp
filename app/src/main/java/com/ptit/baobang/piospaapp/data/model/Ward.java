@@ -11,10 +11,6 @@ public class Ward  implements Serializable{
     @Expose
     private int wardid;
 
-    @SerializedName("location")
-    @Expose
-    private String location;
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -36,14 +32,6 @@ public class Ward  implements Serializable{
 
     public void setWardid(int wardid) {
         this.wardid = wardid;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public String getName() {
