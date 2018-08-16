@@ -278,9 +278,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             case R.id.nav_profile:
                 mPresenter.clickNavProfile();
                 break;
-            case R.id.nav_scancode:
-                mPresenter.clickScanBarcode();
-                break;
+//            case R.id.nav_scancode:
+//                mPresenter.clickScanBarcode();
+//                break;
             case R.id.nav_change_password:
                 mPresenter.clickNavChangePassword();
                 break;
