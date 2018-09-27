@@ -1,18 +1,14 @@
 package com.ptit.baobang.piospaapp.ui.activities.main;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
@@ -35,14 +31,14 @@ import com.ptit.baobang.piospaapp.ui.activities.login.LoginActivity;
 import com.ptit.baobang.piospaapp.ui.activities.order.OrderActivity;
 import com.ptit.baobang.piospaapp.ui.activities.product_detail.ProductDetailActivity;
 import com.ptit.baobang.piospaapp.ui.activities.profile.ProfileActivity;
-import com.ptit.baobang.piospaapp.ui.activities.scan_code.ScanCodeActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_cart.CartFragment;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_product.ProductFragment;
-import com.ptit.baobang.piospaapp.ui.fragments.fragment_service.ServiceFragment;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackConfirmDialog;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
+import com.ptit.baobang.piospaapp.utils.DefaultValue;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import butterknife.BindView;
@@ -87,7 +83,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -117,7 +112,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     private void addDrawerLayout() {
         mToggle = new ActionBarDrawerToggle(
-                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this,
+                mDrawer,
+                mToolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(mToggle);
         mToggle.syncState();
 
@@ -138,7 +137,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private void addSelectedFragment() {
         MenuItem selectedItem;
         Intent intent = getIntent();
-        mSelectedFragment = intent.getIntExtra(AppConstants.FRAGMENT, 0);
+        mSelectedFragment = intent.getIntExtra(KeyBundleConstant.FRAGMENT, DefaultValue.INT);
         selectedItem = mNavigation.getMenu().getItem(mSelectedFragment);
         selectedFragment(selectedItem);
     }
@@ -148,92 +147,35 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             case R.id.navigation_product:
                 showProductFragment();
                 break;
-            case R.id.navigation_service:
-                showServiceFragment();
-                break;
             case R.id.navigation_cart:
                 showCartFragment();
                 break;
         }
 
         centerToolbarTitle(mToolbar, AppConstants.PADDING_TOOLBAR);
-        // update selected item
-//        mSelectedItem = selectedItem.getItemId();
-//        mNavigation.getMenu().getItem(mSelectedFragment).setChecked(true);
-//        if (fragment != null) {
-//            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            fragmentTransaction.replace(R.id.content, fragment).commit();
-//        }
     }
 
 
     private void showCartFragment() {
-//        mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
-//        if (!(mCurrentFragment instanceof CartFragment)) {
         mToolbar.setTitle(getString(R.string.title_cart) + "      ");
         mFragmentTran = getSupportFragmentManager().beginTransaction();
         mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         mFragmentTran.replace(R.id.content, CartFragment.newInstance());
         mFragmentTran.commit();
-        mNavigation.getMenu().getItem(2).setChecked(true);
-//        }
-    }
-
-    private void showServiceFragment() {
-        mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
-        if (!(mCurrentFragment instanceof ServiceFragment)) {
-            mToolbar.setTitle(getString(R.string.title_service));
-            mFragmentTran = getSupportFragmentManager().beginTransaction();
-            mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-            mFragmentTran.replace(R.id.content, ServiceFragment.newInstance());
-            mFragmentTran.commit();
-            mNavigation.getMenu().getItem(1).setChecked(true);
-        }
+        mNavigation.getMenu().getItem(AppConstants.CART_INDEX).setChecked(true);
     }
 
     private void showProductFragment() {
         mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
         if (!(mCurrentFragment instanceof ProductFragment)) {
-            mToolbar.setTitle(
-                    getString(R.string.title_product));
+            mToolbar.setTitle(getString(R.string.title_product));
             mFragmentTran = getSupportFragmentManager().beginTransaction();
             mFragmentTran.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
             mFragmentTran.replace(R.id.content, ProductFragment.newInstance());
             mFragmentTran.commit();
-            mNavigation.getMenu().getItem(0).setChecked(true);
+            mNavigation.getMenu().getItem(AppConstants.PRODUCT_INDEX).setChecked(true);
         }
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppConstants.SECOND_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) { // Activity.RESULT_OK
-
-                // get String data from Intent
-                String returnString = data.getStringExtra("result");
-                mPresenter.getProductByCode(returnString);
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case AppConstants.ZBAR_CAMERA_PERMISSION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(this, ScanCodeActivity.class);
-                    startActivity(intent);
-                } else {
-                    showMessage(getString(R.string.message), "Please grant camera permission to use the QR Scanner", SweetAlertDialog.ERROR_TYPE);
-                }
-                return;
-        }
-    }
-
     @Override
     public void onBackPressed() {
 
@@ -343,22 +285,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     }
 
     @Override
-    public void openScanBarcodeActivity() {
-
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, AppConstants.ZBAR_CAMERA_PERMISSION);
-        } else {
-            Intent intent = new Intent(this, ScanCodeActivity.class);
-            startActivityForResult(intent, AppConstants.SECOND_ACTIVITY_REQUEST_CODE);
-        }
-    }
-
-    @Override
     public void openProductDetail(Product data) {
         Intent intent = new Intent(this, ProductDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(AppConstants.PRODUCT_ID, data);
+        bundle.putSerializable(KeyBundleConstant.PRODUCT_ID, data);
         intent.putExtras(bundle);
         startActivity(intent);
     }

@@ -4,13 +4,12 @@ import android.content.Context;
 
 public interface IMainPresenter {
     void clickNavProfile();
+
     void clickNavOrder();
+
     void clickNavChangePassword();
+
     void clickNavLogout();
 
     void loadUserInfo(Context context);
-
-    void clickScanBarcode();
-
-    void getProductByCode(String returnString);
 }

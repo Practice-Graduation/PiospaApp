@@ -2,13 +2,13 @@ package com.ptit.baobang.piospaapp.ui.fragments.fragment_product;
 
 import android.content.Context;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.data.model.ProductGroup;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.RxSearchObservable;
 
 import java.util.List;
@@ -45,13 +45,11 @@ public class ProductFragmentPresenter extends BasePresenter implements IProductF
             @Override
             public void onResponse(Call<EndPoint<List<ProductGroup>>> call, Response<EndPoint<List<ProductGroup>>> response) {
                 if(response.body() != null){
-                    if (response.body().getStatusCode() == 200) {
+                    if (response.body().getStatusCode() == AppConstants.SUCCESS_CODE) {
                         handleResponse(response.body());
                     }else{
                         mView.hideLoading(response.body().getMessage(), false);
                     }
-                }else{
-                    Log.e("ProFragPresenter", "Body none");
                 }
             }
 
@@ -70,7 +68,7 @@ public class ProductFragmentPresenter extends BasePresenter implements IProductF
     @Override
     public void filter(SearchView searchView) {
         RxSearchObservable.fromView(searchView)
-                .debounce(100, TimeUnit.MILLISECONDS)
+                .debounce(RxSearchObservable.TIME_OUT, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())

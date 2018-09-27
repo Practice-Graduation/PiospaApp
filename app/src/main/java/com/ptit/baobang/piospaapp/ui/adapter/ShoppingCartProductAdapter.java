@@ -16,6 +16,7 @@ import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.ui.listener.OnItemClickListener;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import java.util.List;
@@ -71,7 +72,7 @@ public class ShoppingCartProductAdapter extends RecyclerView.Adapter<ShoppingCar
         void binView(CartProductItem cartItem) {
             Product product = cartItem.getProduct();
             txtName.setText(product.getProductName());
-            txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) + ": " + CommonUtils.formatToCurrency(product.getPrice())));
+            txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) + AppConstants.DOUBLE_DOT + CommonUtils.formatToCurrency(product.getPrice())));
             txtQuanlity.setText(new StringBuilder(cartItem.getQuanlity() + ""));
             txtTotal.setText(CommonUtils.formatToCurrency(cartItem.getTotalItem()));
             RequestOptions options = new RequestOptions().error(R.drawable.error).placeholder(R.drawable.paceholder);

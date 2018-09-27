@@ -18,7 +18,6 @@ import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
-import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.OrderDeliveryType;
@@ -31,13 +30,15 @@ import com.ptit.baobang.piospaapp.ui.activities.order.OrderActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.DeliveryTypeAdapter;
 import com.ptit.baobang.piospaapp.ui.adapter.PaymentTypeAdapter;
 import com.ptit.baobang.piospaapp.ui.adapter.ProductCartComfirmAdapter;
-import com.ptit.baobang.piospaapp.ui.adapter.ServiceCartComfirmAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.ui.dialogs.district.DistrictActivity;
 import com.ptit.baobang.piospaapp.ui.dialogs.province.ProvinceActivity;
 import com.ptit.baobang.piospaapp.ui.dialogs.ward.WardActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
+import com.ptit.baobang.piospaapp.utils.DefaultValue;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
+import com.ptit.baobang.piospaapp.utils.RequestCodeConstant;
 import com.shuhart.stepview.StepView;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -165,9 +166,6 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     List<CartProductItem> mCartProductItems;
     ProductCartComfirmAdapter mProductCartComfirmAdapter;
 
-    List<CartServicePriceItem> mCartServicePriceItems;
-    ServiceCartComfirmAdapter mServiceCartComfirmAdapter;
-
     List<OrderPaymentType> mOrderPaymentTypes;
     PaymentTypeAdapter mPaymentTypeAdapter;
 
@@ -226,19 +224,19 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
 
                 if (eplPaymentType.isExpanded()) {
                     eplPaymentType.collapse();
-                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0);
+                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(DefaultValue.INT, DefaultValue.INT, R.drawable.ic_arrow_down, DefaultValue.INT);
                 } else {
                     eplPaymentType.expand();
-                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0);
+                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(DefaultValue.INT, DefaultValue.INT, R.drawable.ic_arrow_up, DefaultValue.INT);
                 }
                 break;
             case R.id.cvDeliveryType:
                 if (eplDeliveryType.isExpanded()) {
                     eplDeliveryType.collapse();
-                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0);
+                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(DefaultValue.INT, DefaultValue.INT, R.drawable.ic_arrow_down, DefaultValue.INT);
                 } else {
                     eplDeliveryType.expand();
-                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0);
+                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(DefaultValue.INT, DefaultValue.INT, R.drawable.ic_arrow_up, DefaultValue.INT);
                 }
                 break;
 
@@ -260,30 +258,37 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         txtDistrict.setClickable(false);
         txtWard.setClickable(false);
 
-        mOrderDeliveryTypes = new ArrayList<>();
-        mDeliveryTypeAdapter = new DeliveryTypeAdapter(this, mOrderDeliveryTypes);
-        rvDeliveryType.setLayoutManager(new LinearLayoutManager(this));
-        rvDeliveryType.setAdapter(mDeliveryTypeAdapter);
+        addRecycleViewDeliveryType();
 
-        mOrderPaymentTypes = new ArrayList<>();
-        mPaymentTypeAdapter = new PaymentTypeAdapter(this, mOrderPaymentTypes);
-        rvPaymentType.setLayoutManager(new LinearLayoutManager(this));
-        rvPaymentType.setAdapter(mPaymentTypeAdapter);
+        addRecycleViewPaymentType();
 
-        mCartProductItems = new ArrayList<>();
-        mProductCartComfirmAdapter = new ProductCartComfirmAdapter(this, mCartProductItems);
-        rvProducts.setLayoutManager(new LinearLayoutManager(this));
-        rvProducts.setAdapter(mProductCartComfirmAdapter);
-
-        mCartServicePriceItems = new ArrayList<>();
-        mServiceCartComfirmAdapter = new ServiceCartComfirmAdapter(this, mCartServicePriceItems);
-        rvServices.setLayoutManager(new LinearLayoutManager(this));
-        rvServices.setAdapter(mServiceCartComfirmAdapter);
+        addRecycleViewProduct();
 
         mPresenter.attachDataForInput(getBaseContext());
         mPresenter.loadDeliveryType();
         mPresenter.loadPaymentType();
         mPresenter.loadTax();
+    }
+
+    private void addRecycleViewProduct() {
+        mCartProductItems = new ArrayList<>();
+        mProductCartComfirmAdapter = new ProductCartComfirmAdapter(this, mCartProductItems);
+        rvProducts.setLayoutManager(new LinearLayoutManager(this));
+        rvProducts.setAdapter(mProductCartComfirmAdapter);
+    }
+
+    private void addRecycleViewPaymentType() {
+        mOrderPaymentTypes = new ArrayList<>();
+        mPaymentTypeAdapter = new PaymentTypeAdapter(this, mOrderPaymentTypes);
+        rvPaymentType.setLayoutManager(new LinearLayoutManager(this));
+        rvPaymentType.setAdapter(mPaymentTypeAdapter);
+    }
+
+    private void addRecycleViewDeliveryType() {
+        mOrderDeliveryTypes = new ArrayList<>();
+        mDeliveryTypeAdapter = new DeliveryTypeAdapter(this, mOrderDeliveryTypes);
+        rvDeliveryType.setLayoutManager(new LinearLayoutManager(this));
+        rvDeliveryType.setAdapter(mDeliveryTypeAdapter);
     }
 
     private void setSupportToolbar() {
@@ -292,7 +297,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle(getString(R.string.check_out) + "          ");
-        centerToolbarTitle(toolbar, 0);
+        centerToolbarTitle(toolbar, DefaultValue.INT);
     }
 
     @Override
@@ -319,7 +324,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         }
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(AppConstants.FRAGMENT, AppConstants.CART_INDEX);
+        intent.putExtra(KeyBundleConstant.FRAGMENT, AppConstants.CART_INDEX);
         startActivity(intent);
         finish();
     }
@@ -373,24 +378,24 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     @Override
     public void openDialogProvince() {
         Intent intent = new Intent(this, ProvinceActivity.class);
-        intent.putExtra(AppConstants.PROVINCE, mProvince);
-        startActivityForResult(intent, AppConstants.REQUEST_CODE_PROVINCE);
+        intent.putExtra(KeyBundleConstant.PROVINCE, mProvince);
+        startActivityForResult(intent, RequestCodeConstant.REQUEST_CODE_PROVINCE);
     }
 
     @Override
     public void openDialogDistrict(Province province) {
         Intent intent = new Intent(this, DistrictActivity.class);
-        intent.putExtra(AppConstants.PROVINCE, mProvince);
-        intent.putExtra(AppConstants.DISTRICT, mDistrict);
-        startActivityForResult(intent, AppConstants.REQUEST_CODE_DISTRICT);
+        intent.putExtra(KeyBundleConstant.PROVINCE, mProvince);
+        intent.putExtra(KeyBundleConstant.DISTRICT, mDistrict);
+        startActivityForResult(intent, RequestCodeConstant.REQUEST_CODE_DISTRICT);
     }
 
     @Override
     public void openDialogWard(District district) {
         Intent intent = new Intent(this, WardActivity.class);
-        intent.putExtra(AppConstants.DISTRICT, mDistrict);
-        intent.putExtra(AppConstants.WARD, mWard);
-        startActivityForResult(intent, AppConstants.REQUEST_CODE_WARD);
+        intent.putExtra(KeyBundleConstant.DISTRICT, mDistrict);
+        intent.putExtra(KeyBundleConstant.WARD, mWard);
+        startActivityForResult(intent, RequestCodeConstant.REQUEST_CODE_WARD);
     }
 
     @Override
@@ -412,7 +417,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
                          String districtName, String wardName, String address,
                          String orderDeliveryTypeName, String orderPaymentTypeName) {
 
-        txtFullName.setText(new StringBuilder(name + "\t" + phone));
+        txtFullName.setText(new StringBuilder(name + AppConstants.TAB_SYMBOL + phone));
         txtAddressComfirm.setText(address);
         txtWardComfirm.setText(wardName);
         txtDistrictComfirm.setText(districtName);
@@ -433,20 +438,6 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         } else {
             rvProducts.setVisibility(View.VISIBLE);
             titleProduct.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void updateRVService(List<CartServicePriceItem> mItems) {
-        mCartServicePriceItems.clear();
-        mCartServicePriceItems.addAll(mItems);
-        mServiceCartComfirmAdapter.notifyDataSetChanged();
-        if (mItems.size() == 0) {
-            rvServices.setVisibility(View.GONE);
-            titleServices.setVisibility(View.GONE);
-        } else {
-            rvServices.setVisibility(View.VISIBLE);
-            titleServices.setVisibility(View.VISIBLE);
         }
     }
 
@@ -498,7 +489,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     public void openOrderActivity() {
         Intent intent = new Intent(this, OrderActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt(AppConstants.ORDER_FRAGMENT_INDEX, 0);
+        bundle.putInt(KeyBundleConstant.ORDER_FRAGMENT_INDEX, 0);
         intent.putExtras(bundle);
         startActivity(intent);
         finish();
@@ -515,9 +506,9 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     public void setTax(Tax data) {
         mTax = data;
         lbTax.setText(data.getName());
-        if (data.getType().equals("percent")) {
-            txtTax.setText(new StringBuilder(data.getValue() + "%"));
-        } else if (data.getType().equals("money")) {
+        if (data.getType().equals(AppConstants.PECENT)) {
+            txtTax.setText(new StringBuilder(data.getValue() + AppConstants.TAB_SYMBOL));
+        } else if (data.getType().equals(AppConstants.MONEY)) {
             txtTax.setText(CommonUtils.formatToCurrency(data.getValue()));
         }
         mPresenter.computeTax(mDeliveryType, data);
@@ -529,8 +520,8 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case AppConstants.REQUEST_CODE_PROVINCE:
-                    Province province = (Province) data.getSerializableExtra(AppConstants.PROVINCE);
+                case RequestCodeConstant.REQUEST_CODE_PROVINCE:
+                    Province province = (Province) data.getSerializableExtra(KeyBundleConstant.PROVINCE);
                     mProvince = province;
                     txtProvince.setText(province.getName());
                     txtDistrict.setText("");
@@ -540,16 +531,16 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
                     txtDistrict.setClickable(true);
                     txtWard.setClickable(false);
                     break;
-                case AppConstants.REQUEST_CODE_DISTRICT:
-                    District district = (District) data.getSerializableExtra(AppConstants.DISTRICT);
+                case RequestCodeConstant.REQUEST_CODE_DISTRICT:
+                    District district = (District) data.getSerializableExtra(KeyBundleConstant.DISTRICT);
                     mDistrict = district;
                     txtDistrict.setText(district.getName());
                     txtWard.setText("");
                     mWard = null;
                     txtWard.setClickable(true);
                     break;
-                case AppConstants.REQUEST_CODE_WARD:
-                    Ward ward = (Ward) data.getSerializableExtra(AppConstants.WARD);
+                case RequestCodeConstant.REQUEST_CODE_WARD:
+                    Ward ward = (Ward) data.getSerializableExtra(KeyBundleConstant.WARD);
                     txtWard.setText(ward.getName());
                     mWard = ward;
                     break;

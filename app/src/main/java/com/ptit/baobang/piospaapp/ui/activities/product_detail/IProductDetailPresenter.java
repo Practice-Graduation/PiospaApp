@@ -6,7 +6,9 @@ import com.ptit.baobang.piospaapp.data.model.Product;
 
 public interface IProductDetailPresenter {
     void loadData(Product product);
+
     void onClickAddCart(Product product, String amount);
+
     void onClickGoToCart();
 
     Product getProductFromBundle(Intent intent);

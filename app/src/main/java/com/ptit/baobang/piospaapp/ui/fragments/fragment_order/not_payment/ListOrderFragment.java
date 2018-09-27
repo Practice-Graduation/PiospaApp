@@ -17,7 +17,7 @@ import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.ui.activities.order_detail.OrderDetailActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.OrderAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseFragment;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ public class ListOrderFragment extends BaseFragment<ListOderPresenter> implement
     public static ListOrderFragment newInstance(OrderStatus orderStatus) {
         ListOrderFragment fragment = new ListOrderFragment();
         Bundle args = new Bundle();
-        args.putSerializable(AppConstants.ORDER_STATUS, orderStatus);
+        args.putSerializable(KeyBundleConstant.ORDER_STATUS, orderStatus);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,7 +55,7 @@ public class ListOrderFragment extends BaseFragment<ListOderPresenter> implement
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             orderStatus = (OrderStatus) getArguments()
-                    .getSerializable(AppConstants.ORDER_STATUS);
+                    .getSerializable(KeyBundleConstant.ORDER_STATUS);
         }
 
     }
@@ -108,7 +108,7 @@ public class ListOrderFragment extends BaseFragment<ListOderPresenter> implement
     @Override
     public void openOrderDetail(OrderRealm order) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(AppConstants.ORDER, order.getOrderId());
+        bundle.putSerializable(KeyBundleConstant.ORDER, order.getOrderId());
         Intent intent = new Intent(getBaseContext(), OrderDetailActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);

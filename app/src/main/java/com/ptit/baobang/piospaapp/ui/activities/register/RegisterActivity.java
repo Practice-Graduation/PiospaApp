@@ -8,7 +8,7 @@ import android.widget.EditText;
 
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -56,8 +56,8 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     @Override
     public void backToLoginActiviry(String email, String password) {
         Intent intent = new Intent();
-        intent.putExtra(AppConstants.USERNAME, email);
-        intent.putExtra(AppConstants.PASSWORD, password);
+        intent.putExtra(KeyBundleConstant.USERNAME, email);
+        intent.putExtra(KeyBundleConstant.PASSWORD, password);
         setResult(RESULT_OK, intent);
         finish();
     }

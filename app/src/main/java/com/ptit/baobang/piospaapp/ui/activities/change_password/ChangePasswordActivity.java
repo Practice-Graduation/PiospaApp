@@ -9,6 +9,8 @@ import android.widget.EditText;
 
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.DefaultValue;
 
 import java.util.Objects;
 
@@ -59,7 +61,7 @@ public class ChangePasswordActivity extends BaseActivity<ChangePasswordPresenter
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.setTitle(getString(R.string.change_password) + "     ");
-        centerToolbarTitle(mToolbar, 20);
+        centerToolbarTitle(mToolbar, AppConstants.PADDING_TOOLBAR);
     }
 
     @Override
@@ -78,8 +80,8 @@ public class ChangePasswordActivity extends BaseActivity<ChangePasswordPresenter
 
     @Override
     public void clearData() {
-        txtOldPassword.setText("");
-        txtNewPassword.setText("");
-        txtPasswordConfirm.setText("");
+        txtOldPassword.setText(DefaultValue.STRING);
+        txtNewPassword.setText(DefaultValue.STRING);
+        txtPasswordConfirm.setText(DefaultValue.STRING);
     }
 }

@@ -21,7 +21,7 @@ import com.ptit.baobang.piospaapp.ui.activities.all_product.AllProductActivity;
 import com.ptit.baobang.piospaapp.ui.activities.product_detail.ProductDetailActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.ProductGroupAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseFragment;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,8 +109,8 @@ public class ProductFragment extends BaseFragment<ProductFragmentPresenter> impl
     public void openAllProductActivity(int productGroupId, String productGroupName) {
         Intent intent = new Intent(getContext(), AllProductActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt(AppConstants.PRODUCT_GROUP_ID, productGroupId);
-        bundle.putString(AppConstants.TOOL_BAR_TITLE, productGroupName);
+        bundle.putInt(KeyBundleConstant.PRODUCT_GROUP_ID, productGroupId);
+        bundle.putString(KeyBundleConstant.TOOL_BAR_TITLE, productGroupName);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -119,7 +119,7 @@ public class ProductFragment extends BaseFragment<ProductFragmentPresenter> impl
     public void openProductDetailActivity(Product product) {
         Intent intent = new Intent(getContext(), ProductDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(AppConstants.PRODUCT_ID, product);
+        bundle.putSerializable(KeyBundleConstant.PRODUCT_ID, product);
         intent.putExtras(bundle);
         startActivity(intent);
     }

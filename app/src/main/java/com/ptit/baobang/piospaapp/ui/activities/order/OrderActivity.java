@@ -14,6 +14,8 @@ import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.PagerApdater;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.ui.fragments.fragment_order.not_payment.ListOrderFragment;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.DefaultValue;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import java.util.List;
@@ -26,8 +28,6 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
-
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
     @BindView(R.id.tabOrder)
@@ -46,9 +46,9 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
 
     private void setUpStackMainScreen() {
         int current = android.os.Process.myPid();
-        if (current != SharedPreferenceUtils.getProcessID(this)){
+        if (current != SharedPreferenceUtils.getProcessID(this)) {
             SharedPreferenceUtils.saveCurrentProcessID(this);
-            SharedPreferenceUtils.saveCount(this, 0);
+            SharedPreferenceUtils.saveCount(this, DefaultValue.INT);
         }
     }
 
@@ -64,7 +64,7 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle(getString(R.string.order) + "      ");
-        centerToolbarTitle(toolbar, 20);
+        centerToolbarTitle(toolbar, AppConstants.PADDING_TOOLBAR);
         mTabOrder.setTabGravity(TabLayout.GRAVITY_FILL);
         mPresenter.loadData(getBaseContext());
     }
@@ -81,12 +81,12 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
     @Override
     public void onBackPressed() {
         int count = SharedPreferenceUtils.getCount(this);
-        if(count == 0){
+        if (count == 0) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
-        }else{
+        } else {
             finish();
         }
     }
@@ -96,7 +96,7 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
         FragmentManager fragmentManager = getSupportFragmentManager();
         PagerApdater adapter = new PagerApdater(fragmentManager);
 
-        for(OrderStatus status : orderStatuses){
+        for (OrderStatus status : orderStatuses) {
             adapter.addTab(ListOrderFragment.newInstance(status), status.getOrderStatusName());
         }
 
@@ -110,7 +110,7 @@ public class OrderActivity extends BaseActivity<OrderPresenter> implements IOrde
     @Override
     public void onResume() {
         super.onResume();
-        if(mPresenter != null){
+        if (mPresenter != null) {
             mPresenter.loadData(getBaseContext());
         }
     }

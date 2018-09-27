@@ -98,7 +98,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
                     .apply(options)
                     .into(img);
             txtName.setText(product.getProductName());
-            txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) +  ": " + CommonUtils.formatToCurrency(product.getPrice())));
+            txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) +  AppConstants.DOUBLE_DOT + CommonUtils.formatToCurrency(product.getPrice())));
             itemView.getLayoutParams().width = (ScreenUtils.getScreenWidth(mContext) - AppConstants.SPAN_COUNT * AppConstants.MARGIN) / AppConstants.SPAN_COUNT;
             if(itemView.getLayoutParams().height > ViewGroup.LayoutParams.WRAP_CONTENT){
 

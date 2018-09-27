@@ -182,6 +182,12 @@
     <string name="msg_subscribed">Subscribed to news topic</string>
     <string name="msg_unsubscribe_failed">Failed to unsubscribe to the topic</string>
     <string name="msg_unsubscribed">Unsubscribed to the topic</string>
+    <string name="load_data_failed_message">Tải dữ liệu thất bại</string>
+    <string name="uploading">Cập nhật thông tin...</string>
+    <string name="save_successed">Lưu thành công</string>
+    <string name="upload_failed">Cập nhật dữ liệu thất bại</string>
+    <string name="select_avatar">Chọn ảnh...</string>
+
 
 
 </resources>

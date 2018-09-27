@@ -5,11 +5,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.cart.BookingItem;
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
-import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
 import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
 import com.ptit.baobang.piospaapp.data.local.helper.OrderHelper;
 import com.ptit.baobang.piospaapp.data.model.Customer;
@@ -25,13 +23,11 @@ import com.ptit.baobang.piospaapp.data.model.Tax;
 import com.ptit.baobang.piospaapp.data.model.Ward;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.data.network.model_request.CartItemProduct;
-import com.ptit.baobang.piospaapp.data.network.model_request.CartItemService;
 import com.ptit.baobang.piospaapp.data.network.model_request.CartShopping;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderBodyRequest;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
-import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
 import com.ptit.baobang.piospaapp.utils.InputUtils;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
@@ -51,7 +47,6 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
     private IPaymentView mView;
     private Context mContext;
     List<CartProductItem> cartProductItems;
-    List<CartServicePriceItem> cartServicePriceItems;
 
     PaymentPresenter(IPaymentView mView, Context context) {
         this.mView = mView;
@@ -122,9 +117,13 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
                              OrderDeliveryType mDeliveryType,
                              OrderPaymentType mPaymentType, Tax mTax) {
 
-        String deliveyAddress = address + ", " + mWard.getType() + " " + mWard.getName()
-                + "," + mDistrict.getType() + " " + mDistrict.getName()
-                + ", " + mProvince.getType() + " " + mProvince.getName();
+        String deliveyAddress = address
+                + AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL
+                + mWard.getType() + AppConstants.SPACE_SYMBOL + mWard.getName()
+                + AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL
+                + mDistrict.getType() + AppConstants.SPACE_SYMBOL + mDistrict.getName()
+                + AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL +
+                mProvince.getType() + AppConstants.SPACE_SYMBOL + mProvince.getName();
 
         Customer customer = SharedPreferenceUtils.getUser(mContext);
         Order order = new Order();
@@ -149,16 +148,13 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
 
 
         List<CartItemProduct> itemProducts = getCartItemProducts();
-        List<CartItemService> itemServices = getCartItemServices();
         CartShopping cartShopping = new CartShopping();
-        cartShopping.setCartItemServices(itemServices);
         cartShopping.setCartItemProducts(itemProducts);
 
         OrderBodyRequest orderBodyRequest = new OrderBodyRequest();
         orderBodyRequest.setOrder(order);
         orderBodyRequest.setCartShopping(cartShopping);
         Gson gson = new Gson();
-        Log.e("JSON", gson.toJson(orderBodyRequest));
         mView.showLoading(mContext.getString(R.string.create_order));
         getCompositeDisposable().add(
                 mApiService.createOrder(orderBodyRequest)
@@ -173,7 +169,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
     }
 
     private void handleResponse(EndPoint<Order> orderEndPoint) {
-        if (orderEndPoint.getStatusCode() == 200) {
+        if (orderEndPoint.getStatusCode() == AppConstants.SUCCESS_CODE) {
             mView.doneStep();
             mView.hideLoading();
             Cart cart = CartHelper.getCart();
@@ -185,13 +181,12 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             mView.openOrderActivity();
         } else {
             mView.hideLoading(orderEndPoint.getMessage(), false);
-            Log.e("Loi", orderEndPoint.getMessage());
         }
     }
 
     private void saveOrderLocal(Order data) {
 
-        OrderRealm orderRealm = new OrderRealm(data, cartProductItems, cartServicePriceItems);
+        OrderRealm orderRealm = new OrderRealm(data, cartProductItems);
         OrderHelper.saveOrder(orderRealm);
     }
 
@@ -306,9 +301,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
     @Override
     public void loadCartItem() {
         cartProductItems = getCartProductItems();
-        cartServicePriceItems = getCartServiceItems();
         mView.updateRVProduct(cartProductItems);
-        mView.updateRVService(cartServicePriceItems);
     }
 
     @Override
@@ -347,21 +340,6 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         return cartItems;
     }
 
-    private List<CartServicePriceItem> getCartServiceItems() {
-        List<CartServicePriceItem> cartItems = new ArrayList<>();
-        Cart cart = CartHelper.getCart();
-
-        Map<BookingItem, Integer> itemMap = cart.getItemWithQuantityServices();
-
-        for (Map.Entry<BookingItem, Integer> entry : itemMap.entrySet()) {
-            CartServicePriceItem cartItem = new CartServicePriceItem();
-            cartItem.setBookingItem(entry.getKey());
-            cartItem.setNumberCustomer(entry.getValue());
-            cartItems.add(cartItem);
-        }
-        return cartItems;
-    }
-
     private List<CartItemProduct> getCartItemProducts() {
         List<CartItemProduct> cartItems = new ArrayList<>();
         Cart cart = CartHelper.getCart();
@@ -371,25 +349,6 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             CartItemProduct cartItem = new CartItemProduct();
             cartItem.setProductId(entry.getKey().getProductId());
             cartItem.setNumber(entry.getValue());
-            cartItems.add(cartItem);
-        }
-        return cartItems;
-    }
-
-    private List<CartItemService> getCartItemServices() {
-        List<CartItemService> cartItems = new ArrayList<>();
-        Cart cart = CartHelper.getCart();
-
-        Map<BookingItem, Integer> itemMap = cart.getItemWithQuantityServices();
-
-        for (Map.Entry<BookingItem, Integer> entry : itemMap.entrySet()) {
-            CartItemService cartItem = new CartItemService();
-            cartItem.setProductId(entry.getKey().getServicePrice().getServicePriceId());
-            //
-            cartItem.setDateBooking(DateTimeUtils.formatDate(entry.getKey().getSelectedDate(), DateTimeUtils.DATE_PATTERN_DDMMYY));
-            cartItem.setTimeBooking(DateTimeUtils.formatDate(entry.getKey().getSelectedDate(), DateTimeUtils.TIME_PATTERN));
-            cartItem.setNumber(entry.getValue());
-            cartItem.setRoom(entry.getKey().getRoom());
             cartItems.add(cartItem);
         }
         return cartItems;

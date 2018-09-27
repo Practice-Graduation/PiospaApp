@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.local.helper.OrderHelper;
 import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
+import com.ptit.baobang.piospaapp.data.local.helper.OrderHelper;
 import com.ptit.baobang.piospaapp.data.model.Order;
 import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
@@ -16,6 +16,7 @@ import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -37,7 +38,7 @@ public class OrderDetailPresenter extends BasePresenter implements IOrderDetailP
     @Override
     public OrderRealm getDate(Intent intent) {
         Bundle bundle = intent.getExtras();
-        int orderId = bundle.getInt(AppConstants.ORDER);
+        int orderId = bundle.getInt(KeyBundleConstant.ORDER);
         mOrder = OrderHelper.getOrderById(orderId);
         return mOrder;
     }
@@ -65,7 +66,7 @@ public class OrderDetailPresenter extends BasePresenter implements IOrderDetailP
     }
 
     private void handlerResponseCancleOrder(EndPoint<Order> orderEndPoint) {
-        if (orderEndPoint.getStatusCode() == 200) {
+        if (orderEndPoint.getStatusCode() == AppConstants.SUCCESS_CODE) {
             mView.hideLoading();
             mOrder.setOrderStatusId(orderEndPoint.getData().getOrderStatus().getOrderStatusId());
             mOrder.setOrderStatusName(orderEndPoint.getData().getOrderStatus().getOrderStatusName());
@@ -83,7 +84,7 @@ public class OrderDetailPresenter extends BasePresenter implements IOrderDetailP
 
     private void handlerResponse(OrderRealm orderRealm) {
 
-        String[] address = orderRealm.getShippingAddress().split(",");
+        String[] address = orderRealm.getShippingAddress().split(AppConstants.COMMA_SYMBOL);
 
         mView.setView(orderRealm.getOrderId()+"",
                 DateTimeUtils.formatDate(DateTimeUtils.getDateFromString(orderRealm.getCreatedAt(), DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ), DateTimeUtils.DATE_PATTERN_DDMMYY),
@@ -91,7 +92,6 @@ public class OrderDetailPresenter extends BasePresenter implements IOrderDetailP
                 orderRealm.getCustomerName(), address[0], address[1],
                 address[2], address[3], orderRealm.getCustomerPhone(),
                 orderRealm.getOrderProductRealms(),
-                orderRealm.getBookingDetails(),
                 orderRealm.getDeliveryType(),
                 orderRealm.getPaymentType(),
                 orderRealm.getPaymentTypeDescription(),

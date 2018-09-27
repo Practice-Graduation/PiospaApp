@@ -9,7 +9,7 @@ import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -40,13 +40,13 @@ public class ProductDetailPresenter extends BasePresenter implements IProductDet
 
     @Override
     public void onClickGoToCart() {
-        mView.openFramentCart();
+        mView.openFragmentCart();
     }
 
     @Override
     public Product getProductFromBundle(Intent intent) {
         Bundle bundle = intent.getExtras();
-        return (Product) (bundle != null ? bundle.getSerializable(AppConstants.PRODUCT_ID) : null);
+        return (Product) (bundle != null ? bundle.getSerializable(KeyBundleConstant.PRODUCT_ID) : null);
     }
 
     @Override

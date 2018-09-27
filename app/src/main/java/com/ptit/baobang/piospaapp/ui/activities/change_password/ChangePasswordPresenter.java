@@ -6,6 +6,7 @@ import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.InputUtils;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
@@ -75,7 +76,7 @@ public class ChangePasswordPresenter extends BasePresenter implements IChangePas
     }
 
     private void handleRespons(EndPoint<Customer> customerEndPoint) {
-        if (customerEndPoint.getStatusCode() == 200) {
+        if (customerEndPoint.getStatusCode() == AppConstants.SUCCESS_CODE) {
             SharedPreferenceUtils.saveUser(mContext, customerEndPoint.getData());
             mView.clearData();
             mView.hideLoading(mContext.getString(R.string.message_change_pwd_success), true);

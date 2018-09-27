@@ -6,11 +6,6 @@
         android:title="@string/title_product" />
 
     <item
-        android:id="@+id/navigation_service"
-        android:icon="@drawable/ic_spa"
-        android:title="@string/title_service" />
-
-    <item
         android:id="@+id/navigation_cart"
         android:icon="@drawable/ic_shopping_cart"
         android:title="@string/title_cart" />

@@ -17,7 +17,7 @@ import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.ui.adapter.DistrictAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +113,7 @@ public class DistrictActivity extends BaseActivity implements IDistrictView {
     @Override
     public void backToPaymentActivity(District district) {
         Intent intent = new Intent();
-        intent.putExtra(AppConstants.DISTRICT, district);
+        intent.putExtra(KeyBundleConstant.DISTRICT, district);
         setResult(RESULT_OK, intent);
         finish();
     }

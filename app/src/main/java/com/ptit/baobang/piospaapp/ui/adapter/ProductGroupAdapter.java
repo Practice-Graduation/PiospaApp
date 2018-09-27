@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import com.ptit.baobang.piospaapp.data.network.api.APIService;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BaseView;
 import com.ptit.baobang.piospaapp.ui.listener.OnItemClickListener;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +55,10 @@ public class ProductGroupAdapter extends RecyclerView.Adapter<ProductGroupAdapte
     @Override
     public void onBindViewHolder(@NonNull ProductGroupAdapter.ProductGroupHolder holder, int position) {
         holder.binView(holder.itemView, mProductGroups.get(position));
-        Log.e("onBindViewHolder", mProductGroups.get(position).getProductGroupName());
         ProductAdapter adapter = mProductAdapters[position];
         if (adapter == null) {
             holder.itemView.setVisibility(View.GONE);
         }else{
-            Log.e("onBindViewHolder", adapter.getItemCount() + "");
             if(adapter.getItemCount() > 0){
                 holder.itemView.setVisibility(View.VISIBLE);
             }else{
@@ -91,7 +89,7 @@ public class ProductGroupAdapter extends RecyclerView.Adapter<ProductGroupAdapte
 
                 @Override
                 public void onResponse(Call<EndPoint<List<Product>>> call, Response<EndPoint<List<Product>>> response) {
-                    if (response.body().getStatusCode() == 200) {
+                    if (response.body().getStatusCode() == AppConstants.SUCCESS_CODE) {
                         handleResponse(index, response.body());
                     }
                 }

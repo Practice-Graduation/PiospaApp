@@ -24,7 +24,7 @@ import com.ptit.baobang.piospaapp.data.network.api.ApiUtils;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.activities.order.OrderActivity;
 import com.ptit.baobang.piospaapp.ui.activities.order_detail.OrderDetailActivity;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import retrofit2.Call;
@@ -54,7 +54,7 @@ public class OrderMessageService extends FirebaseMessagingService {
                     OrderHelper.saveOrder(orderRealm);
                     Intent intent = new Intent(OrderMessageService.this, OrderDetailActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putInt(AppConstants.ORDER, order.getOrderId());
+                    bundle.putInt(KeyBundleConstant.ORDER, order.getOrderId());
                     intent.putExtras(bundle);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     showMessage("Đơn hàng số " + orderId + " đã được cập nhật", "Thông báo từ hệ thống Spa", intent);

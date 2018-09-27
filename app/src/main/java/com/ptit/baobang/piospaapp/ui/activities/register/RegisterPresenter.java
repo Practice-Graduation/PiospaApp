@@ -6,6 +6,7 @@ import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.InputUtils;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -83,7 +84,7 @@ public class RegisterPresenter extends BasePresenter implements IRegisterPresent
     }
 
     private void handleResponse(EndPoint<Customer> customerEndPoint) {
-        if (customerEndPoint.getStatusCode() == 200) {
+        if (customerEndPoint.getStatusCode() == AppConstants.SUCCESS_CODE) {
             mView.hideLoading();
             mView.backToLoginActiviry(
                     customerEndPoint.getData().getAccount(),

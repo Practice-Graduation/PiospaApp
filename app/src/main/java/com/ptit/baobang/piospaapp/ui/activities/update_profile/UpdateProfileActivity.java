@@ -41,6 +41,8 @@ import com.ptit.baobang.piospaapp.ui.dialogs.ward.WardActivity;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackDialog;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
+import com.ptit.baobang.piospaapp.utils.RequestCodeConstant;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import java.io.FileDescriptor;
@@ -247,16 +249,16 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
     @Override
     public void onClickProvince(Province mProvince) {
         Intent intent = new Intent(this, ProvinceActivity.class);
-        intent.putExtra(AppConstants.PROVINCE, mProvince);
-        startActivityForResult(intent, AppConstants.REQUEST_CODE_PROVINCE);
+        intent.putExtra(KeyBundleConstant.PROVINCE, mProvince);
+        startActivityForResult(intent, RequestCodeConstant.REQUEST_CODE_PROVINCE);
     }
 
     @Override
     public void onClickDistrict(District mDistrict) {
         Intent intent = new Intent(this, DistrictActivity.class);
-        intent.putExtra(AppConstants.PROVINCE, mProvince);
-        intent.putExtra(AppConstants.DISTRICT, mDistrict);
-        startActivityForResult(intent, AppConstants.REQUEST_CODE_DISTRICT);
+        intent.putExtra(KeyBundleConstant.PROVINCE, mProvince);
+        intent.putExtra(KeyBundleConstant.DISTRICT, mDistrict);
+        startActivityForResult(intent, RequestCodeConstant.REQUEST_CODE_DISTRICT);
     }
 
     @Override
@@ -310,9 +312,9 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
     @Override
     public void onClickWard(Ward mWard) {
         Intent intent = new Intent(this, WardActivity.class);
-        intent.putExtra(AppConstants.DISTRICT, mDistrict);
-        intent.putExtra(AppConstants.WARD, mWard);
-        startActivityForResult(intent, AppConstants.REQUEST_CODE_WARD);
+        intent.putExtra(KeyBundleConstant.DISTRICT, mDistrict);
+        intent.putExtra(KeyBundleConstant.WARD, mWard);
+        startActivityForResult(intent, RequestCodeConstant.REQUEST_CODE_WARD);
     }
 
     @Override
@@ -458,7 +460,7 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case AppConstants.REQUEST_CAMERA_PIC:
+            case RequestCodeConstant.REQUEST_CAMERA_PIC:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                             == PackageManager.PERMISSION_GRANTED) {
@@ -468,7 +470,7 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
                     showMessage(getString(R.string.message), getString(R.string.require_camera_permission), SweetAlertDialog.WARNING_TYPE);
                 }
                 break;
-            case AppConstants.REQUEST_SELECT_FILE:
+            case RequestCodeConstant.REQUEST_SELECT_FILE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mPresenter.galleryIntent(this);
                 } else {
@@ -483,8 +485,8 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case AppConstants.REQUEST_CODE_PROVINCE:
-                    Province province = (Province) data.getSerializableExtra(AppConstants.PROVINCE);
+                case RequestCodeConstant.REQUEST_CODE_PROVINCE:
+                    Province province = (Province) data.getSerializableExtra(KeyBundleConstant.PROVINCE);
                     mProvince = province;
                     txtProvince.setText(province.getName());
                     txtDistrict.setText("");
@@ -494,20 +496,20 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
                     txtDistrict.setClickable(true);
                     txtWard.setClickable(false);
                     break;
-                case AppConstants.REQUEST_CODE_DISTRICT:
-                    District district = (District) data.getSerializableExtra(AppConstants.DISTRICT);
+                case RequestCodeConstant.REQUEST_CODE_DISTRICT:
+                    District district = (District) data.getSerializableExtra(KeyBundleConstant.DISTRICT);
                     mDistrict = district;
                     txtDistrict.setText(district.getName());
                     txtWard.setText("");
                     mWard = null;
                     txtWard.setClickable(true);
                     break;
-                case AppConstants.REQUEST_CODE_WARD:
-                    Ward ward = (Ward) data.getSerializableExtra(AppConstants.WARD);
+                case RequestCodeConstant.REQUEST_CODE_WARD:
+                    Ward ward = (Ward) data.getSerializableExtra(KeyBundleConstant.WARD);
                     txtWard.setText(ward.getName());
                     mWard = ward;
                     break;
-                case AppConstants.REQUEST_CAMERA_PIC:
+                case RequestCodeConstant.REQUEST_CAMERA_PIC:
                     Bundle bundle = data.getExtras();
 
                     if (bundle != null) {
@@ -517,7 +519,7 @@ public class UpdateProfileActivity extends BaseActivity<UpdateProfilePresenter> 
                         avatar = null;
                     }
                     break;
-                case AppConstants.REQUEST_SELECT_FILE:
+                case RequestCodeConstant.REQUEST_SELECT_FILE:
                     Uri selectedImageUri = data.getData();
                     try {
                         avatar = getBitmapFromUri(this, selectedImageUri);

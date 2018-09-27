@@ -11,21 +11,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.local.db_realm.BookingDetailRealm;
 import com.ptit.baobang.piospaapp.data.local.db_realm.OrderProductRealm;
 import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
 import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.OrderProductAdapter;
-import com.ptit.baobang.piospaapp.ui.adapter.OrderServiceAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
+import com.ptit.baobang.piospaapp.utils.DefaultValue;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
-
 import net.cachapa.expandablelayout.ExpandableLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -108,11 +104,6 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     List<OrderProductRealm> mProduct;
     OrderProductAdapter mProductAdapter;
 
-    @BindView(R.id.rvServices)
-    RecyclerView rvServices;
-    List<BookingDetailRealm> mServices;
-    OrderServiceAdapter mServiceAdapter;
-
     @BindView(R.id.cvDeliveyType)
     CardView cvDeliveyType;
     @BindView(R.id.cvPaymentTypeComfirm)
@@ -133,7 +124,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         int current = android.os.Process.myPid();
         if (current != SharedPreferenceUtils.getProcessID(this)){
             SharedPreferenceUtils.saveCurrentProcessID(this);
-            SharedPreferenceUtils.saveCount(this, 0);
+            SharedPreferenceUtils.saveCount(this, DefaultValue.INT);
         }
     }
     private void init() {
@@ -145,11 +136,6 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         mProductAdapter = new OrderProductAdapter(this, mProduct);
         rvProducts.setLayoutManager(new LinearLayoutManager(this));
         rvProducts.setAdapter(mProductAdapter);
-
-        mServices = new ArrayList<>();
-        mServiceAdapter = new OrderServiceAdapter(this, mServices);
-        rvServices.setLayoutManager(new LinearLayoutManager(this));
-        rvServices.setAdapter(mServiceAdapter);
 
         order = mPresenter.getDate(getIntent());
         mPresenter.loadData(order);
@@ -170,7 +156,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle(getString(R.string.order_detail) + "     ");
-        centerToolbarTitle(toolbar, 0);
+        centerToolbarTitle(toolbar, DefaultValue.INT);
     }
 
     @Override
@@ -197,20 +183,20 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
 
     @Override
     public void setView(String code, String createdAt, String orderStatusName, String fullName, String address, String ward, String district,
-                        String province, String phone, List<OrderProductRealm> productItems, List<BookingDetailRealm> priceItems, String orderDeliveryTypeName,
+                        String province, String phone, List<OrderProductRealm> productItems, String orderDeliveryTypeName,
                         String orderPaymentTypeName, String orderPaymentTypeDescription,
                         String total, String ship, String subtotal) {
 
         switch (orderStatusName) {
-            case "Chưa thanh toán":
+            case AppConstants.NOT_PAY_MENT:
                 cvOrderStatus.setBackgroundResource(R.color.light_blue);
                 btnCancel.setVisibility(View.VISIBLE);
                 break;
-            case "Thanh toán":
+            case AppConstants.PAYMENT:
                 cvOrderStatus.setBackgroundResource(R.color.light_green);
                 btnCancel.setVisibility(View.GONE);
                 break;
-            case "Hủy":
+            case AppConstants.CANCEL:
                 cvOrderStatus.setBackgroundResource(R.color.light_red);
                 btnCancel.setVisibility(View.GONE);
                 break;
@@ -219,7 +205,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         txtOrderId.setText(getString(R.string.order_id) + code);
         txtCreatedAt.setText(getString(R.string.created_at) + createdAt);
         txtStatus.setText(getString(R.string.status) + orderStatusName);
-        txtFullName.setText(new StringBuilder(fullName + "\t" + phone));
+        txtFullName.setText(new StringBuilder(fullName + AppConstants.TAB_SYMBOL + phone));
         txtAddressComfirm.setText(address);
         txtWardComfirm.setText(ward);
         txtDistrictComfirm.setText(district);
@@ -246,16 +232,10 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         txtShip.setText(ship);
         txtPayment.setText(subtotal);
         updateRecycleProducts(productItems);
-        updateRecycleServices(priceItems);
         if (mProduct.size() == 0) {
             layoutProduct.setVisibility(View.GONE);
         } else {
             layoutProduct.setVisibility(View.VISIBLE);
-        }
-        if (mServices.size() == 0) {
-            layoutService.setVisibility(View.GONE);
-        } else {
-            layoutService.setVisibility(View.VISIBLE);
         }
 
         expandableLayout.expand(true);
@@ -272,24 +252,17 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     }
 
     @Override
-    public void updateRecycleServices(List<BookingDetailRealm> priceItems) {
-        mServices.clear();
-        mServices.addAll(priceItems);
-        mServiceAdapter.notifyDataSetChanged();
-    }
-
-    @Override
     public void setView(String orderStatusName) {
         switch (orderStatusName) {
-            case "Chưa thanh toán":
+            case AppConstants.NOT_PAY_MENT:
                 cvOrderStatus.setBackgroundResource(R.color.light_blue);
                 btnCancel.setVisibility(View.VISIBLE);
                 break;
-            case "Thanh toán":
+            case AppConstants.PAYMENT:
                 cvOrderStatus.setBackgroundResource(R.color.light_green);
                 btnCancel.setVisibility(View.GONE);
                 break;
-            case "Hủy":
+            case AppConstants.CANCEL:
                 cvOrderStatus.setBackgroundResource(R.color.light_red);
                 btnCancel.setVisibility(View.GONE);
                 break;
@@ -302,7 +275,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     public void setTax(String taxName, int taxValue, String taxUnit) {
         lbTax.setText(taxName);
         if(taxUnit.equals(AppConstants.PECENT)){
-            txtTax.setText(new StringBuilder(taxValue + "%"));
+            txtTax.setText(new StringBuilder(taxValue + AppConstants.PERCENT_SYMBOL));
         }else if(taxUnit.equals(AppConstants.MONEY)){
             txtTax.setText(CommonUtils.formatToCurrency(taxValue));
         }

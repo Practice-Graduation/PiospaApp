@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.local.db_realm.BookingDetailRealm;
 import com.ptit.baobang.piospaapp.data.local.db_realm.OrderProductRealm;
 import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
@@ -98,20 +97,8 @@ public class OrderAdapter<P extends BasePresenter> extends RecyclerView.Adapter<
                 txtTime.setVisibility(View.GONE);
                 quanlity = context.getString(R.string.amount) + ": " + orderProduct.getAmount();
                 price += CommonUtils.formatToCurrency(orderProduct.getPrice());
-            } else {
-                if (order.getBookingDetails().size() > 0) {
-                    BookingDetailRealm detail = order.getBookingDetails().get(0);
-                    name = detail.getServiceName();
-                    imgStr = detail.getServiceImage();
-
-                    date = detail.getDateBooking();
-                    time = detail.getTimeBooking();
-
-                    quanlity = context.getString(R.string.number_customer) + ": " + detail.getNumberCustomer() + "";
-                    price += CommonUtils.formatToCurrency(detail.getPrice());
-                }
             }
-            int totalNumber = order.getOrderProductRealms().size() + order.getBookingDetails().size();
+            int totalNumber = order.getOrderProductRealms().size();
             if (totalNumber <= 1) {
                 layoutMore.setVisibility(View.GONE);
             } else {

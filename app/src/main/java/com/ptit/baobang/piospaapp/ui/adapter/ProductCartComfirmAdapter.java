@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class ProductCartComfirmAdapter extends RecyclerView.Adapter<ProductCartC
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view  = inflater.inflate(R.layout.item_product_cart_comfirm, parent, false);
+        View view = inflater.inflate(R.layout.item_product_cart_comfirm, parent, false);
         return new ViewHolder(view);
     }
 
@@ -62,12 +63,12 @@ public class ProductCartComfirmAdapter extends RecyclerView.Adapter<ProductCartC
         void bindView(CartProductItem cartProductItem) {
             try {
                 txtName.setText(cartProductItem.getProduct().getProductName());
-                txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) + ": " + CommonUtils.formatToCurrency(cartProductItem.getProduct().getPrice())));
-                txtQuanlity.setText(new StringBuilder(mContext.getString(R.string.quanlity)+": "+cartProductItem.getQuanlity()));
+                txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) + AppConstants.DOUBLE_DOT + CommonUtils.formatToCurrency(cartProductItem.getProduct().getPrice())));
+                txtQuanlity.setText(new StringBuilder(mContext.getString(R.string.quanlity) + AppConstants.DOUBLE_DOT + cartProductItem.getQuanlity()));
                 RequestOptions options = new RequestOptions().error(R.drawable.error).placeholder(R.drawable.paceholder);
                 Glide.with(mContext).load(cartProductItem.getProduct().getImage())
                         .apply(options).into(img);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

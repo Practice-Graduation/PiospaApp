@@ -19,6 +19,7 @@ import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -103,21 +104,21 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     @Override
     public void showProductDetail(Product product) {
         txtName.setText(product.getProductName());
-        txtPrice.setText(new StringBuilder(getString(R.string.price) + ": " + CommonUtils.formatToCurrency(product.getPrice())));
+        txtPrice.setText(new StringBuilder(getString(R.string.price) +  AppConstants.DOUBLE_DOT + CommonUtils.formatToCurrency(product.getPrice())));
         txtInfo.setText(Html.fromHtml(product.getDescription()));
-        txtAmount.setText("1");
-        txtProductLable.setText("Thương hiệu: " + product.getProductLabel().getProductLabelName());
-        txtProductOrigin.setText("Nguồn gốc: " +  product.getProductOrigin().getProductOriginName());
-        txtProductQuanlity.setText("Trọng lượng: " + product.getQuantity() + product.getQuantityValue());
+        txtAmount.setText(AppConstants.DEFAULT_AMOUNT);
+        txtProductLable.setText(AppConstants.LABEL + product.getProductLabel().getProductLabelName());
+        txtProductOrigin.setText(AppConstants.ORGIGIN +  product.getProductOrigin().getProductOriginName());
+        txtProductQuanlity.setText(AppConstants.QUANLITY + product.getQuantity() + product.getQuantityValue());
         RequestOptions options = new RequestOptions().placeholder(R.drawable.paceholder).error(R.drawable.error);
         Glide.with(this).load(product.getImage()).apply(options).into(img);
         Glide.with(this).load(product.getImage()).apply(options).into(imgSmallImage);
     }
 
     @Override
-    public void openFramentCart() {
+    public void openFragmentCart() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(AppConstants.FRAGMENT, AppConstants.CART_INDEX);
+        intent.putExtra(KeyBundleConstant.FRAGMENT, AppConstants.CART_INDEX);
         startActivity(intent);
     }
 

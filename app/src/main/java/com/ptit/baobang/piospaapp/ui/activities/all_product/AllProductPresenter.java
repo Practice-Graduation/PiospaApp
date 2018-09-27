@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Product;
@@ -74,7 +73,7 @@ public class AllProductPresenter extends BasePresenter implements IAllProductPre
     @Override
     public void filter(SearchView searchView) {
         RxSearchObservable.fromView(searchView)
-                .debounce(100, TimeUnit.MILLISECONDS)
+                .debounce(RxSearchObservable.TIME_OUT, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
@@ -82,7 +81,6 @@ public class AllProductPresenter extends BasePresenter implements IAllProductPre
     }
 
     private void handFilterResponse(String s) {
-        Log.e("TAG", s);
         mView.getProductAdapter().getFilter().filter(s);
     }
 }

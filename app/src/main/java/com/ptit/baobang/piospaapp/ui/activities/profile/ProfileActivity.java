@@ -26,7 +26,7 @@ import com.ptit.baobang.piospaapp.ui.activities.login.LoginActivity;
 import com.ptit.baobang.piospaapp.ui.activities.order.OrderActivity;
 import com.ptit.baobang.piospaapp.ui.activities.update_profile.UpdateProfileActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import java.util.Objects;
@@ -205,7 +205,7 @@ public class ProfileActivity extends BaseActivity<ProfilePresenter> implements I
     public void showOrderActivity(int i) {
         Intent intent = new Intent(this, OrderActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt(AppConstants.ORDER_FRAGMENT_INDEX, i);
+        bundle.putInt(KeyBundleConstant.ORDER_FRAGMENT_INDEX, i);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -224,7 +224,7 @@ public class ProfileActivity extends BaseActivity<ProfilePresenter> implements I
     public void onClickUpdate(Customer customer) {
         Intent intent = new Intent(this, UpdateProfileActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(AppConstants.CUSTOMER, customer);
+        bundle.putSerializable(KeyBundleConstant.CUSTOMER, customer);
         intent.putExtras(bundle);
         startActivity(intent);
     }

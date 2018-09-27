@@ -17,7 +17,7 @@ import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Ward;
 import com.ptit.baobang.piospaapp.ui.adapter.WardAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +105,7 @@ public class WardActivity extends BaseActivity implements IWardView {
     @Override
     public void backToPaymentActivity(Ward ward) {
         Intent intent = new Intent();
-        intent.putExtra(AppConstants.WARD, ward);
+        intent.putExtra(KeyBundleConstant.WARD, ward);
         setResult(RESULT_OK, intent);
         finish();
     }

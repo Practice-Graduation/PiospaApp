@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.local.helper.OrderHelper;
-import com.ptit.baobang.piospaapp.data.local.listener.RealmCallBack;
-import com.ptit.baobang.piospaapp.data.local.db_realm.BookingDetailRealm;
 import com.ptit.baobang.piospaapp.data.local.db_realm.OrderProductRealm;
 import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
-import com.ptit.baobang.piospaapp.data.model.BookingDetailObject;
+import com.ptit.baobang.piospaapp.data.local.helper.OrderHelper;
+import com.ptit.baobang.piospaapp.data.local.listener.RealmCallBack;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.OrderObject;
 import com.ptit.baobang.piospaapp.data.model.OrderProductObject;
@@ -18,6 +16,8 @@ import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.DefaultValue;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class OrderPresenter extends BasePresenter implements IOrderPresenter {
     }
 
     private void handleError(Throwable throwable) {
-        mView.hideLoading("Tải dữ liệu thất bại", false);
+        mView.hideLoading(mContext.getString(R.string.load_data_failed_message), false);
     }
 
     private void handleResponeSuccess(EndPoint<List<OrderObject>> orderEndPoint) {
@@ -84,9 +84,8 @@ public class OrderPresenter extends BasePresenter implements IOrderPresenter {
         List<OrderRealm> orderRealms = new ArrayList<>();
         List<OrderObject> orderObjects = orderEndPoint.getData();
         for (OrderObject orderObject : orderObjects) {
-            RealmList<BookingDetailRealm> bookingDetails = getBookingDetailRealm(orderObject.getBookingDetails());
             RealmList<OrderProductRealm> orderProductRealms = getOrderProductRealm(orderObject.getOrderProducts());
-            orderRealms.add(new OrderRealm(orderObject.getOrder(), bookingDetails, orderProductRealms));
+            orderRealms.add(new OrderRealm(orderObject.getOrder(), orderProductRealms));
         }
         OrderHelper.saveOrderList(orderRealms, new RealmCallBack() {
             @Override
@@ -113,18 +112,9 @@ public class OrderPresenter extends BasePresenter implements IOrderPresenter {
         return orderProductRealms;
     }
 
-    private RealmList<BookingDetailRealm> getBookingDetailRealm(List<BookingDetailObject> bookingDetails) {
-        RealmList<BookingDetailRealm> bookingDetailRealms = new RealmList<>();
-        for(BookingDetailObject bookingDetailObject : bookingDetails){
-            bookingDetailRealms.add(new BookingDetailRealm(bookingDetailObject));
-        }
-        return bookingDetailRealms;
-    }
-
-
     public int getSelectedTab(Intent intent) {
         Bundle bundle = intent.getExtras();
-        if (bundle == null) return 0;
-        return bundle.getInt(AppConstants.ORDER_FRAGMENT_INDEX);
+        if (bundle == null) return DefaultValue.INT;
+        return bundle.getInt(KeyBundleConstant.ORDER_FRAGMENT_INDEX);
     }
 }

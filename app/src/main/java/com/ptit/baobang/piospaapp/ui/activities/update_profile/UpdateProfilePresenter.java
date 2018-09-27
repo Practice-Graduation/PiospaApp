@@ -8,13 +8,13 @@ import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.data.model.Ward;
+import com.ptit.baobang.piospaapp.data.network.api.APIService;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackChoosePhoto;
@@ -23,6 +23,7 @@ import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
 import com.ptit.baobang.piospaapp.utils.InputUtils;
+import com.ptit.baobang.piospaapp.utils.RequestCodeConstant;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -32,7 +33,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -63,10 +63,9 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
         } else {
             gender = gender.equalsIgnoreCase(mContext.getString(R.string.male)) ? mContext.getString(R.string.text_male) : mContext.getString(R.string.text_female);
         }
-        String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern, new Locale("vi", "VN"));
+        SimpleDateFormat sdf = new SimpleDateFormat(DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ, DateTimeUtils.getLocale());
         try {
             calendar.setTime(sdf.parse(birday));
             birday = DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY);
@@ -171,16 +170,14 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
                 customer.setPhone(phone);
                 customer.setEmail(email);
 
-                String pattern = "dd/MM/yyy";
-
                 Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat(pattern, new Locale("vi", "VN"));
+                SimpleDateFormat sdf = new SimpleDateFormat(DateTimeUtils.DATE_PATTERN_DDMMYY, DateTimeUtils.getLocale());
                 try {
                     calendar.setTime(sdf.parse(birthday));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                mView.showLoading("Upload...");
+                mView.showLoading(mContext.getString(R.string.uploading));
                 customer.setBirthday(DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ));
                 customer.setGender(gender.equalsIgnoreCase(mContext.getString(R.string.text_male)) ? mContext.getString(R.string.male) : mContext.getString(R.string.female));
                 customer.setProvince(mProvince);
@@ -189,10 +186,8 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
                 customer.setAddress(address);
                 if (avatar == null) {
                     uploadWithoutAvatar(customer);
-                    Log.e("Up profile Pre", "uploadWithoutAvatar");
                 } else {
                     uploadWithAvatar(customer, avatar);
-                    Log.e("Up profile Pre", "uploadWithAvatar");
                 }
             }
 
@@ -216,7 +211,7 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
         try {
 
             //create a file to write bitmap data
-            File file = new File(mContext.getCacheDir(), "avatar.jpg");
+            File file = new File(mContext.getCacheDir(), AppConstants.DEFAULT_FILE_NAME);
             file.createNewFile();
 
             //Convert bitmap to byte array
@@ -231,14 +226,16 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
             fos.flush();
             fos.close();
 
+
+
             RequestBody requestFile =
                     RequestBody.create(
-                            MediaType.parse("multipart/form-data"),
+                            MediaType.parse(APIService.MULTIPART_FORM_DATA),
                             file
                     );
             RequestBody data = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("file", file.getName(), requestFile)
+                    .addFormDataPart(APIService.PARAM_UPLOAD_AVATAR, file.getName(), requestFile)
                     .build();
 
             getCompositeDisposable().add(mApiService.uploadImage(data)
@@ -256,7 +253,7 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
     }
 
     private void handleResponseUpload(EndPoint<String> stringEndPoint) {
-        if (stringEndPoint.getStatusCode() == 200) {
+        if (stringEndPoint.getStatusCode() == AppConstants.SUCCESS_CODE) {
             mCustomer.setCustomerAvatar(stringEndPoint.getData());
             getCompositeDisposable().add(mApiService.updateCustomer(mCustomer.getCustomerId(), mCustomer)
                     .subscribeOn(Schedulers.computation())
@@ -264,26 +261,26 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
                     .unsubscribeOn(Schedulers.io())
                     .subscribe(UpdateProfilePresenter.this::handleUploadSuccess, UpdateProfilePresenter.this::handleUploadError));
         } else {
-            mView.hideLoading("Có lỗi xảy ra " + stringEndPoint.getMessage(), false);
+            mView.hideLoading(stringEndPoint.getMessage(), false);
         }
     }
 
 
     private void handleUploadSuccess(EndPoint<Customer> customerEndPoint) {
 
-        if (customerEndPoint.getStatusCode() == 200) {
+        if (customerEndPoint.getStatusCode() == AppConstants.SUCCESS_CODE) {
             SharedPreferenceUtils.saveUser(mContext, customerEndPoint.getData());
             mView.setNullAvatar();
             mView.loadAvatar(customerEndPoint.getData().getCustomerAvatar());
-            mView.hideLoading("Lưu thành công", true);
+            mView.hideLoading(mContext.getString(R.string.save_successed), true);
         } else {
-            mView.hideLoading("Có lỗi xảy ra " + customerEndPoint.getMessage(), false);
+            mView.hideLoading(customerEndPoint.getMessage(), false);
         }
 
     }
 
     private void handleUploadError(Throwable throwable) {
-        mView.hideLoading("Upload thất bại", false);
+        mView.hideLoading(mContext.getString(R.string.upload_failed), false);
     }
 
     @Override
@@ -307,20 +304,20 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
 
     public void cameraIntent(Activity activity) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        activity.startActivityForResult(intent, AppConstants.REQUEST_CAMERA_PIC);
+        activity.startActivityForResult(intent, RequestCodeConstant.REQUEST_CAMERA_PIC);
     }
 
     public void galleryIntent(Activity activity) {
         Intent intent = new Intent();
-        intent.setType("image/*");
+        intent.setType(AppConstants.IMAGE_PATH);
         intent.setAction(Intent.ACTION_GET_CONTENT);//
-        activity.startActivityForResult(Intent.createChooser(intent, "Select avatar..."), AppConstants.REQUEST_SELECT_FILE);
+        activity.startActivityForResult(Intent.createChooser(intent, activity.getString(R.string.select_avatar)), RequestCodeConstant.REQUEST_SELECT_FILE);
     }
 
     private boolean checkCamPermission(Activity activity) {
         if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.CAMERA}, AppConstants.REQUEST_CAMERA_PIC);
+            ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.CAMERA}, RequestCodeConstant.REQUEST_CAMERA_PIC);
             return false;
         } else {
             return true;
@@ -330,7 +327,7 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
     private boolean checkGaleryPermission(Activity activity) {
         if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, AppConstants.REQUEST_SELECT_FILE);
+            ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, RequestCodeConstant.REQUEST_SELECT_FILE);
             return false;
         } else {
             return true;
@@ -353,17 +350,16 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
         if (!customer.getEmail().trim().equalsIgnoreCase(email.trim())) {
             return true;
         }
-        String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern, new Locale("vi", "VN"));
+        SimpleDateFormat sdf = new SimpleDateFormat(DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSX, DateTimeUtils.getLocale());
         String cusBirth = "";
         try {
             calendar.setTime(sdf.parse(customer.getBirthday()));
             cusBirth = DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY);
         } catch (ParseException e) {
             e.printStackTrace();
-            sdf = new SimpleDateFormat(pattern, new Locale("vi", "VN"));
+            sdf = new SimpleDateFormat(DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSX, DateTimeUtils.getLocale());
             try {
                 calendar.setTime(sdf.parse(customer.getBirthday()));
                 cusBirth = DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY);

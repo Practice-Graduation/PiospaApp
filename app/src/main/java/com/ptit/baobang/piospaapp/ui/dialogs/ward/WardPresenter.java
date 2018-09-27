@@ -9,7 +9,7 @@ import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Ward;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 import com.ptit.baobang.piospaapp.utils.RxSearchObservable;
 
 import java.util.List;
@@ -57,19 +57,19 @@ public class WardPresenter extends BasePresenter implements IWardPresenter {
 
     @Override
     public District getDistrict(Intent intent) {
-        return (District) intent.getSerializableExtra(AppConstants.DISTRICT);
+        return (District) intent.getSerializableExtra(KeyBundleConstant.DISTRICT);
 
     }
 
     @Override
     public Ward getWard(Intent intent) {
-        return (Ward) intent.getSerializableExtra(AppConstants.WARD);
+        return (Ward) intent.getSerializableExtra(KeyBundleConstant.WARD);
     }
 
     @Override
     public void filter(SearchView searchView) {
         RxSearchObservable.fromView(searchView)
-                .debounce(100, TimeUnit.MILLISECONDS)
+                .debounce(RxSearchObservable.TIME_OUT, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())

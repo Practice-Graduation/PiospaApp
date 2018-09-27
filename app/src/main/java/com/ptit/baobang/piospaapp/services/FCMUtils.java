@@ -14,7 +14,6 @@ public class FCMUtils {
                     if (!task.isSuccessful()) {
                         msg = context.getString(R.string.msg_subscribe_failed);
                     }
-                    Log.d("LoginPresenter", msg);
                 });
 
     }
@@ -27,7 +26,6 @@ public class FCMUtils {
                if (!task.isSuccessful()) {
                    msg = context.getString(R.string.msg_unsubscribe_failed);
                }
-               Log.d("LoginPresenter", msg);
            });
        }catch (Exception e){
             e.printStackTrace();

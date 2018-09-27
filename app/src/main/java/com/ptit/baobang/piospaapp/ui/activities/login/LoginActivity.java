@@ -13,7 +13,8 @@ import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.activities.register.RegisterActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
+import com.ptit.baobang.piospaapp.utils.RequestCodeConstant;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import butterknife.BindView;
@@ -42,7 +43,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         setContentView(R.layout.activity_login);
         mPresenter = new LoginPresenter(this, this);
         hideKeyboardOutside(root);
-        slideDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
+        slideDownAnimation = AnimationUtils.loadAnimation(
+                getApplicationContext(),
                 R.anim.slide_down_animation);
         nestedScrollView.startAnimation(slideDownAnimation);
     }
@@ -60,7 +62,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     void onClick(View view){
         switch (view.getId()){
             case R.id.btnLogin:
-                mPresenter.onClickLogin(txtUsername.getText().toString(),
+                mPresenter.onClickLogin(
+                        txtUsername.getText().toString(),
                         txtPassword.getText().toString());
                 break;
             case R.id.btnRegister:
@@ -80,16 +83,16 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     public void openRegisterActivity() {
         Intent intent = new Intent(this, RegisterActivity.class);
-        startActivityForResult(intent, AppConstants.REQUEST_CODE);
+        startActivityForResult(intent, RequestCodeConstant.REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == AppConstants.REQUEST_CODE){
+        if(requestCode == RequestCodeConstant.REQUEST_CODE){
             if(resultCode == RESULT_OK){
-                String userName = data.getStringExtra(AppConstants.USERNAME);
-                String password = data.getStringExtra(AppConstants.PASSWORD);
+                String userName = data.getStringExtra(KeyBundleConstant.USERNAME);
+                String password = data.getStringExtra(KeyBundleConstant.PASSWORD);
                 txtUsername.setText(userName);
                 txtPassword.setText(password);
             }

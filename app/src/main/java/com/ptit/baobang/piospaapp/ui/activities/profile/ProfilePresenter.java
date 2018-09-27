@@ -11,14 +11,13 @@ import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class ProfilePresenter extends BasePresenter implements IProfilePresenter {
 
     private Context mContext;
     private IProfileView mView;
 
-    public ProfilePresenter(Context mContext,IProfileView mView) {
+    public ProfilePresenter(Context mContext, IProfileView mView) {
         this.mView = mView;
         this.mContext = mContext;
     }
@@ -29,15 +28,14 @@ public class ProfilePresenter extends BasePresenter implements IProfilePresenter
 
         String gender = customer.getGender();
         String birday = (customer.getBirthday() == null || customer.getBirthday().trim().length() == 0) ? "" : customer.getBirthday();
-        if(gender == null || gender.trim().length() == 0){
+        if (gender == null || gender.trim().length() == 0) {
             gender = "";
-        }else{
+        } else {
             gender = gender.equalsIgnoreCase(mContext.getString(R.string.male)) ? mContext.getString(R.string.text_male) : mContext.getString(R.string.text_female);
         }
-        String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern, new Locale("vi", "VN"));
+        SimpleDateFormat sdf = new SimpleDateFormat(DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ, DateTimeUtils.getLocale());
         try {
             calendar.setTime(sdf.parse(birday));
             birday = DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY);

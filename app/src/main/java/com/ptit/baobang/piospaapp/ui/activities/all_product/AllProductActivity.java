@@ -19,6 +19,8 @@ import com.ptit.baobang.piospaapp.ui.activities.product_detail.ProductDetailActi
 import com.ptit.baobang.piospaapp.ui.adapter.ProductAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.DefaultValue;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,7 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle(getTitleFromBundle());
-        centerToolbarTitle(toolbar, 0);
+        centerToolbarTitle(toolbar, DefaultValue.INT);
         mProducts = new ArrayList<>();
         mProductAdapter = new ProductAdapter(this, mProducts, R.layout.item_all_product);
         rvProducts.setLayoutManager(new GridLayoutManager(this, AppConstants.SPAN_COUNT));
@@ -80,7 +82,7 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
     public void openProductDetailActivity(Product product) {
         Intent intent = new Intent(this, ProductDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(AppConstants.PRODUCT_ID, product);
+        bundle.putSerializable(KeyBundleConstant.PRODUCT_ID, product);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -95,7 +97,7 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
         int id = 0;
         try {
             if (bundle != null)
-                id = bundle.getInt(AppConstants.PRODUCT_GROUP_ID);
+                id = bundle.getInt(KeyBundleConstant.PRODUCT_GROUP_ID);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
@@ -140,7 +142,7 @@ public class AllProductActivity extends BaseActivity<AllProductPresenter> implem
         String title = getString(R.string.title_product) + "    ";
         try {
             if (bundle != null)
-                title = bundle.getString(AppConstants.TOOL_BAR_TITLE);
+                title = bundle.getString(KeyBundleConstant.TOOL_BAR_TITLE);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }

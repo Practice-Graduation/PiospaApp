@@ -16,7 +16,7 @@ import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.ui.adapter.ProvinceAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +103,7 @@ public class ProvinceActivity extends BaseActivity implements IProvinceView {
     @Override
     public void backToPaymentActivity(Province province) {
         Intent intent = new Intent();
-        intent.putExtra(AppConstants.PROVINCE, province);
+        intent.putExtra(KeyBundleConstant.PROVINCE, province);
         setResult(RESULT_OK, intent);
         finish();
     }

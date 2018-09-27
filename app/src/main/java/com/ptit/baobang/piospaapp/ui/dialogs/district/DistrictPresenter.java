@@ -9,7 +9,7 @@ import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
-import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 import com.ptit.baobang.piospaapp.utils.RxSearchObservable;
 
 import java.util.List;
@@ -56,18 +56,18 @@ public class DistrictPresenter extends BasePresenter implements IDistrictPresent
 
     @Override
     public Province getProvince(Intent intent) {
-        return (Province) intent.getSerializableExtra(AppConstants.PROVINCE);
+        return (Province) intent.getSerializableExtra(KeyBundleConstant.PROVINCE);
     }
 
     @Override
     public District getDistrict(Intent intent) {
-        return (District) intent.getSerializableExtra(AppConstants.DISTRICT);
+        return (District) intent.getSerializableExtra(KeyBundleConstant.DISTRICT);
     }
 
     @Override
     public void filter(SearchView searchView) {
         RxSearchObservable.fromView(searchView)
-                .debounce(100, TimeUnit.MILLISECONDS)
+                .debounce(RxSearchObservable.TIME_OUT, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())

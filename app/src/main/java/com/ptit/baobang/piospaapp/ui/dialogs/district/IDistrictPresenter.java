@@ -10,7 +10,9 @@ public interface IDistrictPresenter {
     void loadData(Province province);
 
     void clickItem(District district);
+
     Province getProvince(Intent intent);
+
     District getDistrict(Intent intent);
 
     void filter(SearchView searchView);

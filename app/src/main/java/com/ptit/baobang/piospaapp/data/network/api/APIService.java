@@ -30,7 +30,8 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface APIService {
-
+    String MULTIPART_FORM_DATA = "multipart/form-data";
+    String PARAM_UPLOAD_AVATAR = "file";
     //---------------PRODUCT--------------------------
 
     @GET("product/group")

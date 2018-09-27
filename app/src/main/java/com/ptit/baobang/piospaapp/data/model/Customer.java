@@ -3,6 +3,7 @@ package com.ptit.baobang.piospaapp.data.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.io.Serializable;
 
@@ -194,11 +195,11 @@ public class Customer  implements Serializable {
     public String getFullAddress(){
         String fullAdress =  address;
         if(ward != null)
-            fullAdress +=  ", " + ward.getType() + " " + ward.getName();
+            fullAdress +=  AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL + ward.getType() + AppConstants.SPACE_SYMBOL + ward.getName();
         if(district != null)
-            fullAdress += ","+ district.getType() + " " + district.getName();
+            fullAdress += AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL+ district.getType() + AppConstants.SPACE_SYMBOL + district.getName();
         if(province != null)
-            fullAdress += ", "+ province.getType() + " " + province.getName();
+            fullAdress += AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL+ province.getType() + AppConstants.SPACE_SYMBOL + province.getName();
         return fullAdress;
     }
 }
