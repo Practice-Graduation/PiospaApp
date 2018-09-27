@@ -1,7 +1,6 @@
 package com.ptit.baobang.piospaapp.data.local.db_realm;
 
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
-import com.ptit.baobang.piospaapp.data.model.BookingDetailObject;
 import com.ptit.baobang.piospaapp.data.model.OrderProductObject;
 
 import io.realm.RealmObject;

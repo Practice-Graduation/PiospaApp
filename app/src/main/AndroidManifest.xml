@@ -39,19 +39,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.activities.service_detail.ServiceDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ui.dialogs.booking_time.BookingTimeActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".ui.activities.register.RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ui.activities.booking_info.BookingInfoActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -87,10 +75,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.activities.all_services.AllServiceActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".ui.activities.change_password.ChangePasswordActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
@@ -123,10 +107,6 @@
             android:name="io.fabric.ApiKey"
             android:value="37144723bfe36cdecec782bb1b438278a61b24d4" />
 
-        <activity
-            android:name=".ui.dialogs.room.RoomActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

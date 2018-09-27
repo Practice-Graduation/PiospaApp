@@ -1,6 +1,5 @@
 package com.ptit.baobang.piospaapp.data.network.api;
 
-import com.ptit.baobang.piospaapp.data.model.BookingDetail;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Order;
@@ -11,19 +10,13 @@ import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.data.model.ProductGroup;
 import com.ptit.baobang.piospaapp.data.model.Province;
-import com.ptit.baobang.piospaapp.data.model.Room;
-import com.ptit.baobang.piospaapp.data.model.Service;
-import com.ptit.baobang.piospaapp.data.model.ServiceGroup;
-import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.data.model.Tax;
 import com.ptit.baobang.piospaapp.data.model.Ward;
-import com.ptit.baobang.piospaapp.data.network.model_request.BookingDetailRequest;
 import com.ptit.baobang.piospaapp.data.network.model_request.CancelOrderRequest;
 import com.ptit.baobang.piospaapp.data.network.model_request.LoginRequest;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderBodyRequest;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderCustomerBody;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderResponse;
-import com.ptit.baobang.piospaapp.data.network.model_request.RoomBody;
 
 import java.util.List;
 
@@ -48,32 +41,7 @@ public interface APIService {
 
     @GET("product/{productId}")
     Call<EndPoint<Product>> getProductById(@Path("productId") int productId);
-
-    //---------------SERVICE--------------------------
-
-    @GET("service/group")
-    Observable<EndPoint<List<ServiceGroup>>> getAllServiceGroup();
-
-    @GET("service/price/group/{groupId}")
-    Call<EndPoint<List<ServicePrice>>> getServicePriceByGroupId(@Path("groupId") int groupId);
-
-    @GET("/service/price/group/{groupId}/top-ten")
-    Call<EndPoint<List<ServicePrice>>> getTopTenServicePriceByGroupId(@Path("groupId") int groupId);
-
-    @GET("service/{serviceId}")
-    Call<EndPoint<Service>> getServiceById(@Path("serviceId") int serviceId);
-
-    @GET("service/price/{servicePriceId}")
-    Observable<EndPoint<ServicePrice>> getServicePriceById(@Path("servicePriceId") int servicePriceId);
-
-    @GET("/service/packages/{packageId}")
-    Observable<EndPoint<List<Service>>> getServiceByPackageId(@Path("packageId") int packageId);
-
-    //---------------BOOKINNG DETAIL--------------------------
-    @POST("detail/date")
-    Observable<EndPoint<List<BookingDetail>>> getBookingDetailOnDayOfRoom(@Body BookingDetailRequest request);
-
-    // ------------------CUSTOMEMR------------------------------------
+    // ------------------CUSTOMER------------------------------------
     @POST("customer/login")
     Call<EndPoint<Customer>> login(@Body LoginRequest loginRequest);
 
@@ -84,7 +52,7 @@ public interface APIService {
     Observable<EndPoint<Customer>> updateCustomer(@Path("customerId") int customerId, @Body Customer customer);
 
 
-    // ------------------ADDREsS------------------------------------
+    // ------------------ADDEREsS------------------------------------
     @GET("province")
     Observable<EndPoint<List<Province>>> getAllProvince();
 
@@ -135,6 +103,4 @@ public interface APIService {
     @GET("product/code/{productCode}")
     Observable<EndPoint<Product>> getProductByCode(@Path("productCode")String returnString);
 
-    @POST("room")
-    Observable<EndPoint<List<Room>>> getRoom(@Body RoomBody roomBody);
 }

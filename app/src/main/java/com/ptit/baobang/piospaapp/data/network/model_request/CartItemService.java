@@ -2,7 +2,6 @@ package com.ptit.baobang.piospaapp.data.network.model_request;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.ptit.baobang.piospaapp.data.model.Room;
 
 public class CartItemService {
 
@@ -18,18 +17,6 @@ public class CartItemService {
     @SerializedName("productId")
     @Expose
     private int productId;
-
-    @SerializedName("room")
-    @Expose
-    private Room room;
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
 
     public String getDateBooking() {
         return dateBooking;

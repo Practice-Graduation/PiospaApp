@@ -1,7 +1,6 @@
 package com.ptit.baobang.piospaapp.data.local.db_realm;
 
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
-import com.ptit.baobang.piospaapp.data.cart.CartServicePriceItem;
 import com.ptit.baobang.piospaapp.data.model.Order;
 
 import java.io.Serializable;
@@ -65,8 +64,6 @@ public class OrderRealm extends RealmObject implements Serializable {
     @RealmField(name = "customer_phone")
     private String customerPhone;
 
-    @RealmField(name = "bookings")
-    private RealmList<BookingDetailRealm> bookingDetails;
 
     @RealmField(name = "order_products")
     private RealmList<OrderProductRealm> orderProductRealms;
@@ -74,7 +71,7 @@ public class OrderRealm extends RealmObject implements Serializable {
     public OrderRealm() {
     }
 
-    public OrderRealm(Order order, RealmList<BookingDetailRealm> bookingDetails, RealmList<OrderProductRealm> orderProductRealms) {
+    public OrderRealm(Order order, RealmList<OrderProductRealm> orderProductRealms) {
         orderId = order.getOrderId();
         createdAt = order.getCreatedAt();
         orderStatusId = order.getOrderStatus().getOrderStatusId();
@@ -103,13 +100,12 @@ public class OrderRealm extends RealmObject implements Serializable {
         customerId = order.getCustomer().getCustomerId();
         customerName = order.getFullName();
         customerPhone = order.getPhone();
-        this.bookingDetails = bookingDetails;
         this.orderProductRealms = orderProductRealms;
 
     }
 
 
-    public OrderRealm(Order order, List<CartProductItem> cartProductItems, List<CartServicePriceItem> cartServicePriceItems) {
+    public OrderRealm(Order order, List<CartProductItem> cartProductItems) {
         orderId = order.getOrderId();
         createdAt = order.getCreatedAt();
         orderStatusId = order.getOrderStatus().getOrderStatusId();
@@ -137,12 +133,8 @@ public class OrderRealm extends RealmObject implements Serializable {
         customerName = order.getFullName();
         customerPhone = order.getPhone();
         orderProductRealms = new RealmList<>();
-        bookingDetails = new RealmList<>();
         for (CartProductItem cpi : cartProductItems) {
             orderProductRealms.add(new OrderProductRealm(cpi));
-        }
-        for (CartServicePriceItem cspi : cartServicePriceItems) {
-            bookingDetails.add(new BookingDetailRealm(cspi));
         }
     }
 
@@ -152,14 +144,6 @@ public class OrderRealm extends RealmObject implements Serializable {
 
     public void setTaxUnit(String taxUnit) {
         this.taxUnit = taxUnit;
-    }
-
-    public RealmList<BookingDetailRealm> getBookingDetails() {
-        return bookingDetails;
-    }
-
-    public void setBookingDetails(RealmList<BookingDetailRealm> bookingDetails) {
-        this.bookingDetails = bookingDetails;
     }
 
     public RealmList<OrderProductRealm> getOrderProductRealms() {

@@ -15,14 +15,10 @@ public class OrderObject implements Serializable {
     @Expose
     private List<OrderProductObject> orderProducts;
 
-    @SerializedName("bookingDetails")
-    @Expose
-    private List<BookingDetailObject> bookingDetails;
 
-    public OrderObject(Order order, List<OrderProductObject> orderProducts, List<BookingDetailObject> bookingDetails) {
+    public OrderObject(Order order, List<OrderProductObject> orderProducts) {
         this.order = order;
         this.orderProducts = orderProducts;
-        this.bookingDetails = bookingDetails;
     }
 
     public OrderObject() {
@@ -42,13 +38,5 @@ public class OrderObject implements Serializable {
 
     public void setOrderProducts(List<OrderProductObject> orderProducts) {
         this.orderProducts = orderProducts;
-    }
-
-    public List<BookingDetailObject> getBookingDetails() {
-        return bookingDetails;
-    }
-
-    public void setBookingDetails(List<BookingDetailObject> bookingDetails) {
-        this.bookingDetails = bookingDetails;
     }
 }
