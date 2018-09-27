@@ -1,20 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    android:layout_marginLeft="@dimen/margin"
-    android:layout_marginTop="@dimen/margin"
-    android:layout_marginStart="@dimen/margin">
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/txtRoomName"
+        android:id="@+id/line"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textStyle="bold"
-        android:textSize="@dimen/subheading_size"
-        android:padding="@dimen/padding"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:background="@drawable/room_selector"/>
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</android.support.v7.widget.CardView>
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/body_text_size"
+        android:text="Khánh Hòa"
+        android:gravity="center|start"
+        android:paddingLeft="@dimen/padding"
+        android:paddingStart="@dimen/padding"
+        android:paddingTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/txtServing" />
+    <TextView
+        android:id="@+id/txtServing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/body_text_size"
+        android:text="Khánh Hòa"
+        android:gravity="center|end"
+        android:paddingLeft="@dimen/padding"
+        android:paddingStart="@dimen/padding"
+        android:paddingTop="20dp"
+        android:layout_marginEnd="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintStart_toEndOf="@id/txtName"
+        app:layout_constraintTop_toBottomOf="@id/line"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imgStatus" />
+
+    <ImageView
+        android:id="@+id/imgStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin"
+        android:src="@drawable/ic_checked"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="@dimen/margin" />
+
+</android.support.constraint.ConstraintLayout>

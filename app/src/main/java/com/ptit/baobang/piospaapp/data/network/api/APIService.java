@@ -11,6 +11,7 @@ import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.data.model.ProductGroup;
 import com.ptit.baobang.piospaapp.data.model.Province;
+import com.ptit.baobang.piospaapp.data.model.Room;
 import com.ptit.baobang.piospaapp.data.model.Service;
 import com.ptit.baobang.piospaapp.data.model.ServiceGroup;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
@@ -22,6 +23,7 @@ import com.ptit.baobang.piospaapp.data.network.model_request.LoginRequest;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderBodyRequest;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderCustomerBody;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderResponse;
+import com.ptit.baobang.piospaapp.data.network.model_request.RoomBody;
 
 import java.util.List;
 
@@ -132,4 +134,7 @@ public interface APIService {
 
     @GET("product/code/{productCode}")
     Observable<EndPoint<Product>> getProductByCode(@Path("productCode")String returnString);
+
+    @POST("room")
+    Observable<EndPoint<List<Room>>> getRoom(@Body RoomBody roomBody);
 }

@@ -71,6 +71,7 @@ public class ShoppingCartServicePriceAdapter extends RecyclerView.Adapter<Shoppi
             txtTotal = itemView.findViewById(R.id.txtTotal);
             btnAdd = itemView.findViewById(R.id.btnAdd);
             btnRemove = itemView.findViewById(R.id.btnRemove);
+            txtRoom = itemView.findViewById(R.id.txtRoom);
         }
 
         public void bindView(CartServicePriceItem cartServicePriveItem) {
@@ -86,7 +87,7 @@ public class ShoppingCartServicePriceAdapter extends RecyclerView.Adapter<Shoppi
                 name = servicePackage.getServicePackageName();
                 image = servicePackage.getImage();
             }
-
+            txtRoom.setText(cartServicePriveItem.getBookingItem().getRoom().getRoomName());
             txtName.setText(name);
             txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) + ": " + CommonUtils.formatToCurrency(servicePrice.getAllPrice())));
             txtDate.setText(new StringBuilder(DateTimeUtils.formatDate(selectedDate, DateTimeUtils.DATE_PATTERN_DDMMYY)));

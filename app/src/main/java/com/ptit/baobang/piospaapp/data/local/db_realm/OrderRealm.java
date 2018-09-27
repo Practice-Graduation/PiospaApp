@@ -105,6 +105,7 @@ public class OrderRealm extends RealmObject implements Serializable {
         customerPhone = order.getPhone();
         this.bookingDetails = bookingDetails;
         this.orderProductRealms = orderProductRealms;
+
     }
 
 

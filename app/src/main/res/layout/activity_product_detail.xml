@@ -145,7 +145,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
+                <TextView
+                    android:id="@+id/txtProductLable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nhãn hiệu"
+                    android:layout_marginEnd="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginTop="@dimen/margin"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
+                <TextView
+                    android:id="@+id/txtProductOrigin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nguồn gốc"
+                    android:layout_marginEnd="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginTop="@dimen/margin"
+                    app:layout_constraintTop_toBottomOf="@id/txtProductLable"/>
+                <TextView
+                    android:id="@+id/txtProductQuanlity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Trọng lượng"
+                    android:layout_marginEnd="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginTop="@dimen/margin"
+                    app:layout_constraintTop_toBottomOf="@id/txtProductOrigin"/>
                 <TextView
                     android:id="@+id/txtInfo"
                     android:layout_width="0dp"
@@ -154,6 +181,7 @@
                     android:layout_marginStart="@dimen/margin"
                     android:layout_marginTop="@dimen/margin"
                     android:text="Thông tin sản phẩm"
+                    app:layout_constraintTop_toBottomOf="@id/txtProductQuanlity"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 

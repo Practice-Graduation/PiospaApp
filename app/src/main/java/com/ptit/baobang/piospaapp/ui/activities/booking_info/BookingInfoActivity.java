@@ -20,17 +20,21 @@ import android.widget.TimePicker;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.data.model.Room;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
 import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
+import com.ptit.baobang.piospaapp.ui.dialogs.room.RoomActivity;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -62,9 +66,13 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
     @BindView(R.id.btnRemove)
     ImageView btnRemove;
 
+    @BindView(R.id.txtRoom)
+    TextView txtRoom;
+
     private ServicePrice mServicePrice;
     private Date mSelectedDate;
     private String mTimeSelected = "";
+    private Room mRoomSelected = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +89,7 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
 
     @OnClick({R.id.btnAdd, R.id.btnRemove,
             R.id.btnComfirm, R.id.fbGoToCart,
-            R.id.txtDate, R.id.txtTimeStart})
+            R.id.txtDate, R.id.txtTimeStart, R.id.txtRoom})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.fbGoToCart:
@@ -94,13 +102,16 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
                 mPresenter.clickRemove(txtAmount.getText().toString());
                 break;
             case R.id.btnComfirm:
-                mPresenter.clickConfirm(mServicePrice, mSelectedDate, mTimeSelected, txtAmount.getText().toString());
+                mPresenter.clickConfirm(mServicePrice, mSelectedDate, mTimeSelected, txtAmount.getText().toString(), mRoomSelected);
                 break;
             case R.id.txtDate:
                 mPresenter.clickSelectDate();
                 break;
             case R.id.txtTimeStart:
                 mPresenter.clickSelectTime(mSelectedDate);
+                break;
+            case R.id.txtRoom:
+                mPresenter.clickRoom(mSelectedDate, mTimeSelected, mRoomSelected);
                 break;
         }
     }
@@ -186,9 +197,10 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppConstants.REQUEST_CODE) {
+        if (requestCode == AppConstants.REQUEST_ROOM) {
             if (resultCode == RESULT_OK) {
-
+                mRoomSelected = (Room) data.getSerializableExtra(AppConstants.ROOM_SELECTED);
+                txtRoom.setText(mRoomSelected.getRoomName());
             }
         }
     }
@@ -228,6 +240,17 @@ public class BookingInfoActivity extends BaseActivity<BookingInfoPresenter> impl
         mTimePicker.setMax(21, 59);
         mTimePicker.setMin(8, 30);
         mTimePicker.show();
+    }
+
+    @Override
+    public void openRoom(List<Room> data) {
+        ArrayList<Room> list = new ArrayList<>(data);
+        Intent intent = new Intent(this, RoomActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("list", list);
+        bundle.putSerializable(AppConstants.ROOM_SELECTED, mRoomSelected);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, AppConstants.REQUEST_ROOM);
     }
 
     @Override

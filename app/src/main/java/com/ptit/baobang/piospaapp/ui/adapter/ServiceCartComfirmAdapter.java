@@ -51,7 +51,7 @@ public class ServiceCartComfirmAdapter extends RecyclerView.Adapter<ServiceCartC
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView img;
-        TextView txtName, txtQuanlity, txtPrice, txtDate, txtTime;
+        TextView txtName, txtQuanlity, txtPrice, txtDate, txtTime, txtRoom;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -61,6 +61,8 @@ public class ServiceCartComfirmAdapter extends RecyclerView.Adapter<ServiceCartC
             txtName = itemView.findViewById(R.id.txtName);
             txtQuanlity = itemView.findViewById(R.id.txtQuanlity);
             txtPrice = itemView.findViewById(R.id.txtPrice);
+
+            txtRoom = itemView.findViewById(R.id.txtRoom);
         }
 
         public void bindView(CartServicePriceItem cartServicePriceItem) {
@@ -73,7 +75,7 @@ public class ServiceCartComfirmAdapter extends RecyclerView.Adapter<ServiceCartC
                 name = servicePrice.getService().getServiceName();
                 image = servicePrice.getService().getImage();
             }
-
+            txtRoom.setText(cartServicePriceItem.getBookingItem().getRoom().getRoomName());
             txtName.setText(name);
             if(cartServicePriceItem.getBookingItem().getSelectedDate() != null){
                 txtDate.setText(new StringBuilder(mContext.getString(R.string.date_booking) + ": " + DateTimeUtils.formatDate(cartServicePriceItem.getBookingItem().getSelectedDate(), DateTimeUtils.DATE_PATTERN_DDMMYY)));

@@ -56,4 +56,5 @@ public interface AppConstants {
     String MONEY = "money";
     int SECOND_ACTIVITY_REQUEST_CODE = 100;
     int ZBAR_CAMERA_PERMISSION = 200;
+    int REQUEST_ROOM = 106;
 }

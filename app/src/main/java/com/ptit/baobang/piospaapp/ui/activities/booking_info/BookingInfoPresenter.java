@@ -8,15 +8,21 @@ import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.BookingItem;
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
+import com.ptit.baobang.piospaapp.data.model.Room;
 import com.ptit.baobang.piospaapp.data.model.ServicePrice;
+import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
+import com.ptit.baobang.piospaapp.data.network.model_request.RoomBody;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class BookingInfoPresenter extends BasePresenter implements IBookingInfoPresenter {
 
@@ -55,7 +61,7 @@ public class BookingInfoPresenter extends BasePresenter implements IBookingInfoP
     }
 
     @Override
-    public void clickConfirm(ServicePrice mServicePrice, Date mSelectedDate, String mTimeSelected, String amount) {
+    public void clickConfirm(ServicePrice mServicePrice, Date mSelectedDate, String mTimeSelected, String amount, Room mRoomSelected) {
         if (mSelectedDate == null) {
             mView.showMessage(mContext.getString(R.string.message), R.string.message_booking_date_empty, SweetAlertDialog.WARNING_TYPE);
             return;
@@ -64,9 +70,13 @@ public class BookingInfoPresenter extends BasePresenter implements IBookingInfoP
             mView.showMessage(mContext.getString(R.string.message), R.string.message_time_booking_empty, SweetAlertDialog.WARNING_TYPE);
             return;
         }
+        if(mRoomSelected == null){
+            mView.showMessage(mContext.getString(R.string.message), "Vui lòng chọn phòng", SweetAlertDialog.WARNING_TYPE);
+            return;
+        }
         int numberCustomer = Integer.parseInt(amount);
         Cart cart = CartHelper.getCart();
-        BookingItem bookingItem = new BookingItem(mServicePrice, mSelectedDate);
+        BookingItem bookingItem = new BookingItem(mServicePrice, mSelectedDate, mRoomSelected);
         cart.add(bookingItem, numberCustomer);
         mView.showMessage(mContext.getString(R.string.message), mContext.getString(R.string.added) + " " + mServicePrice + " " + mContext.getString(R.string._in_cart), SweetAlertDialog.SUCCESS_TYPE);
     }
@@ -93,6 +103,34 @@ public class BookingInfoPresenter extends BasePresenter implements IBookingInfoP
             return;
         }
         mView.openTimePicker(date);
+    }
+
+    @Override
+    public void clickRoom(Date mSelectedDate, String mTimeSelected, Room mRoomSelected) {
+        if(mSelectedDate == null || mTimeSelected == null){
+            mView.showMessage(mContext.getString(R.string.message),"Vui lòng chọn ngày giờ đặt hẹn", SweetAlertDialog.WARNING_TYPE);
+            return;
+        }
+
+        RoomBody roomBody = new RoomBody(DateTimeUtils.formatDate(mSelectedDate, DateTimeUtils.DATE_PATTERN_DDMMYY), mTimeSelected);
+
+        getCompositeDisposable().add(mApiService.getRoom(roomBody)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(this::handlerResponseRoom, this::handlerErorr));
+    }
+
+    private void handlerResponseRoom(EndPoint<List<Room>> listEndPoint) {
+        if(listEndPoint.getData().size() == 0){
+            mView.showMessage(mContext.getString(R.string.message),"Phòng đầy, vui lòng chọn thời gian khác.", SweetAlertDialog.WARNING_TYPE);
+            return;
+        }
+        mView.openRoom(listEndPoint.getData());
+    }
+
+    private void handlerErorr(Throwable throwable) {
+        mView.showMessage(mContext.getString(R.string.message),throwable.getMessage(), SweetAlertDialog.ERROR_TYPE);
     }
 
     private boolean isSameDate(Date time, Date date) {

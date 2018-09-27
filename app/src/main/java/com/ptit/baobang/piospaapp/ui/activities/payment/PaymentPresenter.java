@@ -184,7 +184,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
 
             mView.openOrderActivity();
         } else {
-            mView.hideLoading(mContext.getString(R.string.create_order_failed), false);
+            mView.hideLoading(orderEndPoint.getMessage(), false);
             Log.e("Loi", orderEndPoint.getMessage());
         }
     }
@@ -389,6 +389,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             cartItem.setDateBooking(DateTimeUtils.formatDate(entry.getKey().getSelectedDate(), DateTimeUtils.DATE_PATTERN_DDMMYY));
             cartItem.setTimeBooking(DateTimeUtils.formatDate(entry.getKey().getSelectedDate(), DateTimeUtils.TIME_PATTERN));
             cartItem.setNumber(entry.getValue());
+            cartItem.setRoom(entry.getKey().getRoom());
             cartItems.add(cartItem);
         }
         return cartItems;

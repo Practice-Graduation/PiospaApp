@@ -55,321 +55,228 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/view_pager"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <android.support.constraint.ConstraintLayout
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="30dp">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvService"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin"
-                android:layout_marginEnd="@dimen/margin"
-                android:layout_marginLeft="@dimen/margin"
-                android:layout_marginRight="@dimen/margin"
-                android:layout_marginStart="@dimen/margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cvService"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="@dimen/margin"
+                    android:layout_marginEnd="@dimen/margin"
+                    android:layout_marginLeft="@dimen/margin"
+                    android:layout_marginRight="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/txtServiceName"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/padding"
-                        android:textSize="@dimen/title_text_size"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtPrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/padding"
-                        android:textSize="@dimen/body_text_size" />
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/txtServiceName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding"
+                            android:textSize="@dimen/title_text_size"
+                            android:textStyle="bold" />
 
-            </android.support.v7.widget.CardView>
+                        <TextView
+                            android:id="@+id/txtPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding"
+                            android:textSize="@dimen/body_text_size" />
+                    </LinearLayout>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin"
-                android:layout_marginStart="@dimen/margin"
-                android:layout_marginTop="@dimen/margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cvService">
+                </android.support.v7.widget.CardView>
 
-                <TextView
-                    android:id="@+id/txtDate"
-                    android:layout_width="match_parent"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cvDate"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding"
-                    android:textSize="@dimen/body_text_size"
-                    android:hint="@string/date_booking"
-                    android:gravity="center|start"
-                    android:drawableRight="@drawable/ic_arrow_right_dark"
-                    android:drawableEnd="@drawable/ic_arrow_right_dark" />
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvTime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin"
-                android:layout_marginStart="@dimen/margin"
-                android:layout_marginTop="@dimen/margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cvDate">
-
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_marginEnd="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginTop="@dimen/margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cvService">
 
                     <TextView
-                        android:id="@+id/txtTimeStart"
+                        android:id="@+id/txtDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/padding"
                         android:textSize="@dimen/body_text_size"
-                        android:hint="@string/time_booking"
+                        android:hint="@string/date_booking"
                         android:gravity="center|start"
                         android:drawableRight="@drawable/ic_arrow_right_dark"
                         android:drawableEnd="@drawable/ic_arrow_right_dark" />
 
-                </android.support.constraint.ConstraintLayout>
-            </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvNumberCustomer"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin"
-                android:layout_marginStart="@dimen/margin"
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="@dimen/margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cvTime">
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cvTime"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding"
-                    android:paddingBottom="@dimen/padding"
-                    app:layout_constraintTop_toBottomOf="@id/txtTimeStart">
+                    android:layout_marginEnd="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginTop="@dimen/margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cvDate">
 
-                    <TextView
-                        android:id="@+id/lbNumberCustomer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:text="@string/number_customer"
-                        android:gravity="center|start"
-                        android:layout_marginEnd="@dimen/margin"
-                        android:layout_marginLeft="@dimen/margin"
-                        android:layout_marginRight="@dimen/margin"
-                        android:layout_marginStart="@dimen/margin"
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/btnRemove"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            android:id="@+id/txtTimeStart"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding"
+                            android:textSize="@dimen/body_text_size"
+                            android:hint="@string/time_booking"
+                            android:gravity="center|start"
+                            android:drawableRight="@drawable/ic_arrow_right_dark"
+                            android:drawableEnd="@drawable/ic_arrow_right_dark" />
 
-                    <ImageButton
-                        android:id="@+id/btnAdd"
-                        android:layout_width="wrap_content"
+                    </android.support.constraint.ConstraintLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cvRoom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginTop="@dimen/margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cvTime">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/txtRoom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding"
+                            android:textSize="@dimen/body_text_size"
+                            android:hint="Phòng"
+                            android:gravity="center|start"
+                            android:drawableRight="@drawable/ic_arrow_right_dark"
+                            android:drawableEnd="@drawable/ic_arrow_right_dark" />
+
+                    </android.support.constraint.ConstraintLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cvNumberCustomer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="@dimen/margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cvRoom">
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:contentDescription="@string/add"
-                        android:padding="0dp"
-                        android:src="@drawable/ic_add"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/txtAmount" />
+                        android:paddingTop="@dimen/padding"
+                        android:paddingBottom="@dimen/padding"
+                        app:layout_constraintTop_toBottomOf="@id/txtTimeStart">
 
-                    <TextView
-                        android:id="@+id/txtAmount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:gravity="center"
-                        android:minWidth="50dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/btnRemove"
-                        app:layout_constraintStart_toEndOf="@+id/btnAdd"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            android:id="@+id/lbNumberCustomer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:text="@string/number_customer"
+                            android:gravity="center|start"
+                            android:layout_marginEnd="@dimen/margin"
+                            android:layout_marginLeft="@dimen/margin"
+                            android:layout_marginRight="@dimen/margin"
+                            android:layout_marginStart="@dimen/margin"
 
-                    <ImageButton
-                        android:id="@+id/btnRemove"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:contentDescription="@string/remove"
-                        android:padding="0dp"
-                        android:src="@drawable/ic_remove"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/txtAmount"
-                        app:layout_constraintStart_toEndOf="@+id/lbNumberCustomer" />
-                </android.support.constraint.ConstraintLayout>
-            </android.support.v7.widget.CardView>
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/btnRemove"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-            <!--<android.support.v7.widget.CardView-->
-                <!--android:id="@+id/cvInfo"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginEnd="@dimen/margin"-->
-                <!--android:layout_marginStart="@dimen/margin"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--app:layout_constraintEnd_toEndOf="parent"-->
-                <!--app:layout_constraintStart_toStartOf="parent"-->
-                <!--app:layout_constraintTop_toBottomOf="@+id/cvNumberCustomer">-->
+                        <ImageButton
+                            android:id="@+id/btnAdd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:contentDescription="@string/add"
+                            android:padding="0dp"
+                            android:src="@drawable/ic_add"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/txtAmount" />
 
-                <!--<android.support.constraint.ConstraintLayout-->
+                        <TextView
+                            android:id="@+id/txtAmount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:minWidth="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/btnRemove"
+                            app:layout_constraintStart_toEndOf="@+id/btnAdd"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginStart="@dimen/margin"-->
-                    <!--android:layout_marginLeft="@dimen/margin">-->
+                        <ImageButton
+                            android:id="@+id/btnRemove"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:contentDescription="@string/remove"
+                            android:padding="0dp"
+                            android:src="@drawable/ic_remove"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/txtAmount"
+                            app:layout_constraintStart_toEndOf="@+id/lbNumberCustomer" />
+                    </android.support.constraint.ConstraintLayout>
+                </android.support.v7.widget.CardView>
 
-                    <!--<android.support.design.widget.TextInputLayout-->
-                        <!--android:id="@+id/tilCustomerName"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toTopOf="parent">-->
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v4.widget.NestedScrollView>
 
-                        <!--<EditText-->
-                            <!--android:id="@+id/txtCustomerName"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:hint="@string/full_name"-->
-                            <!--android:inputType="text"-->
-                            <!--android:backgroundTint="@color/white"-->
-                            <!--tools:targetApi="lollipop"-->
-                            <!--android:drawableLeft="@drawable/ic_user_dark"-->
-                            <!--android:drawablePadding="@dimen/padding"-->
-                            <!--android:drawableStart="@drawable/ic_user_dark" />-->
-                    <!--</android.support.design.widget.TextInputLayout>-->
 
-                    <!--<android.support.design.widget.TextInputLayout-->
-                        <!--android:id="@+id/tilPhone"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@id/tilCustomerName">-->
+        <Button
+            android:id="@+id/btnComfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            android:text="@string/comfirm"
+            android:textColor="@color/white"
+            android:textSize="@dimen/button_text_size"/>
 
-                        <!--<EditText-->
-                            <!--android:id="@+id/txtPhone"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:hint="@string/phone"-->
-                            <!--android:backgroundTint="@color/white"-->
-                            <!--android:inputType="phone"-->
-                            <!--tools:targetApi="lollipop"-->
-                            <!--android:drawableLeft="@drawable/ic_phone_dark"-->
-                            <!--android:drawablePadding="@dimen/padding"-->
-                            <!--android:drawableStart="@drawable/ic_phone_dark" />-->
-                    <!--</android.support.design.widget.TextInputLayout>-->
+    </LinearLayout>
 
-                    <!--<android.support.design.widget.TextInputLayout-->
-                        <!--android:id="@+id/tilEmail"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@id/tilPhone">-->
-
-                        <!--<EditText-->
-                            <!--android:id="@+id/txtEmail"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:hint="@string/email"-->
-                            <!--android:inputType="textEmailAddress"-->
-                            <!--android:backgroundTint="@color/white"-->
-                            <!--tools:targetApi="lollipop"-->
-                            <!--android:drawableLeft="@drawable/ic_email_dark"-->
-                            <!--android:drawablePadding="@dimen/padding"-->
-                            <!--android:drawableStart="@drawable/ic_email_dark" />-->
-                    <!--</android.support.design.widget.TextInputLayout>-->
-
-                    <!--<android.support.design.widget.TextInputLayout-->
-                        <!--android:id="@+id/tilNote"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@id/tilEmail">-->
-
-                        <!--<EditText-->
-                            <!--android:id="@+id/txtNote"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:hint="@string/note"-->
-                            <!--android:minLines="3"-->
-                            <!--android:backgroundTint="@color/white"-->
-                            <!--android:inputType="textMultiLine"-->
-                            <!--tools:targetApi="lollipop"-->
-                            <!--android:drawableLeft="@drawable/ic_note_dark"-->
-                            <!--android:drawablePadding="@dimen/padding"-->
-                            <!--android:drawableStart="@drawable/ic_note_dark" />-->
-                    <!--</android.support.design.widget.TextInputLayout>-->
-
-                    <!--<android.support.design.widget.TextInputLayout-->
-                        <!--android:id="@+id/tilNotes"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toBottomOf="@id/tilNote">-->
-
-                        <!--<EditText-->
-                            <!--android:id="@+id/txtNotes"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:hint="@string/note"-->
-                            <!--android:minLines="3"-->
-                            <!--android:backgroundTint="@color/white"-->
-                            <!--android:inputType="textMultiLine"-->
-                            <!--tools:targetApi="lollipop"-->
-                            <!--android:drawableLeft="@drawable/ic_note_dark"-->
-                            <!--android:drawablePadding="@dimen/padding"-->
-                            <!--android:drawableStart="@drawable/ic_note_dark" />-->
-                    <!--</android.support.design.widget.TextInputLayout>-->
-                <!--</android.support.constraint.ConstraintLayout>-->
-
-            <!--</android.support.v7.widget.CardView>-->
-
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v4.widget.NestedScrollView>
-
-    <Button
-        android:id="@+id/btnComfirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
-        android:text="@string/comfirm"
-        android:textColor="@color/white"
-        android:textSize="@dimen/button_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 
     <android.support.design.widget.FloatingActionButton

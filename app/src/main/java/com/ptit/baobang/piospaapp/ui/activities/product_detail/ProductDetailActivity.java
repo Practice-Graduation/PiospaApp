@@ -23,7 +23,7 @@ import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> implements IProductDetailView{
+public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> implements IProductDetailView {
 
     private Product product;
 
@@ -46,6 +46,13 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     @BindView(R.id.txtAmount)
     TextView txtAmount;
 
+    @BindView(R.id.txtProductLable)
+    TextView txtProductLable;
+    @BindView(R.id.txtProductOrigin)
+    TextView txtProductOrigin;
+    @BindView(R.id.txtProductQuanlity)
+    TextView txtProductQuanlity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +71,7 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     }
 
     private void addControls() {
-        mPresenter = new ProductDetailPresenter(this ,this);
+        mPresenter = new ProductDetailPresenter(this, this);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -76,8 +83,8 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     }
 
     @OnClick({R.id.btnAddCart, R.id.fbGoToCart, R.id.btnAdd, R.id.btnRemove})
-    void onClick(View view){
-        switch (view.getId()){
+    void onClick(View view) {
+        switch (view.getId()) {
             case R.id.btnAddCart:
                 mPresenter.onClickAddCart(product, txtAmount.getText().toString());
                 break;
@@ -96,9 +103,12 @@ public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter> 
     @Override
     public void showProductDetail(Product product) {
         txtName.setText(product.getProductName());
-        txtPrice.setText(new StringBuilder( getString(R.string.price) +": " + CommonUtils.formatToCurrency(product.getPrice())));
+        txtPrice.setText(new StringBuilder(getString(R.string.price) + ": " + CommonUtils.formatToCurrency(product.getPrice())));
         txtInfo.setText(Html.fromHtml(product.getDescription()));
         txtAmount.setText("1");
+        txtProductLable.setText("Thương hiệu: " + product.getProductLabel().getProductLabelName());
+        txtProductOrigin.setText("Nguồn gốc: " +  product.getProductOrigin().getProductOriginName());
+        txtProductQuanlity.setText("Trọng lượng: " + product.getQuantity() + product.getQuantityValue());
         RequestOptions options = new RequestOptions().placeholder(R.drawable.paceholder).error(R.drawable.error);
         Glide.with(this).load(product.getImage()).apply(options).into(img);
         Glide.with(this).load(product.getImage()).apply(options).into(imgSmallImage);

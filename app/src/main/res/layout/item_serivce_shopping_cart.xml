@@ -32,6 +32,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/body_text_size"
+                android:text="name"
                 app:layout_constraintBottom_toTopOf="@+id/txtDate"
                 app:layout_constraintEnd_toEndOf="@+id/txtTotal"
                 app:layout_constraintStart_toEndOf="@+id/img"
@@ -43,7 +44,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/body_text_size"
-                app:layout_constraintBottom_toTopOf="@+id/txtPrice"
+                android:text="date"
+                app:layout_constraintBottom_toTopOf="@+id/txtRoom"
                 app:layout_constraintEnd_toStartOf="@+id/txtTime"
                 app:layout_constraintStart_toEndOf="@+id/img"
                 app:layout_constraintTop_toBottomOf="@+id/txtName" />
@@ -55,14 +57,39 @@
                 android:layout_marginEnd="@dimen/margin"
                 android:layout_marginRight="@dimen/margin"
                 android:gravity="end"
+                android:text="time"
                 android:layout_marginTop="@dimen/margin_small"
                 android:textAlignment="textEnd"
                 android:textSize="@dimen/body_text_size"
-                app:layout_constraintBottom_toTopOf="@+id/txtPrice"
+                app:layout_constraintBottom_toTopOf="@+id/txtRoom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/txtDate"
                 app:layout_constraintTop_toBottomOf="@+id/txtName" />
 
+            <TextView
+                android:id="@+id/txtRoom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/body_text_size"
+                android:text="room"
+                app:layout_constraintBottom_toTopOf="@+id/txtPrice"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img"
+                app:layout_constraintTop_toBottomOf="@+id/txtDate" />
+
+           <!-- <TextView
+                android:id="@+id/lbQuanlity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="@dimen/body_text_size"
+                android:minWidth="30dp"
+                android:text="Số khách: "
+                android:textAlignment="center"
+                android:layout_marginBottom="@dimen/margin"
+                app:layout_constraintStart_toEndOf="@id/img"
+                app:layout_constraintTop_toBottomOf="@+id/txtPrice"
+                app:layout_constraintBottom_toBottomOf="parent"/>-->
 
             <TextView
                 android:id="@+id/txtQuanlity"
@@ -71,11 +98,13 @@
                 android:textStyle="bold"
                 android:textSize="@dimen/body_text_size"
                 android:minWidth="30dp"
+                android:text="1"
                 android:textAlignment="center"
-                app:layout_constraintStart_toEndOf="@+id/btnAdd"
+                android:layout_marginBottom="@dimen/margin"
+                app:layout_constraintStart_toEndOf="@+id/btnRemove"
                 app:layout_constraintTop_toBottomOf="@+id/txtPrice"
-                app:layout_constraintBottom_toBottomOf="@+id/btnRemove"
-                app:layout_constraintEnd_toStartOf="@+id/btnRemove"/>
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
 
             <TextView
                 android:id="@+id/txtPrice"
@@ -84,10 +113,11 @@
                 android:textSize="@dimen/body_text_size"
                 android:textStyle="bold"
                 android:layout_marginTop="@dimen/margin_small"
+                android:text="100"
                 app:layout_constraintBottom_toTopOf="@+id/btnAdd"
                 app:layout_constraintEnd_toStartOf="@+id/lbTotal"
                 app:layout_constraintStart_toStartOf="@+id/txtName"
-                app:layout_constraintTop_toBottomOf="@+id/txtTime" />
+                app:layout_constraintTop_toBottomOf="@+id/txtRoom" />
 
             <TextView
                 android:id="@+id/lbTotal"
@@ -99,7 +129,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:textSize="@dimen/body_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtDate"
+                app:layout_constraintTop_toBottomOf="@+id/txtRoom"
                 android:layout_marginEnd="@dimen/margin" />
 
             <TextView
@@ -108,7 +138,9 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="@dimen/body_text_size"
+                android:text="123"
                 android:layout_marginRight="@dimen/margin"
+                android:layout_marginBottom="@dimen/margin"
                 app:layout_constraintBottom_toBottomOf="@+id/btnRemove"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/btnRemove"

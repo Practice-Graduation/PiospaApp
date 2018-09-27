@@ -27,7 +27,29 @@ public class BookingDetailRealm extends RealmObject {
     @RealmField(name = "price")
     private int price;
 
+    @RealmField(name = "room_id")
+    private int roomId;
+
+    @RealmField(name = "room_name")
+    private String roomName;
+
     public BookingDetailRealm() {
+    }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public BookingDetailRealm(CartServicePriceItem item) {
@@ -44,6 +66,8 @@ public class BookingDetailRealm extends RealmObject {
         timeBooking = DateTimeUtils.formatDate(item.getBookingItem().getSelectedDate(), DateTimeUtils.TIME_PATTERN);
         numberCustomer = item.getNumberCustomer();
         price = item.getBookingItem().getServicePrice().getAllPrice();
+        roomId = item.getBookingItem().getRoom().getRoomId();
+        roomName = item.getBookingItem().getRoom().getRoomName();
     }
 
     public BookingDetailRealm(BookingDetailObject bookingDetailObject) {
