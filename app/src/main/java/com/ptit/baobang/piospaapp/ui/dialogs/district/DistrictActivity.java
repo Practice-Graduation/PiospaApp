@@ -69,7 +69,7 @@ public class DistrictActivity extends BaseActivity implements IDistrictView {
     private void addControls() {
         setTitle(R.string.district);
         mPresenter = new DistrictPresenter(this,this);
-        mUnbinder = ButterKnife.bind(this);
+        mUnbind = ButterKnife.bind(this);
 
         mDistricts = new ArrayList<>();
         mAdapter = new DistrictAdapter(this, mDistricts);

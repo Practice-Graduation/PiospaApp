@@ -15,9 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ptit.baobang.piospaapp.R;
-import com.ptit.baobang.piospaapp.data.cart.Cart;
-import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
+import com.ptit.baobang.piospaapp.data.dto.CustomerInfoDTO;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.OrderDeliveryType;
@@ -29,7 +28,7 @@ import com.ptit.baobang.piospaapp.ui.activities.main.MainActivity;
 import com.ptit.baobang.piospaapp.ui.activities.order.OrderActivity;
 import com.ptit.baobang.piospaapp.ui.adapter.DeliveryTypeAdapter;
 import com.ptit.baobang.piospaapp.ui.adapter.PaymentTypeAdapter;
-import com.ptit.baobang.piospaapp.ui.adapter.ProductCartComfirmAdapter;
+import com.ptit.baobang.piospaapp.ui.adapter.ProductCartConfirmAdapter;
 import com.ptit.baobang.piospaapp.ui.base.BaseActivity;
 import com.ptit.baobang.piospaapp.ui.dialogs.district.DistrictActivity;
 import com.ptit.baobang.piospaapp.ui.dialogs.province.ProvinceActivity;
@@ -41,8 +40,6 @@ import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 import com.ptit.baobang.piospaapp.utils.RequestCodeConstant;
 import com.shuhart.stepview.StepView;
 
-import net.cachapa.expandablelayout.ExpandableLayout;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,13 +50,18 @@ import butterknife.OnClick;
 
 public class PaymentActivity extends BaseActivity<PaymentPresenter> implements IPaymentView {
 
+    public static final int STEP_1_PAYMENT_TYPE = 0;
+    public static final int STEP_2_ADDRESS = 1;
+    public static final int STEP_3_DELIVERY_TYPE = 2;
+    public static final int STEP_4_CONFIRM = 3;
+
     @BindView(R.id.root)
     LinearLayout root;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.stepView)
+    @BindView(R.id.step_view)
     StepView stepView;
 
     @BindView(R.id.delivery_info)
@@ -68,103 +70,104 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     @BindView(R.id.payment_type)
     NestedScrollView nsvPaymentType;
 
-    @BindView(R.id.comfirm)
-    NestedScrollView nsvComfirm;
+    @BindView(R.id.delivery_type)
+    NestedScrollView nsvDeliveryType;
 
-    @BindView(R.id.txtName)
+    @BindView(R.id.confirm)
+    NestedScrollView nsvConfirm;
+
+
+    @BindView(R.id.txt_name)
     EditText txtName;
 
-    @BindView(R.id.txtPhone)
+    @BindView(R.id.txt_phone)
     EditText txtPhone;
 
-    @BindView(R.id.txtAddress)
+    @BindView(R.id.txt_address)
     EditText txtAddress;
 
-    @BindView(R.id.txtProvince)
+    @BindView(R.id.txt_province)
     TextView txtProvince;
 
-    @BindView(R.id.txtDistrict)
+    @BindView(R.id.txt_district)
     TextView txtDistrict;
 
-    @BindView(R.id.txtWard)
+    @BindView(R.id.txt_ward)
     TextView txtWard;
 
-    @BindView(R.id.rvPaymentType)
+    @BindView(R.id.rv_payment_type)
     RecyclerView rvPaymentType;
 
-    @BindView(R.id.rvDeliveryType)
+    @BindView(R.id.rv_delivery_type)
     RecyclerView rvDeliveryType;
 
-    @BindView(R.id.btnNext)
+    @BindView(R.id.btn_next)
     Button btnNext;
 
-    // Comfirm
-    @BindView(R.id.titleProduct)
+    // Confirm
+    @BindView(R.id.title_product)
     TextView titleProduct;
 
-    @BindView(R.id.titleServices)
+    @BindView(R.id.title_services)
     TextView titleServices;
 
-    @BindView(R.id.txtFullName)
+    @BindView(R.id.txt_full_name)
     TextView txtFullName;
 
-    @BindView(R.id.txtAddressComfirm)
-    TextView txtAddressComfirm;
+    @BindView(R.id.txt_address_confirm)
+    TextView txtAddressConfirm;
 
-    @BindView(R.id.txtWardComfirm)
-    TextView txtWardComfirm;
+    @BindView(R.id.txt_ward_confirm)
+    TextView txtWardConfirm;
 
-    @BindView(R.id.txtDistrictComfirm)
-    TextView txtDistrictComfirm;
+    @BindView(R.id.txt_district_confirm)
+    TextView txtDistrictConfirm;
 
-    @BindView(R.id.txtProvinceComfirm)
-    TextView txtProvinceComfirm;
+    @BindView(R.id.txt_province_confirm)
+    TextView txtProvinceConfirm;
 
-    @BindView(R.id.txtDeliveryType)
+    @BindView(R.id.txt_delivery_type)
     TextView txtDeliveryType;
 
-    @BindView(R.id.txtPaymentType)
+    @BindView(R.id.txt_payment_type)
     TextView txtPaymentType;
 
-    @BindView(R.id.txtPaymentTypeDescription)
+    @BindView(R.id.txt_payment_type_description)
     TextView txtPaymentTypeDescription;
 
-    @BindView(R.id.txtTotal)
+    @BindView(R.id.txt_total)
     TextView txtTotal;
-    @BindView(R.id.txtShip)
+
+    @BindView(R.id.txt_ship)
     TextView txtShip;
-    @BindView(R.id.txtPayment)
+
+    @BindView(R.id.txt_payment)
     TextView txtPayment;
-    @BindView(R.id.lbTax)
+
+    @BindView(R.id.lb_tax)
     TextView lbTax;
-    @BindView(R.id.txtTax)
+
+    @BindView(R.id.txt_tax)
     TextView txtTax;
 
-    @BindView(R.id.rvProducts)
+    @BindView(R.id.rv_products)
     RecyclerView rvProducts;
 
-    @BindView(R.id.rvServices)
+    @BindView(R.id.rv_services)
     RecyclerView rvServices;
 
-    @BindView(R.id.expandable_layout_payment_type)
-    ExpandableLayout eplPaymentType;
-    @BindView(R.id.expandable_layout_delivery_type)
-    ExpandableLayout eplDeliveryType;
+    @BindView(R.id.cv_payment_type_confirm)
+    CardView cvPaymentTypeConfirm;
 
-    @BindView(R.id.lbDeliveryType)
-    TextView lbDeliveryType;
-    @BindView(R.id.lbPaymentType)
-    TextView lbPaymentType;
-    @BindView(R.id.cvPaymentTypeComfirm)
-    CardView cvPaymentTypeComfirm;
-    @BindView(R.id.cvDeliveyTypeConfirm)
-    CardView cvDeliveyTypeConfirm;
-    @BindView(R.id.lbShip)
+    @BindView(R.id.cv_delivery_type_confirm)
+    CardView cvDeliverTypeConfirm;
+
+    @BindView(R.id.lb_ship)
     TextView lbShip;
 
 
     List<CartProductItem> mCartProductItems;
-    ProductCartComfirmAdapter mProductCartComfirmAdapter;
+    ProductCartConfirmAdapter mProductCartConfirmAdapter;
 
     List<OrderPaymentType> mOrderPaymentTypes;
     PaymentTypeAdapter mPaymentTypeAdapter;
@@ -172,12 +175,8 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     List<OrderDeliveryType> mOrderDeliveryTypes;
     DeliveryTypeAdapter mDeliveryTypeAdapter;
 
-    private Province mProvince;
-    private District mDistrict;
-    private Ward mWard;
-    private OrderDeliveryType mDeliveryType;
-    private OrderPaymentType mPaymentType;
-    private Tax mTax;
+    private CustomerInfoDTO mCustomerInfoDTO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,57 +188,36 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     }
 
     private void addEvents() {
-        mPaymentTypeAdapter.setListener(position -> mPaymentType = mOrderPaymentTypes.get(position));
+        mPaymentTypeAdapter.setListener(position -> {
+            mCustomerInfoDTO.setPaymentType(mOrderPaymentTypes.get(position));
+        });
 
-        mDeliveryTypeAdapter.setmListener(position -> mDeliveryType = mOrderDeliveryTypes.get(position));
-
-
+        mDeliveryTypeAdapter.setmListener(position -> {
+            mCustomerInfoDTO.setDeliveryType(mOrderDeliveryTypes.get(position));
+        });
     }
 
-    @OnClick({R.id.btnNext, R.id.txtProvince, R.id.txtDistrict, R.id.txtWard, R.id.cvDeliveryType, R.id.cvPaymentType})
+    @OnClick({R.id.btn_next, R.id.txt_province,
+            R.id.txt_district, R.id.txt_ward})
     void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnNext:
-                mPresenter.clickButtonNext(stepView.getCurrentStep(),
-                        txtName.getText().toString(),
-                        txtPhone.getText().toString(),
-                        mProvince,
-                        mDistrict,
-                        mWard,
-                        txtAddress.getText().toString(),
-                        mDeliveryType,
-                        mPaymentType,
-                        mTax);
+            case R.id.btn_next:
+
+                mCustomerInfoDTO.setName(txtName.getText().toString());
+                mCustomerInfoDTO.setPhone(txtPhone.getText().toString());
+                mCustomerInfoDTO.setAddress(txtAddress.getText().toString());
+
+                mPresenter.clickButtonNext(stepView, mCustomerInfoDTO);
                 break;
-            case R.id.txtProvince:
+            case R.id.txt_province:
                 mPresenter.clickTextViewProvince();
                 break;
-            case R.id.txtDistrict:
-                mPresenter.clickTextViewDistrict(mProvince);
+            case R.id.txt_district:
+                mPresenter.clickTextViewDistrict(mCustomerInfoDTO.getProvince());
                 break;
-            case R.id.txtWard:
-                mPresenter.clickTextViewWard(mDistrict);
+            case R.id.txt_ward:
+                mPresenter.clickTextViewWard(mCustomerInfoDTO.getDistrict());
                 break;
-            case R.id.cvPaymentType:
-
-                if (eplPaymentType.isExpanded()) {
-                    eplPaymentType.collapse();
-                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(DefaultValue.INT, DefaultValue.INT, R.drawable.ic_arrow_down, DefaultValue.INT);
-                } else {
-                    eplPaymentType.expand();
-                    lbPaymentType.setCompoundDrawablesWithIntrinsicBounds(DefaultValue.INT, DefaultValue.INT, R.drawable.ic_arrow_up, DefaultValue.INT);
-                }
-                break;
-            case R.id.cvDeliveryType:
-                if (eplDeliveryType.isExpanded()) {
-                    eplDeliveryType.collapse();
-                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(DefaultValue.INT, DefaultValue.INT, R.drawable.ic_arrow_down, DefaultValue.INT);
-                } else {
-                    eplDeliveryType.expand();
-                    lbDeliveryType.setCompoundDrawablesWithIntrinsicBounds(DefaultValue.INT, DefaultValue.INT, R.drawable.ic_arrow_up, DefaultValue.INT);
-                }
-                break;
-
         }
     }
 
@@ -248,8 +226,12 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         setSupportToolbar();
 
         mPresenter = new PaymentPresenter(this, this);
-        nsvPaymentType.setVisibility(View.GONE);
-        nsvComfirm.setVisibility(View.GONE);
+
+        nsvPaymentType.setVisibility(View.VISIBLE);
+        nsvDeliveryInfo.setVisibility(View.GONE);
+        nsvDeliveryType.setVisibility(View.GONE);
+        nsvConfirm.setVisibility(View.GONE);
+
         stepView.getState()
                 .steps(Arrays.asList(getResources().getStringArray(R.array.arr_step)))
                 .stepsNumber(getResources().getStringArray(R.array.arr_step).length)
@@ -272,9 +254,9 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
 
     private void addRecycleViewProduct() {
         mCartProductItems = new ArrayList<>();
-        mProductCartComfirmAdapter = new ProductCartComfirmAdapter(this, mCartProductItems);
+        mProductCartConfirmAdapter = new ProductCartConfirmAdapter(this, mCartProductItems);
         rvProducts.setLayoutManager(new LinearLayoutManager(this));
-        rvProducts.setAdapter(mProductCartComfirmAdapter);
+        rvProducts.setAdapter(mProductCartConfirmAdapter);
     }
 
     private void addRecycleViewPaymentType() {
@@ -296,7 +278,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle(getString(R.string.check_out) + "          ");
+        toolbar.setTitle(getString(R.string.check_out));
         centerToolbarTitle(toolbar, DefaultValue.INT);
     }
 
@@ -311,14 +293,14 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
 
     private void bacToCart() {
 
-        if (stepView.getCurrentStep() > 0) {
-            Cart cart = CartHelper.getCart();
-            if (stepView.getCurrentStep() == 2 && cart.getProducts().size() == 0) {
-
-                nextStep(stepView.getCurrentStep() - 2);
+        if (stepView.getCurrentStep() > STEP_1_PAYMENT_TYPE) {
+            if (mCustomerInfoDTO.getPaymentType().getOrderPaymentTypeId() == AppConstants.PAYMENT_TYPE_GET) {
+                int newStep = stepView.getCurrentStep() - STEP_4_CONFIRM;
+                nextStep(newStep);
             } else {
-
-                nextStep(stepView.getCurrentStep() - 1);
+                int newStep = stepView.getCurrentStep();
+                newStep--;
+                nextStep(newStep);
             }
             return;
         }
@@ -337,39 +319,40 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     @Override
     public void nextStep(int currentStep) {
         switch (currentStep) {
-            case 0:
-                nsvDeliveryInfo.setVisibility(View.VISIBLE);
-                nsvPaymentType.setVisibility(View.GONE);
-                nsvComfirm.setVisibility(View.GONE);
-                break;
-            case 1:
-
-                nsvDeliveryInfo.setVisibility(View.GONE);
+            case STEP_1_PAYMENT_TYPE:
                 nsvPaymentType.setVisibility(View.VISIBLE);
-                nsvComfirm.setVisibility(View.GONE);
+                nsvDeliveryInfo.setVisibility(View.GONE);
+                nsvDeliveryType.setVisibility(View.GONE);
+                nsvConfirm.setVisibility(View.GONE);
                 break;
-            case 2:
-                mPresenter.attachData(txtName.getText().toString(),
-                        txtPhone.getText().toString(),
-                        mProvince,
-                        mDistrict,
-                        mWard,
-                        txtAddress.getText().toString(),
-                        mDeliveryType,
-                        mPaymentType);
-                if (mDeliveryType == null) {
-                    cvDeliveyTypeConfirm.setVisibility(View.GONE);
+            case STEP_2_ADDRESS:
+                nsvPaymentType.setVisibility(View.GONE);
+                nsvDeliveryInfo.setVisibility(View.VISIBLE);
+                nsvDeliveryType.setVisibility(View.GONE);
+                nsvConfirm.setVisibility(View.GONE);
+                break;
+            case STEP_3_DELIVERY_TYPE:
+                nsvPaymentType.setVisibility(View.GONE);
+                nsvDeliveryInfo.setVisibility(View.GONE);
+                nsvDeliveryType.setVisibility(View.VISIBLE);
+                nsvConfirm.setVisibility(View.GONE);
+                break;
+            case STEP_4_CONFIRM:
+                showData(mCustomerInfoDTO);
+                if (mCustomerInfoDTO.getDeliveryType() == null) {
+                    cvDeliverTypeConfirm.setVisibility(View.GONE);
                     lbShip.setVisibility(View.GONE);
                     txtShip.setVisibility(View.GONE);
                 }
-                if (mPaymentType == null) {
-                    cvPaymentTypeComfirm.setVisibility(View.GONE);
+                if (mCustomerInfoDTO.getPaymentType() == null) {
+                    cvPaymentTypeConfirm.setVisibility(View.GONE);
                 }
                 mPresenter.loadCartItem();
                 btnNext.setText(R.string.comfirm);
-                nsvDeliveryInfo.setVisibility(View.GONE);
                 nsvPaymentType.setVisibility(View.GONE);
-                nsvComfirm.setVisibility(View.VISIBLE);
+                nsvDeliveryInfo.setVisibility(View.GONE);
+                nsvDeliveryType.setVisibility(View.GONE);
+                nsvConfirm.setVisibility(View.VISIBLE);
                 break;
         }
         stepView.go(currentStep, true);
@@ -378,23 +361,23 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     @Override
     public void openDialogProvince() {
         Intent intent = new Intent(this, ProvinceActivity.class);
-        intent.putExtra(KeyBundleConstant.PROVINCE, mProvince);
+        intent.putExtra(KeyBundleConstant.PROVINCE, mCustomerInfoDTO.getProvince());
         startActivityForResult(intent, RequestCodeConstant.REQUEST_CODE_PROVINCE);
     }
 
     @Override
     public void openDialogDistrict(Province province) {
         Intent intent = new Intent(this, DistrictActivity.class);
-        intent.putExtra(KeyBundleConstant.PROVINCE, mProvince);
-        intent.putExtra(KeyBundleConstant.DISTRICT, mDistrict);
+        intent.putExtra(KeyBundleConstant.PROVINCE, mCustomerInfoDTO.getProvince());
+        intent.putExtra(KeyBundleConstant.DISTRICT, mCustomerInfoDTO.getDistrict());
         startActivityForResult(intent, RequestCodeConstant.REQUEST_CODE_DISTRICT);
     }
 
     @Override
     public void openDialogWard(District district) {
         Intent intent = new Intent(this, WardActivity.class);
-        intent.putExtra(KeyBundleConstant.DISTRICT, mDistrict);
-        intent.putExtra(KeyBundleConstant.WARD, mWard);
+        intent.putExtra(KeyBundleConstant.DISTRICT, mCustomerInfoDTO.getDistrict());
+        intent.putExtra(KeyBundleConstant.WARD, mCustomerInfoDTO.getWard());
         startActivityForResult(intent, RequestCodeConstant.REQUEST_CODE_WARD);
     }
 
@@ -413,26 +396,50 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     }
 
     @Override
-    public void showData(String name, String phone, String provinceName,
-                         String districtName, String wardName, String address,
-                         String orderDeliveryTypeName, String orderPaymentTypeName) {
+    public void showData(CustomerInfoDTO customerInfoDTO) {
+        String nameAndPhone = customerInfoDTO.getName() + AppConstants.TAB_SYMBOL + customerInfoDTO.getPhone();
+        txtFullName.setText(nameAndPhone);
+        txtAddressConfirm.setText(customerInfoDTO.getAddress());
+        setWardConfirm(customerInfoDTO.getWard());
+        setDistrictConfirm(customerInfoDTO.getDistrict());
+        setProvinceConfirm(customerInfoDTO.getProvince());
+        setDeliveryType(customerInfoDTO.getDeliveryType());
+        setPaymentType(customerInfoDTO.getPaymentType());
+    }
 
-        txtFullName.setText(new StringBuilder(name + AppConstants.TAB_SYMBOL + phone));
-        txtAddressComfirm.setText(address);
-        txtWardComfirm.setText(wardName);
-        txtDistrictComfirm.setText(districtName);
-        txtProvinceComfirm.setText(provinceName);
-        txtDeliveryType.setText(orderDeliveryTypeName);
-        txtPaymentType.setText(orderPaymentTypeName);
+    private void setPaymentType(OrderPaymentType paymentType) {
+        String paymentName = paymentType == null ? DefaultValue.STRING : paymentType.getOrderPaymentTypeName();
+        txtPaymentType.setText(paymentName);
+    }
 
+    private void setDeliveryType(OrderDeliveryType deliveryType) {
+        String deliveryTypeName = deliveryType == null ? DefaultValue.STRING : deliveryType.getOrderDeliveryTypeName();
+        txtDeliveryType.setText(deliveryTypeName);
+    }
+
+    private void setProvinceConfirm(Province province) {
+        String provinceName = province == null ? DefaultValue.STRING : province.toString();
+        txtProvinceConfirm.setText(provinceName);
+    }
+
+    private void setDistrictConfirm(District district) {
+        String districtName = district == null ? DefaultValue.STRING : district.toString();
+        txtDistrictConfirm.setText(districtName);
+    }
+
+    private void setWardConfirm(Ward ward) {
+        String wardName = ward == null ? DefaultValue.STRING : ward.toString();
+        txtWardConfirm.setText(wardName);
     }
 
     @Override
     public void updateRVProduct(List<CartProductItem> mItems) {
+
         mCartProductItems.clear();
         mCartProductItems.addAll(mItems);
-        mProductCartComfirmAdapter.notifyDataSetChanged();
-        if (mItems.size() == 0) {
+        mProductCartConfirmAdapter.notifyDataSetChanged();
+
+        if (mItems.size() == AppConstants.LIST_EMPTY_SIZE) {
             rvProducts.setVisibility(View.GONE);
             titleProduct.setVisibility(View.GONE);
         } else {
@@ -443,41 +450,60 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
 
     @Override
     public void showDataForInput(Customer customer) {
-        txtName.setText(customer.getFullname());
-        txtPhone.setText(customer.getPhone());
-        mProvince = customer.getProvince();
-        mDistrict = customer.getDistrict();
-        mWard = customer.getWard();
 
-        if (mProvince != null) {
-            txtProvince.setText(mProvince.getName());
-        }
-        if (mDistrict != null) {
-            txtDistrict.setText(mDistrict.getName());
-        }
-        if (mWard != null) {
-            txtWard.setText(mWard.getName());
-        }
+        setDataToDTO(customer);
 
-        if (mProvince == null) {
+        setTextToView();
+
+        enableClickView();
+    }
+
+    private void enableClickView() {
+        if (mCustomerInfoDTO.getProvince() == null) {
             txtProvince.setClickable(true);
             txtDistrict.setClickable(false);
             txtWard.setClickable(false);
         } else {
             txtProvince.setClickable(true);
             txtDistrict.setClickable(true);
-            if (mDistrict == null) {
+            if (mCustomerInfoDTO.getDistrict() == null) {
                 txtWard.setClickable(false);
             } else {
                 txtWard.setClickable(true);
             }
         }
+    }
 
-        if (customer.getAddress() != null) {
-            txtAddress.setText(customer.getAddress());
+    private void setTextToView() {
+        txtName.setText(mCustomerInfoDTO.getName());
+
+        txtPhone.setText(mCustomerInfoDTO.getPhone());
+
+        if (mCustomerInfoDTO.getProvince() != null) {
+            txtProvince.setText(mCustomerInfoDTO.getProvince().getName());
         }
+        if (mCustomerInfoDTO.getDistrict() != null) {
+            txtDistrict.setText(mCustomerInfoDTO.getDistrict().getName());
+        }
+        if (mCustomerInfoDTO.getWard() != null) {
+            txtWard.setText(mCustomerInfoDTO.getWard().getName());
+        }
+        if (mCustomerInfoDTO.getAddress() != null) {
+            txtAddress.setText(mCustomerInfoDTO.getAddress());
+        }
+    }
 
-
+    private void setDataToDTO(Customer customer) {
+        mCustomerInfoDTO = new CustomerInfoDTO();
+        mCustomerInfoDTO.setName(customer.getFullName());
+        mCustomerInfoDTO.setPhone(customer.getPhone());
+        Ward ward = customer.getWard();
+        District district = ward.getDistrict();
+        Province province = district.getProvince();
+        mCustomerInfoDTO.setProvince(province);
+        mCustomerInfoDTO.setDistrict(district);
+        mCustomerInfoDTO.setWard(ward);
+        mCustomerInfoDTO.setAddress(customer.getAddress());
     }
 
     @Override
@@ -489,7 +515,7 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
     public void openOrderActivity() {
         Intent intent = new Intent(this, OrderActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt(KeyBundleConstant.ORDER_FRAGMENT_INDEX, 0);
+        bundle.putInt(KeyBundleConstant.ORDER_FRAGMENT_INDEX, AppConstants.ORDER_STATUS_NOT_PAYMENT_INDEX);
         intent.putExtras(bundle);
         startActivity(intent);
         finish();
@@ -504,14 +530,14 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
 
     @Override
     public void setTax(Tax data) {
-        mTax = data;
+        mCustomerInfoDTO.setTax(data);
         lbTax.setText(data.getName());
         if (data.getType().equals(AppConstants.PECENT)) {
-            txtTax.setText(new StringBuilder(data.getValue() + AppConstants.TAB_SYMBOL));
+            txtTax.setText(new StringBuilder(data.getValue() + AppConstants.PERCENT_SYMBOL));
         } else if (data.getType().equals(AppConstants.MONEY)) {
             txtTax.setText(CommonUtils.formatToCurrency(data.getValue()));
         }
-        mPresenter.computeTax(mDeliveryType, data);
+        mPresenter.computeTaxAndShip(mCustomerInfoDTO.getDeliveryType(), data);
 
     }
 
@@ -522,27 +548,27 @@ public class PaymentActivity extends BaseActivity<PaymentPresenter> implements I
             switch (requestCode) {
                 case RequestCodeConstant.REQUEST_CODE_PROVINCE:
                     Province province = (Province) data.getSerializableExtra(KeyBundleConstant.PROVINCE);
-                    mProvince = province;
+                    mCustomerInfoDTO.setProvince(province);
                     txtProvince.setText(province.getName());
-                    txtDistrict.setText("");
-                    txtWard.setText("");
-                    mDistrict = null;
-                    mWard = null;
+                    txtDistrict.setText(DefaultValue.STRING);
+                    txtWard.setText(DefaultValue.STRING);
+                    mCustomerInfoDTO.setDistrict(null);
+                    mCustomerInfoDTO.setWard(null);
                     txtDistrict.setClickable(true);
                     txtWard.setClickable(false);
                     break;
                 case RequestCodeConstant.REQUEST_CODE_DISTRICT:
                     District district = (District) data.getSerializableExtra(KeyBundleConstant.DISTRICT);
-                    mDistrict = district;
+                    mCustomerInfoDTO.setDistrict(district);
                     txtDistrict.setText(district.getName());
-                    txtWard.setText("");
-                    mWard = null;
+                    txtWard.setText(DefaultValue.STRING);
+                    mCustomerInfoDTO.setWard(null);
                     txtWard.setClickable(true);
                     break;
                 case RequestCodeConstant.REQUEST_CODE_WARD:
                     Ward ward = (Ward) data.getSerializableExtra(KeyBundleConstant.WARD);
                     txtWard.setText(ward.getName());
-                    mWard = ward;
+                    mCustomerInfoDTO.setWard(ward);
                     break;
             }
         }

@@ -57,8 +57,9 @@
     <string name="can_booking">Có thể đặt hẹn</string>
     <!-- Error message -->
     <string-array name="arr_step">
+        <item>Hình thức\nnhận hàng</item>
         <item>Địa chỉ</item>
-        <item>Hình thức thanh toán</item>
+        <item>Hình thức\ngiao hàng</item>
         <item>Xác nhận</item>
     </string-array>
 
@@ -78,7 +79,7 @@
     <string name="address_note">Số nhà, tên toà nhà, tên khu vực</string>
     <string name="enter_address">Điền địa chỉ cụ thể</string>
     <string name="delivery_type">Loại hình giao hàng</string>
-    <string name="payment_type">Hình thức thanh toán</string>
+    <string name="payment_type">Hình thức nhận hàng</string>
     <string name="next">Tiếp theo</string>
     <string name="previous">Quay lại</string>
     <string name="quanlity">Số lượng</string>
@@ -107,8 +108,8 @@
     <string name="cart_empty_message">Giỏ hàng hiện rỗng, vui lòng mua hàng trước khi thanh toán</string>
     <string name="message_quit_app">Bạn có muốn thoát ứng dụng</string>
     <string name="ok">Đồng ý</string>
-    <string name="message_username_empty">Vui lòng nhập vào tên đăng nhập</string>
-    <string name="message_pwd_empty">Vui lòng nhập vào mật khẩu</string>
+
+
     <string name="minute">phút</string>
     <string name="message_booking_date_empty">Chọn ngày đặt hẹn</string>
     <string name="message_time_booking_empty">Chọn giờ đặt hẹn</string>
@@ -116,10 +117,7 @@
     <string name="message_change_pwd_success">Đổi mật khẩu thành công</string>
     <string name="message_old_password_empty">Vui lòng nhập vào mật khẩu cũ</string>
     <string name="message_new_pwd_empty">Vui lòng nhập vào mật khẩu mới</string>
-    <string name="message_pwd_invalid">Mật khẩu ít nhất 5 kí tự</string>
-    <string name="message_pwd_comfirm_empty">Vui lòng nhập vào xác nhận mật khẩu</string>
     <string name="message_old_pwd_invlid">Mật khẩu cũ không đúng</string>
-    <string name="message_pwd_and_pwd_comfirm_not_same">Mật khẩu xác nhận không giống mật khẩu mới</string>
     <string name="order_detail">Chi tiết đơn hàng</string>
     <string name="order_id">Hóa đơn số:</string>
     <string name="created_at">Ngày tạo:</string>
@@ -127,8 +125,6 @@
     <string name="profile">Thông tin cá nhân</string>
     <string name="male">male</string>
     <string name="female">female</string>
-    <string name="message_fullname_empty">Nhập vào họ và tên</string>
-    <string name="message_username_invalid">Tài khoản ít nhất 5 kí tự a-zA-Z0-9._-</string>
     <string name="update_profile">Cập nhật thông tin</string>
     <string name="enter_fullname">Nhập họ và tên</string>
     <string name="enter_email">Nhập địa chỉ email</string>
@@ -166,7 +162,7 @@
     <string name="create_order">Tạo hóa đơn</string>
     <string name="create_order_failed">Đặt hàng thất bại</string>
     <string name="delivery_type_empty">Vui lòng chọn hình thức giao hàng</string>
-    <string name="payment_type_empty">Vui lòng chọn hình thức thanh toán</string>
+    <string name="payment_type_empty">Vui lòng chọn hình thức nhận hàng</string>
     <string name="message_phone_empty">Vui lòng nhập vào số điện thoại</string>
     <string name="message_ward_empty">Vui lòng chọn phường/xã</string>
     <string name="message_specific_address_empty">Vui lòng nhập địa chỉ cụ thể</string>

@@ -1,6 +1,7 @@
 package com.ptit.baobang.piospaapp.ui.activities.payment;
 
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
+import com.ptit.baobang.piospaapp.data.dto.CustomerInfoDTO;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.OrderDeliveryType;
@@ -24,9 +25,7 @@ public interface IPaymentView extends BaseView{
 
     void updateRVOrderPaymentType(List<OrderPaymentType> paymentTypes);
 
-    void showData(String name, String phone, String provinceName,
-                  String districtName, String wardName, String address,
-                  String orderDeliveryTypeName, String orderPaymentTypeName);
+    void showData(CustomerInfoDTO customerInfoDTO);
 
     void updateRVProduct(List<CartProductItem> mItems);
 

@@ -4,8 +4,12 @@ import android.content.Intent;
 
 import com.ptit.baobang.piospaapp.data.model.Product;
 
+/**
+ * ProductDetailPresenter interface
+ *
+ * @author BangNB
+ */
 public interface IProductDetailPresenter {
-    void loadData(Product product);
 
     void onClickAddCart(Product product, String amount);
 
@@ -13,7 +17,7 @@ public interface IProductDetailPresenter {
 
     Product getProductFromBundle(Intent intent);
 
-    void onClickAddButton(String s);
+    void onClickPositiveButton(Product product, String strAmount);
 
-    void onClickRemoveButton(String s);
+    void onClickNegativeButton(String amount);
 }

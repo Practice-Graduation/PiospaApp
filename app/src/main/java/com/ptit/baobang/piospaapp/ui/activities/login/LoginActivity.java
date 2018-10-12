@@ -41,8 +41,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         mPresenter = new LoginPresenter(this, this);
         hideKeyboardOutside(root);
+
         slideDownAnimation = AnimationUtils.loadAnimation(
                 getApplicationContext(),
                 R.anim.slide_down_animation);
@@ -87,15 +89,35 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     }
 
     @Override
+    public String getUserName() {
+        return txtUsername.getText().toString();
+    }
+
+    @Override
+    public String getPassword() {
+        return txtPassword.getText().toString();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RequestCodeConstant.REQUEST_CODE){
             if(resultCode == RESULT_OK){
-                String userName = data.getStringExtra(KeyBundleConstant.USERNAME);
-                String password = data.getStringExtra(KeyBundleConstant.PASSWORD);
-                txtUsername.setText(userName);
-                txtPassword.setText(password);
+                doDataResponse(data);
             }
         }
+    }
+
+    /**
+     * Method get username and password was registed by user
+     * And show in Login form
+     * @param data
+     * */
+
+    private void doDataResponse(Intent data) {
+        String userName = data.getStringExtra(KeyBundleConstant.USERNAME);
+        String password = data.getStringExtra(KeyBundleConstant.PASSWORD);
+        txtUsername.setText(userName);
+        txtPassword.setText(password);
     }
 }

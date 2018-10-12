@@ -10,8 +10,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
 import com.ptit.baobang.piospaapp.data.model.Product;
@@ -61,8 +59,8 @@ public class ShoppingCartProductAdapter extends RecyclerView.Adapter<ShoppingCar
         ShoppingCartHolder(View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.img);
-            btnAdd = itemView.findViewById(R.id.btnAdd);
-            btnRemove = itemView.findViewById(R.id.btnRemove);
+            btnAdd = itemView.findViewById(R.id.btnPositive);
+            btnRemove = itemView.findViewById(R.id.btnNegative);
             txtName = itemView.findViewById(R.id.txtName);
             txtQuanlity = itemView.findViewById(R.id.txtQuanlity);
             txtPrice = itemView.findViewById(R.id.txtPrice);
@@ -75,8 +73,9 @@ public class ShoppingCartProductAdapter extends RecyclerView.Adapter<ShoppingCar
             txtPrice.setText(new StringBuilder(mContext.getString(R.string.price) + AppConstants.DOUBLE_DOT + CommonUtils.formatToCurrency(product.getPrice())));
             txtQuanlity.setText(new StringBuilder(cartItem.getQuanlity() + ""));
             txtTotal.setText(CommonUtils.formatToCurrency(cartItem.getTotalItem()));
-            RequestOptions options = new RequestOptions().error(R.drawable.error).placeholder(R.drawable.paceholder);
-            Glide.with(mContext).load(product.getImage()).apply(options).into(img);
+            CommonUtils.loadImage(img, product.getImage());
+//            RequestOptions options = new RequestOptions().error(R.drawable.error).placeholder(R.drawable.paceholder);
+//            Glide.with(mContext).load(product.getImage()).apply(options).into(img);
             btnAdd.setOnClickListener(view -> {
                 if(mAddListener != null){
                     mAddListener.onItemSelected(getAdapterPosition());

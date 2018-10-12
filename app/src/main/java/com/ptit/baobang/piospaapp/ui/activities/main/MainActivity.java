@@ -46,8 +46,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements IMainView, NavigationView.OnNavigationItemSelectedListener {
     private static final String SELECTED_ITEM = "arg_selected_item";
-    private static int mSelectedItem = 0;
-    private static int mSelectedFragment = 0;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -137,8 +135,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private void addSelectedFragment() {
         MenuItem selectedItem;
         Intent intent = getIntent();
-        mSelectedFragment = intent.getIntExtra(KeyBundleConstant.FRAGMENT, DefaultValue.INT);
-        selectedItem = mNavigation.getMenu().getItem(mSelectedFragment);
+        int selectedFragment = intent.getIntExtra(KeyBundleConstant.FRAGMENT, DefaultValue.INT);
+        selectedItem = mNavigation.getMenu().getItem(selectedFragment);
         selectedFragment(selectedItem);
     }
 
@@ -235,11 +233,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         return true;
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(SELECTED_ITEM, mSelectedItem);
-        super.onSaveInstanceState(outState);
-    }
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        outState.putInt(SELECTED_ITEM, mSelectedItem);
+//        super.onSaveInstanceState(outState);
+//    }
 
     @Override
     public void openOrderActivity() {

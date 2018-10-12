@@ -7,6 +7,7 @@ import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.error.Error;
 import com.ptit.baobang.piospaapp.utils.InputUtils;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -32,41 +33,41 @@ public class RegisterPresenter extends BasePresenter implements IRegisterPresent
     @Override
     public void clickRegister(String fullName, String email, String password, String retypePassword) {
         if (fullName.trim().length() == 0) {
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_fullname_empty, SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_NAME_EMPTY, SweetAlertDialog.WARNING_TYPE);
             return;
         }
         if (email.trim().length() == 0) {
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_username_empty, SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_USR_EMPTY, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
         if (!InputUtils.isValidUsername(email)) {
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_username_invalid, SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_USR_INVALID, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
         if (password.trim().length() == 0) {
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_empty, SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_PWD_EMPTY, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
         if (!InputUtils.isValidPassword(password.trim())) {
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_invalid, SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_PWD_INVALID, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
         if (retypePassword.trim().length() == 0) {
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_comfirm_empty, SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_PWD_COMFIRM_EMPTY, SweetAlertDialog.WARNING_TYPE);
             return;
         }
         if (!password.trim().equalsIgnoreCase(retypePassword.trim())) {
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_and_pwd_comfirm_not_same, SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_PWD_COMFIRM_NOT_SAME, SweetAlertDialog.WARNING_TYPE);
             return;
         }
         Customer customer = new Customer();
         customer.setAccount(email);
         customer.setPassword(password);
-        customer.setFullname(fullName);
+        customer.setFullName(fullName);
 
         mView.showLoading(mContext.getString(R.string.register));
 

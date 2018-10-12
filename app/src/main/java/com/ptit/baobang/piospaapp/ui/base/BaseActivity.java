@@ -1,16 +1,13 @@
 package com.ptit.baobang.piospaapp.ui.base;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +22,7 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.error.Error;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackConfirmDialog;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackDialog;
 import com.ptit.baobang.piospaapp.utils.NetworkUtils;
@@ -38,22 +36,25 @@ import io.fabric.sdk.android.Fabric;
 
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements BaseView {
 
-    private ProgressDialog mProgressDialog;
-    protected Unbinder mUnbinder;
+    protected Unbinder mUnbind;
     private SweetAlertDialog mSweetAlertDialog;
     protected T mPresenter;
-    private boolean isFirstInit;
-
+    private String COLOR = "#A5DC86";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
+        }
 
     }
 
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        mUnbinder = ButterKnife.bind(this);
+        mUnbind = ButterKnife.bind(this);
         Fabric.with(this, new Crashlytics());
     }
 
@@ -80,7 +81,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if (!isFinishing()) {
             if (mSweetAlertDialog == null || !mSweetAlertDialog.isShowing()) {
                 mSweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-                mSweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                mSweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor(COLOR));
                 mSweetAlertDialog.setTitleText(message);
                 mSweetAlertDialog.setCancelable(false);
                 mSweetAlertDialog.show();
@@ -107,6 +108,22 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     @Override
+    public void hideLoading(Error error, boolean isSuccess) {
+        if (!isFinishing()) {
+            if (mSweetAlertDialog.isShowing()) {
+                mSweetAlertDialog.setCanceledOnTouchOutside(true);
+                mSweetAlertDialog.setTitleText(error.toString());
+                mSweetAlertDialog.setConfirmText(getString(R.string.ok));
+                if (isSuccess) {
+                    mSweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                } else {
+                    mSweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                }
+            }
+        }
+    }
+
+    @Override
     public void hideLoading() {
         if (!isFinishing()) {
             if (mSweetAlertDialog.isShowing()) {
@@ -115,21 +132,21 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         }
     }
 
-    private void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                message, Snackbar.LENGTH_SHORT);
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView
-                .findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
-        snackbar.show();
-    }
-
     @Override
     public void showMessage(String title, int message, int messageType) {
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, messageType);
         sweetAlertDialog.setTitleText(title);
         sweetAlertDialog.setContentText(getString(message));
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
+    }
+
+    @Override
+    public void showMessage(String title, Error error, int messageType) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, messageType);
+        sweetAlertDialog.setTitleText(title);
+        sweetAlertDialog.setContentText(error.toString());
         sweetAlertDialog.setConfirmText(getString(R.string.ok));
         sweetAlertDialog.setCanceledOnTouchOutside(true);
         sweetAlertDialog.show();
@@ -145,7 +162,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         sweetAlertDialog.show();
     }
 
-    public void showEnterTextDialog(String title, String message, String text_pos, String text_neg, CallBackDialog callback) {
+    public void showEnterTextDialog(String title,
+                                    String message,
+                                    String text_pos,
+                                    String text_neg,
+                                    CallBackDialog callback) {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
@@ -197,8 +218,13 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     @Override
-    public void showConfirm(String title, String message, String text_pos, String text_neg, int msgType, CallBackConfirmDialog callback) {
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,msgType);
+    public void showConfirm(String title,
+                            String message,
+                            String text_pos,
+                            String text_neg,
+                            int msgType,
+                            CallBackConfirmDialog callback) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, msgType);
         sweetAlertDialog.setTitleText(title);
         sweetAlertDialog.setContentText(message);
         sweetAlertDialog.setConfirmText(text_pos);
@@ -236,7 +262,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void hideKeyboardOutside(View view) {
         //Set up touch listener for non-text box views to hide keyboard.
@@ -257,8 +282,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     protected void onDestroy() {
 
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
+        if (mUnbind != null) {
+            mUnbind.unbind();
         }
         super.onDestroy();
     }
@@ -266,7 +291,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     protected void onStop() {
         super.onStop();
-        if(mPresenter != null){
+        if (mPresenter != null) {
             mPresenter.unSubscribeRequests();
         }
     }

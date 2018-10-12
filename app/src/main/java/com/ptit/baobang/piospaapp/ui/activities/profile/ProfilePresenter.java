@@ -46,13 +46,13 @@ public class ProfilePresenter extends BasePresenter implements IProfilePresenter
 
         mView.loadData(
                 (customer.getCustomerAvatar() == null || customer.getCustomerAvatar().trim().length() == 0) ? "" : customer.getCustomerAvatar(),
-                customer.getFullname(),
+                customer.getFullName(),
                 (customer.getPhone() == null || customer.getPhone().trim().length() == 0) ? "" : customer.getPhone(),
                 (customer.getEmail() == null || customer.getEmail().trim().length() == 0) ? "" : customer.getEmail(),
                 birday,
                 gender,
-                customer.getProvince(),
-                customer.getDistrict(),
+                customer.getWard().getDistrict().getProvince(),
+                customer.getWard().getDistrict(),
                 customer.getWard(),
                 (customer.getAddress() == null || customer.getAddress().trim().length() == 0) ? "" : customer.getAddress());
     }

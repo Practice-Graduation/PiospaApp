@@ -2,6 +2,7 @@ package com.ptit.baobang.piospaapp.data.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.io.Serializable;
 
@@ -58,4 +59,8 @@ public class Ward  implements Serializable{
         this.district = district;
     }
 
+    @Override
+    public String toString() {
+        return type + AppConstants.SPACE_SYMBOL + name;
+    }
 }

@@ -2,32 +2,26 @@ package com.ptit.baobang.piospaapp.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.drawable.ColorDrawable;
-import android.provider.Settings;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackChoosePhoto;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Currency;
-import java.util.Date;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CommonUtils {
 
@@ -39,16 +33,7 @@ public class CommonUtils {
     private CommonUtils() {
         // This utility class is not publicly instantiable
     }
-    public static String convertDateToString(Date date, String outputFormat) {
-        String convertString = "";
-        SimpleDateFormat df = new SimpleDateFormat(outputFormat);
-        try {
-            convertString = df.format(date);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return convertString;
-    }
+
     public static void openDialogChooseImage(Activity activity, CallBackChoosePhoto callBack) {
         final CharSequence[] items = {activity.getString(R.string.camera), activity.getString(R.string.album)};
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -64,25 +49,6 @@ public class CommonUtils {
         });
 
         builder.show();
-    }
-
-
-    public static ProgressDialog showLoadingDialog(Context context) {
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.show();
-        if (progressDialog.getWindow() != null) {
-            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-        progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        return progressDialog;
-    }
-
-    @SuppressLint("all")
-    public static String getDeviceId(Context context) {
-        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
     @SuppressLint("RestrictedApi")
@@ -106,41 +72,19 @@ public class CommonUtils {
         }
     }
 
-    public static Date getDateTime(Date date, String time){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        String []item = time.split(":");
-        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(item[0]));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(item[1]));
-        if(item.length > 2){
-            calendar.set(Calendar.SECOND, Integer.parseInt(item[2]));
-        }
-
-        return calendar.getTime();
-    }
-
-    public static boolean isEmailValid(String email) {
-        Pattern pattern;
-        Matcher matcher;
-        final String EMAIL_PATTERN =
-                "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-        pattern = Pattern.compile(EMAIL_PATTERN);
-        matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    public static String formatDateAndMonth(int number){
+    public static String formatDateAndMonth(int number) {
         return String.format("%02d", number);
     }
 
-    public static String formatToCurrency(int number){
+    public static String formatToCurrency(int number) {
         return numberFormat.format(number) + currency.getSymbol();
     }
-    public static String formatToCurrency(BigDecimal number){
+
+    public static String formatToCurrency(BigDecimal number) {
         return numberFormat.format(number) + currency.getSymbol();
     }
-    public static String formatToCurrency(String number){
+
+    public static String formatToCurrency(String number) {
         Long aLong = Long.valueOf(number);
         return numberFormat.format(aLong) + currency.getSymbol();
     }
@@ -172,5 +116,15 @@ public class CommonUtils {
             SharedPreferenceUtils.saveCount(context, 1);
         }
 
+    }
+
+    public static void loadImage(ImageView imageView, String url) {
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.drawable.paceholder)
+                .error(R.drawable.error);
+        Glide.with(imageView.getContext())
+                .load(url)
+                .apply(options)
+                .into(imageView);
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
+import com.ptit.baobang.piospaapp.error.Error;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.InputUtils;
@@ -39,13 +40,13 @@ public class ChangePasswordPresenter extends BasePresenter implements IChangePas
             return;
         }
 
-        if(!InputUtils.isValidPassword(newPassword.trim())){
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_invalid, SweetAlertDialog.WARNING_TYPE);
+        if (!InputUtils.isValidPassword(newPassword.trim())) {
+            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_CHANGE_PWD_INVALID, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
         if (passwordConfirm.trim().length() == 0) {
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_comfirm_empty, SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_CHANGE_PWD_COMFIRM_EMPTY, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
@@ -57,7 +58,7 @@ public class ChangePasswordPresenter extends BasePresenter implements IChangePas
         }
 
         if (!newPassword.trim().equals(passwordConfirm.trim())) {
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_pwd_and_pwd_comfirm_not_same, SweetAlertDialog.WARNING_TYPE);
+            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_CHANGE_PWD_COMFIRM_NOT_SAME, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 

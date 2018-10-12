@@ -64,7 +64,7 @@ public class ProvinceActivity extends BaseActivity implements IProvinceView {
 
     private void addControls() {
         mPresenter = new ProvincePresenter(this, this);
-        mUnbinder = ButterKnife.bind(this);
+        mUnbind = ButterKnife.bind(this);
 
         mProvinces = new ArrayList<>();
         mAdapter = new ProvinceAdapter(this, mProvinces);

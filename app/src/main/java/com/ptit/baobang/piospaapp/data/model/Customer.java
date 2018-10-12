@@ -7,7 +7,7 @@ import com.ptit.baobang.piospaapp.utils.AppConstants;
 
 import java.io.Serializable;
 
-public class Customer  implements Serializable {
+public class Customer implements Serializable {
 
     @SerializedName("customerId")
     @Expose
@@ -33,17 +33,13 @@ public class Customer  implements Serializable {
     @Expose
     private String customerAvatar = "";
 
-    @SerializedName("district")
-    @Expose
-    private District district;
-
     @SerializedName("email")
     @Expose
     private String email = "";
 
     @SerializedName("fullname")
     @Expose
-    private String fullname = "";
+    private String fullName = "";
 
     @SerializedName("gender")
     @Expose
@@ -60,10 +56,6 @@ public class Customer  implements Serializable {
     @SerializedName("phone")
     @Expose
     private String phone = "";
-
-    @SerializedName("province")
-    @Expose
-    private Province province;
 
     @SerializedName("ward")
     @Expose
@@ -120,14 +112,6 @@ public class Customer  implements Serializable {
         this.customerAvatar = customerAvatar;
     }
 
-    public District getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(District district) {
-        this.district = district;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -136,12 +120,12 @@ public class Customer  implements Serializable {
         this.email = email;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getGender() {
@@ -176,14 +160,6 @@ public class Customer  implements Serializable {
         this.phone = phone;
     }
 
-    public Province getProvince() {
-        return province;
-    }
-
-    public void setProvince(Province province) {
-        this.province = province;
-    }
-
     public Ward getWard() {
         return ward;
     }
@@ -192,14 +168,19 @@ public class Customer  implements Serializable {
         this.ward = ward;
     }
 
-    public String getFullAddress(){
-        String fullAdress =  address;
-        if(ward != null)
-            fullAdress +=  AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL + ward.getType() + AppConstants.SPACE_SYMBOL + ward.getName();
-        if(district != null)
-            fullAdress += AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL+ district.getType() + AppConstants.SPACE_SYMBOL + district.getName();
-        if(province != null)
-            fullAdress += AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL+ province.getType() + AppConstants.SPACE_SYMBOL + province.getName();
+    public String getFullAddress() {
+        String fullAdress = address;
+        if (ward != null) {
+            District district = ward.getDistrict();
+            Province province = district.getProvince();
+            fullAdress += AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL + ward.getType()
+                        + AppConstants.SPACE_SYMBOL + ward.getName();
+            fullAdress += AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL + district.getType()
+                        + AppConstants.SPACE_SYMBOL + district.getName();
+            fullAdress += AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL + province.getType()
+                        + AppConstants.SPACE_SYMBOL + province.getName();
+
+        }
         return fullAdress;
     }
 }

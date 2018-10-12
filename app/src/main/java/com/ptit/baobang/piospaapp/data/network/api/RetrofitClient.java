@@ -8,6 +8,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
+    private static final int TIME_OUT = 1;
     private static Retrofit retrofit = null;
     private static OkHttpClient okHttpClient = null;
 
@@ -28,10 +29,10 @@ public class RetrofitClient {
     public static OkHttpClient getRequestHeader() {
         if(okHttpClient == null){
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            okHttpClient = builder.connectTimeout(1, TimeUnit.MINUTES)
-                    .writeTimeout(1, TimeUnit.MINUTES)
-                    .readTimeout(1, TimeUnit.MINUTES)
-                    .connectTimeout(1, TimeUnit.MINUTES)
+            okHttpClient = builder.connectTimeout(TIME_OUT, TimeUnit.MINUTES)
+                    .writeTimeout(TIME_OUT, TimeUnit.MINUTES)
+                    .readTimeout(TIME_OUT, TimeUnit.MINUTES)
+                    .connectTimeout(TIME_OUT, TimeUnit.MINUTES)
                     .build();
         }
         return okHttpClient;

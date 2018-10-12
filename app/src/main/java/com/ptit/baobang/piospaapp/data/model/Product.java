@@ -197,4 +197,8 @@ public class Product  implements Serializable, Comparable<Product>{
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    public String getQuanlityString(){
+        return quantity + quantityValue;
+    }
 }

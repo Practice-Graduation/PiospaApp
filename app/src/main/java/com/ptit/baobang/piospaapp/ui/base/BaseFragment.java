@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackConfirmDialog;
+import com.ptit.baobang.piospaapp.error.Error;
 import com.ptit.baobang.piospaapp.utils.NetworkUtils;
 
 import java.util.Objects;
@@ -58,7 +59,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     @Override
     public void showLoading(String message) {
-        if(!Objects.requireNonNull(getActivity()).isFinishing()) {
+        if (!Objects.requireNonNull(getActivity()).isFinishing()) {
             if (mSweetAlertDialog == null || !mSweetAlertDialog.isShowing()) {
                 mSweetAlertDialog = new SweetAlertDialog(getBaseContext(), SweetAlertDialog.PROGRESS_TYPE);
                 mSweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -73,10 +74,26 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     @Override
     public void hideLoading(String message, boolean isSuccess) {
-        if(!Objects.requireNonNull(getActivity()).isFinishing()) {
+        if (!Objects.requireNonNull(getActivity()).isFinishing()) {
             if (mSweetAlertDialog.isShowing()) {
                 mSweetAlertDialog.setCanceledOnTouchOutside(true);
                 mSweetAlertDialog.setTitleText(message);
+                mSweetAlertDialog.setConfirmText(getString(R.string.ok));
+                if (isSuccess) {
+                    mSweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                } else {
+                    mSweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void hideLoading(Error error, boolean isSuccess) {
+        if (!Objects.requireNonNull(getActivity()).isFinishing()) {
+            if (mSweetAlertDialog.isShowing()) {
+                mSweetAlertDialog.setCanceledOnTouchOutside(true);
+                mSweetAlertDialog.setTitleText(error.toString());
                 mSweetAlertDialog.setConfirmText(getString(R.string.ok));
                 if (isSuccess) {
                     mSweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
@@ -114,7 +131,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     @Override
     public void hideLoading() {
-        if(!Objects.requireNonNull(getActivity()).isFinishing()) {
+        if (!Objects.requireNonNull(getActivity()).isFinishing()) {
             if (mSweetAlertDialog.isShowing()) {
                 mSweetAlertDialog.dismissWithAnimation();
             }
@@ -123,7 +140,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     @Override
     public void showMessage(String title, int message, int messageType) {
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(),messageType);
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(), messageType);
         sweetAlertDialog.setTitleText(title);
         sweetAlertDialog.setContentText(getString(message));
         sweetAlertDialog.setConfirmText(getString(R.string.ok));
@@ -133,9 +150,19 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     @Override
     public void showMessage(String title, String message, int messageType) {
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(),messageType);
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(), messageType);
         sweetAlertDialog.setTitleText(title);
         sweetAlertDialog.setContentText(message);
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
+    }
+
+    @Override
+    public void showMessage(String title, Error error, int messageType) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(), messageType);
+        sweetAlertDialog.setTitleText(title);
+        sweetAlertDialog.setContentText(error.toString());
         sweetAlertDialog.setConfirmText(getString(R.string.ok));
         sweetAlertDialog.setCanceledOnTouchOutside(true);
         sweetAlertDialog.show();
@@ -174,7 +201,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Override
     public void onStop() {
         super.onStop();
-        if(mPresenter != null){
+        if (mPresenter != null) {
             mPresenter.unSubscribeRequests();
         }
     }

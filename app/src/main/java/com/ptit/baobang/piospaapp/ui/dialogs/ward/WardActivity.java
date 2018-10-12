@@ -65,7 +65,7 @@ public class WardActivity extends BaseActivity implements IWardView {
     }
     private void addControls() {
         mPresenter = new WardPresenter(this, this);
-        mUnbinder = ButterKnife.bind(this);
+        mUnbind = ButterKnife.bind(this);
 
         mWards = new ArrayList<>();
         mAdapter = new WardAdapter(this, mWards);

@@ -76,13 +76,13 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
 
         mView.loadData(
                 (customer.getCustomerAvatar() == null || customer.getCustomerAvatar().trim().length() == 0) ? "" : customer.getCustomerAvatar(),
-                customer.getFullname(),
+                customer.getFullName(),
                 (customer.getPhone() == null || customer.getPhone().trim().length() == 0) ? "" : customer.getPhone(),
                 (customer.getEmail() == null || customer.getEmail().trim().length() == 0) ? "" : customer.getEmail(),
                 birday,
                 gender,
-                customer.getProvince(),
-                customer.getDistrict(),
+                customer.getWard().getDistrict().getProvince(),
+                customer.getWard().getDistrict(),
                 customer.getWard(),
                 (customer.getAddress() == null || customer.getAddress().trim().length() == 0) ? "" : customer.getAddress());
     }
@@ -166,7 +166,7 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
         mView.showConfirm(mContext.getString(R.string.message), mContext.getString(R.string.save_change), mContext.getString(R.string.ok), mContext.getString(R.string.cancel), SweetAlertDialog.NORMAL_TYPE, new CallBackConfirmDialog() {
             @Override
             public void DiaglogPositive() {
-                customer.setFullname(fullName);
+                customer.setFullName(fullName);
                 customer.setPhone(phone);
                 customer.setEmail(email);
 
@@ -180,8 +180,6 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
                 mView.showLoading(mContext.getString(R.string.uploading));
                 customer.setBirthday(DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ));
                 customer.setGender(gender.equalsIgnoreCase(mContext.getString(R.string.text_male)) ? mContext.getString(R.string.male) : mContext.getString(R.string.female));
-                customer.setProvince(mProvince);
-                customer.setDistrict(mDistrict);
                 customer.setWard(mWard);
                 customer.setAddress(address);
                 if (avatar == null) {
@@ -340,7 +338,7 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
             return true;
         }
 
-        if (!customer.getFullname().trim().equalsIgnoreCase(fullName.trim())) {
+        if (!customer.getFullName().trim().equalsIgnoreCase(fullName.trim())) {
             return true;
         }
 
@@ -376,24 +374,6 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
             return true;
         }
 
-        if (customer.getProvince() == null) {
-            if (mProvince != null)
-                return true;
-        } else {
-            if (customer.getProvince().getProvinceid() != mProvince.getProvinceid()) {
-                return true;
-            }
-        }
-
-        if (customer.getDistrict() == null) {
-            if (mDistrict != null)
-                return true;
-        } else {
-            if (customer.getDistrict().getDistrictid() != mDistrict.getDistrictid()) {
-                return true;
-            }
-        }
-
         if (customer.getWard() == null) {
             if (mWard != null) {
                 return true;
@@ -403,7 +383,6 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
                 return true;
             }
         }
-
 
         return !customer.getAddress().trim().equalsIgnoreCase(address.trim());
 

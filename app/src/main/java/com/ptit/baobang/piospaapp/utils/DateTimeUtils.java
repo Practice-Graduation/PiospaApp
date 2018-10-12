@@ -7,10 +7,11 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DateTimeUtils {
+    private static String DATE_DDMMYY = "ddMMYYYY";
     public static String DATE_PATTERN_DDMMYY = "dd/MM/yyyy";
     public static String DATE_PATTERN_DDMMYYTHHMMSSSSSZ =  "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static String DATE_PATTERN_DDMMYYTHHMMSSSSSX =  "yyyy-MM-dd'T'HH:mm:ss.SSSX";
-    public static String DATE_PATTERN_DDMMYYTHHMMSS =  "yyyy-MM-dd'T'HH:mm:ss";
+    private static String DATE_PATTERN_DDMMYYTHHMMSS =  "yyyy-MM-dd'T'HH:mm:ss";
     private static Locale locale = new Locale("vi", "VN");
 
     private static SimpleDateFormat getDateFormat(String pattern) {
@@ -44,5 +45,14 @@ public class DateTimeUtils {
 
     public static String formatDate(Date date, String pattern){
         return getDateFormat(pattern).format(date);
+    }
+
+    public static String getCurrentDate(){
+        Calendar calendar = Calendar.getInstance();
+        return getDateFormat(DATE_DDMMYY).format(calendar.getTime());
+    }
+    public static String getCurrentDateTime(){
+        Calendar calendar = Calendar.getInstance();
+        return getDateFormat(DATE_PATTERN_DDMMYYTHHMMSS).format(calendar.getTime());
     }
 }

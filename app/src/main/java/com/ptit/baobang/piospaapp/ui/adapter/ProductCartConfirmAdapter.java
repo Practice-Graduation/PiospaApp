@@ -18,12 +18,12 @@ import com.ptit.baobang.piospaapp.utils.CommonUtils;
 
 import java.util.List;
 
-public class ProductCartComfirmAdapter extends RecyclerView.Adapter<ProductCartComfirmAdapter.ViewHolder> {
+public class ProductCartConfirmAdapter extends RecyclerView.Adapter<ProductCartConfirmAdapter.ViewHolder> {
 
     private Context mContext;
     List<CartProductItem> mItems;
 
-    public ProductCartComfirmAdapter(Context mContext, List<CartProductItem> mItems) {
+    public ProductCartConfirmAdapter(Context mContext, List<CartProductItem> mItems) {
         this.mContext = mContext;
         this.mItems = mItems;
     }

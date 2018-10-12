@@ -1,13 +1,13 @@
 package com.ptit.baobang.piospaapp.ui.activities.payment;
 
 import android.content.Context;
-import android.util.Log;
+import android.support.annotation.NonNull;
 
-import com.google.gson.Gson;
 import com.ptit.baobang.piospaapp.R;
 import com.ptit.baobang.piospaapp.data.cart.Cart;
 import com.ptit.baobang.piospaapp.data.cart.CartHelper;
 import com.ptit.baobang.piospaapp.data.cart.CartProductItem;
+import com.ptit.baobang.piospaapp.data.dto.CustomerInfoDTO;
 import com.ptit.baobang.piospaapp.data.local.db_realm.OrderRealm;
 import com.ptit.baobang.piospaapp.data.local.helper.OrderHelper;
 import com.ptit.baobang.piospaapp.data.model.Customer;
@@ -20,16 +20,18 @@ import com.ptit.baobang.piospaapp.data.model.OrderStatus;
 import com.ptit.baobang.piospaapp.data.model.Product;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.data.model.Tax;
-import com.ptit.baobang.piospaapp.data.model.Ward;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.data.network.model_request.CartItemProduct;
 import com.ptit.baobang.piospaapp.data.network.model_request.CartShopping;
 import com.ptit.baobang.piospaapp.data.network.model_request.OrderBodyRequest;
+import com.ptit.baobang.piospaapp.error.Error;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
+import com.ptit.baobang.piospaapp.utils.DefaultValue;
 import com.ptit.baobang.piospaapp.utils.InputUtils;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
+import com.shuhart.stepview.StepView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -42,8 +44,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class PaymentPresenter extends BasePresenter implements IPaymentPresenter {
 
-    private static String TAG = "PaymentPresenter";
-
     private IPaymentView mView;
     private Context mContext;
     List<CartProductItem> cartProductItems;
@@ -54,98 +54,67 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
     }
 
     @Override
-    public void clickButtonNext(int currentStep, String name,
-                                String phone, Province mProvince,
-                                District mDistrict, Ward mWard,
-                                String address, OrderDeliveryType mDeliveryType,
-                                OrderPaymentType mPaymentType, Tax mTax) {
+    public void clickButtonNext(StepView stepView, CustomerInfoDTO customerInfoDTO) {
+        int currentStep = stepView.getCurrentStep();
         switch (currentStep) {
-            case 0:
-                if (!checkDeliveryInfoInput(name, phone, mProvince,
-                        mDistrict, mWard, address)) {
+            case PaymentActivity.STEP_1_PAYMENT_TYPE:
+                if (!checkPaymentTypeInput(customerInfoDTO)) {
                     return;
                 }
                 break;
-            case 1:
-                if (!checkPaymentInput(mDeliveryType, mPaymentType)) {
+            case PaymentActivity.STEP_2_ADDRESS:
+                if (!checkDeliveryInfoInput(customerInfoDTO)) {
                     return;
                 }
                 break;
-            case 2:
-                createOrder(name, phone, mProvince, mDistrict, mWard,
-                        address, mDeliveryType, mPaymentType, mTax);
+            case PaymentActivity.STEP_3_DELIVERY_TYPE:
+                if (!checkDeliveryType(customerInfoDTO)) {
+                    return;
+                }
+                break;
+            case PaymentActivity.STEP_4_CONFIRM:
+                createOrder(customerInfoDTO);
                 break;
         }
-        Cart cart = CartHelper.getCart();
-        if (currentStep == 0 && cart.getProducts().size() == 0) {
-            currentStep += 2;
+        if (customerInfoDTO.getPaymentType().getOrderPaymentTypeId() == AppConstants.PAYMENT_TYPE_GET) {
+            currentStep = stepView.getStepCount() - 1;
+            computeTaxAndShip(customerInfoDTO.getDeliveryType(), customerInfoDTO.getTax());
         } else {
             currentStep++;
-        }
-        if (currentStep == 2) {
-            computeTax(mDeliveryType, mTax);
         }
         mView.nextStep(currentStep);
     }
 
-    public void computeTax(OrderDeliveryType mDeliveryType, Tax mTax) {
+    public void computeTaxAndShip(OrderDeliveryType mDeliveryType, Tax mTax) {
 
         int shipInt = 0;
         if (mDeliveryType != null) {
             shipInt = mDeliveryType.getPrice();
         }
 
+        Cart cart = CartHelper.getCart();
+        BigDecimal total = cart.getTotalPrice();
+        mTax = null;
         if (mTax != null) {
-            Cart cart = CartHelper.getCart();
-
-            BigDecimal total = cart.getTotalPrice();
             if (mTax.getType().equals(AppConstants.PECENT)) {
-                total = total.add(total.multiply(BigDecimal.valueOf(10)).divide(BigDecimal.valueOf(100)));
+                total = total.add(total.multiply(BigDecimal.valueOf(mTax.getValue())).divide(BigDecimal.valueOf(AppConstants.HUNDRES_PERCENT)));
             } else if (mTax.getType().equals(AppConstants.MONEY)) {
                 total = total.add(new BigDecimal(mTax.getValue()));
             }
-            String totalPrice = CommonUtils.formatToCurrency(cart.getTotalPrice());
-            String ship = CommonUtils.formatToCurrency(shipInt);
-            String payment = CommonUtils.formatToCurrency(total.add(BigDecimal.valueOf(shipInt)));
-            mView.updateUIPaymentInfo(totalPrice, ship, payment);
         }
+        String totalPrice = CommonUtils.formatToCurrency(cart.getTotalPrice());
+        String ship = CommonUtils.formatToCurrency(shipInt);
+        String payment = CommonUtils.formatToCurrency(total.add(BigDecimal.valueOf(shipInt)));
+        mView.updateUIPaymentInfo(totalPrice, ship, payment);
 
     }
 
-    private void createOrder(String name, String phone, Province mProvince,
-                             District mDistrict, Ward mWard, String address,
-                             OrderDeliveryType mDeliveryType,
-                             OrderPaymentType mPaymentType, Tax mTax) {
+    private void createOrder(CustomerInfoDTO customerInfoDTO) {
 
-        String deliveyAddress = address
-                + AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL
-                + mWard.getType() + AppConstants.SPACE_SYMBOL + mWard.getName()
-                + AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL
-                + mDistrict.getType() + AppConstants.SPACE_SYMBOL + mDistrict.getName()
-                + AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL +
-                mProvince.getType() + AppConstants.SPACE_SYMBOL + mProvince.getName();
+        String deliveryAddress = getDeliveryAddress(customerInfoDTO);
 
         Customer customer = SharedPreferenceUtils.getUser(mContext);
-        Order order = new Order();
-        order.setFullName(name);
-        order.setPhone(phone);
-        order.setCustomer(customer);
-        order.setAddress(customer.getFullAddress());
-        order.setAddressDelivery(deliveyAddress);
-        order.setOrderPaymentType(mPaymentType);
-        order.setOrderDeliveryType(mDeliveryType);
-        if (mDeliveryType == null) {
-
-            order.setDeliveryCost(0);
-        } else {
-
-            order.setDeliveryCost(mDeliveryType.getPrice());
-        }
-        order.setTax(mTax);
-        // to get default value was define on database
-        order.setOrderStatus(new OrderStatus());
-        order.setOrderDeliveryStatus(new OrderDeliveryStatus());
-
+        Order order = createOrderObject(customerInfoDTO, deliveryAddress, customer);
 
         List<CartItemProduct> itemProducts = getCartItemProducts();
         CartShopping cartShopping = new CartShopping();
@@ -154,7 +123,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
         OrderBodyRequest orderBodyRequest = new OrderBodyRequest();
         orderBodyRequest.setOrder(order);
         orderBodyRequest.setCartShopping(cartShopping);
-        Gson gson = new Gson();
+
         mView.showLoading(mContext.getString(R.string.create_order));
         getCompositeDisposable().add(
                 mApiService.createOrder(orderBodyRequest)
@@ -162,6 +131,40 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
                         .observeOn(AndroidSchedulers.mainThread())
                         .unsubscribeOn(Schedulers.io())
                         .subscribe(this::handleResponse, this::handleError));
+    }
+
+    @NonNull
+    private Order createOrderObject(CustomerInfoDTO customerInfoDTO, String deliveryAddress, Customer customer) {
+
+        Order order = new Order();
+        order.setFullName(customerInfoDTO.getName());
+        order.setPhone(customerInfoDTO.getPhone());
+        order.setCustomer(customer);
+        order.setAddress(customer.getFullAddress());
+        order.setAddressDelivery(deliveryAddress);
+        order.setOrderPaymentType(customerInfoDTO.getPaymentType());
+        order.setOrderDeliveryType(customerInfoDTO.getDeliveryType());
+        if (customerInfoDTO.getDeliveryType() == null) {
+            order.setDeliveryCost(DefaultValue.INT);
+        } else {
+            order.setDeliveryCost(customerInfoDTO.getDeliveryType().getPrice());
+        }
+        order.setTax(customerInfoDTO.getTax());
+        // to get default value was define on database
+        order.setOrderStatus(new OrderStatus());
+        order.setOrderDeliveryStatus(new OrderDeliveryStatus());
+        return order;
+    }
+
+    @NonNull
+    private String getDeliveryAddress(CustomerInfoDTO customerInfoDTO) {
+        return customerInfoDTO.getAddress()
+                + AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL
+                + customerInfoDTO.getWard().getType() + AppConstants.SPACE_SYMBOL + customerInfoDTO.getWard().getName()
+                + AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL
+                + customerInfoDTO.getDistrict().getType() + AppConstants.SPACE_SYMBOL + customerInfoDTO.getDistrict().getName()
+                + AppConstants.COMMA_SYMBOL + AppConstants.SPACE_SYMBOL +
+                customerInfoDTO.getProvince().getType() + AppConstants.SPACE_SYMBOL + customerInfoDTO.getProvince().getName();
     }
 
     private void handleError(Throwable throwable) {
@@ -174,10 +177,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             mView.hideLoading();
             Cart cart = CartHelper.getCart();
             cart.clear();
-
             saveOrderLocal(orderEndPoint.getData());
-
-
             mView.openOrderActivity();
         } else {
             mView.hideLoading(orderEndPoint.getMessage(), false);
@@ -185,50 +185,55 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
     }
 
     private void saveOrderLocal(Order data) {
-
         OrderRealm orderRealm = new OrderRealm(data, cartProductItems);
         OrderHelper.saveOrder(orderRealm);
     }
 
-    private boolean checkPaymentInput(OrderDeliveryType mDeliveryType,
-                                      OrderPaymentType mPaymentType) {
-        if (mDeliveryType == null) {
+    private boolean checkDeliveryType(CustomerInfoDTO customerInfoDTO) {
+        if (customerInfoDTO.getDeliveryType() == null) {
             mView.showMessage(mContext.getString(R.string.message), R.string.delivery_type_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
-        if (mPaymentType == null) {
+        return true;
+    }
+
+    private boolean checkPaymentTypeInput(CustomerInfoDTO customerInfoDTO) {
+        if (customerInfoDTO.getPaymentType() == null) {
             mView.showMessage(mContext.getString(R.string.message), R.string.payment_type_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
         return true;
     }
 
-    private boolean checkDeliveryInfoInput(String name, String phone, Province mProvince, District mDistrict, Ward mWard, String address) {
-        if (name == null || name.isEmpty()) {
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_fullname_empty, SweetAlertDialog.WARNING_TYPE);
+    private boolean checkDeliveryInfoInput(CustomerInfoDTO customerInfoDTO) {
+        if (customerInfoDTO.getName() == null || customerInfoDTO.getName().isEmpty()) {
+            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_PAYMENT_NAME_EMPTY, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
-        if (phone == null || phone.isEmpty()) {
+        if (customerInfoDTO.getPhone() == null || customerInfoDTO.getPhone().isEmpty()) {
             mView.showMessage(mContext.getString(R.string.message), R.string.message_phone_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
-        if (!InputUtils.isValidPhone(phone)) {
-            mView.showMessage(mContext.getString(R.string.message), mContext.getString(R.string.phone) + " " + phone + " " + mContext.getString(R.string.wrong), SweetAlertDialog.WARNING_TYPE);
+        if (!InputUtils.isValidPhone(customerInfoDTO.getPhone())) {
+            String message = mContext.getString(R.string.phone)
+                    + AppConstants.SPACE_SYMBOL + customerInfoDTO.getPhone()
+                    + AppConstants.SPACE_SYMBOL + mContext.getString(R.string.wrong);
+            mView.showMessage(mContext.getString(R.string.message), message, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
-        if (mProvince == null) {
+        if (customerInfoDTO.getProvince() == null) {
             mView.showMessage(mContext.getString(R.string.message), R.string.message_province_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
-        if (mDistrict == null) {
+        if (customerInfoDTO.getDistrict() == null) {
             mView.showMessage(mContext.getString(R.string.message), R.string.message_district_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
-        if (mWard == null) {
+        if (customerInfoDTO.getWard() == null) {
             mView.showMessage(mContext.getString(R.string.message), R.string.message_ward_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
-        if (address == null || address.isEmpty()) {
+        if (customerInfoDTO.getAddress() == null || customerInfoDTO.getAddress().isEmpty()) {
             mView.showMessage(mContext.getString(R.string.message), R.string.message_specific_address_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
@@ -285,17 +290,6 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
     private void handleOrderPaymentTypeResponse(EndPoint<List<OrderPaymentType>> listEndPoint) {
         List<OrderPaymentType> deliveryTypes = listEndPoint.getData();
         mView.updateRVOrderPaymentType(deliveryTypes);
-    }
-
-    @Override
-    public void attachData(String name, String phone, Province mProvince,
-                           District mDistrict, Ward mWard, String address,
-                           OrderDeliveryType mDeliveryType,
-                           OrderPaymentType mPaymentType) {
-        mView.showData(name, phone, mProvince.getName(), mDistrict.getName(),
-                mWard.getName(), address,
-                mDeliveryType == null ? "" : mDeliveryType.getOrderDeliveryTypeName(),
-                mPaymentType == null ? "" : mPaymentType.getOrderPaymentTypeName());
     }
 
     @Override

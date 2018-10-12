@@ -13,7 +13,7 @@ import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class RegisterActivity extends BaseActivity<RegisterPresenter> implements IRegisterView{
+public class RegisterActivity extends BaseActivity<RegisterPresenter> implements IRegisterView {
 
     @BindView(R.id.txtFullName)
     EditText txtFullName;
@@ -35,16 +35,17 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     }
 
     @OnClick({R.id.btnRegister, R.id.txtBackToLogin})
-    void onClick(View view){
-        switch (view.getId()){
+    void onClick(View view) {
+        switch (view.getId()) {
             case R.id.btnRegister:
-                mPresenter.clickRegister(txtFullName.getText().toString(),
+                mPresenter.clickRegister(
+                        txtFullName.getText().toString(),
                         txtEmail.getText().toString(),
                         txtPassword.getText().toString(),
                         txtRetypePassword.getText().toString());
                 break;
             case R.id.txtBackToLogin:
-                backToLoginActiviry("","");
+                backToLoginActiviry("", "");
                 break;
         }
     }

@@ -39,10 +39,10 @@
             android:textSize="@dimen/body_text_size"
             android:minWidth="30dp"
             android:textAlignment="center"
-            app:layout_constraintStart_toEndOf="@+id/btnAdd"
+            app:layout_constraintStart_toEndOf="@+id/btnPositive"
             app:layout_constraintTop_toBottomOf="@+id/txtPrice"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnRemove"/>
+            app:layout_constraintEnd_toStartOf="@+id/btnNegative"/>
 
         <TextView
             android:id="@+id/txtPrice"
@@ -52,7 +52,7 @@
             android:textSize="@dimen/body_text_size"
             app:layout_constraintStart_toStartOf="@+id/txtName"
             app:layout_constraintTop_toBottomOf="@+id/txtName"
-            app:layout_constraintBottom_toTopOf="@+id/btnAdd" />
+            app:layout_constraintBottom_toTopOf="@+id/btnPositive" />
 
         <TextView
             android:id="@+id/lbTotal"
@@ -78,7 +78,7 @@
             android:layout_marginEnd="@dimen/margin" />
 
         <ImageButton
-            android:id="@+id/btnAdd"
+            android:id="@+id/btnPositive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add"
@@ -90,7 +90,7 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <ImageButton
-            android:id="@+id/btnRemove"
+            android:id="@+id/btnNegative"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="0dp"
