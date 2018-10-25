@@ -7,8 +7,4 @@ public interface ILoginView extends BaseView {
 
     void openRegisterActivity();
 
-    String getUserName();
-
-    String getPassword();
-
 }

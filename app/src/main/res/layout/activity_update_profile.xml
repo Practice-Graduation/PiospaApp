@@ -24,7 +24,8 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -113,15 +114,16 @@
                         android:gravity="center|start"
                         android:text="@string/full_name"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/txtFullName"
+                        app:layout_constraintEnd_toStartOf="@+id/edtFullName"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-                    <TextView
-                        android:id="@+id/txtFullName"
+                    <EditText
+                        android:id="@+id/edtFullName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/full_name"
                         android:gravity="center|end"
+                        android:background="@color/white"
                         android:drawableRight="@drawable/ic_arrow_right_dark"
                         android:drawableEnd="@drawable/ic_arrow_right_dark"
                         app:layout_constraintTop_toTopOf="parent"
@@ -152,13 +154,14 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/txtPhone"/>
-                    <TextView
-                        android:id="@+id/txtPhone"
+                        app:layout_constraintEnd_toStartOf="@+id/edtPhone"/>
+                    <EditText
+                        android:id="@+id/edtPhone"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/phone"
                         android:gravity="center|end"
+                        android:background="@color/white"
                         android:drawableRight="@drawable/ic_arrow_right_dark"
                         android:drawableEnd="@drawable/ic_arrow_right_dark"
                         app:layout_constraintTop_toTopOf="parent"
@@ -184,18 +187,19 @@
                         android:id="@+id/lbEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/email"
+                        android:text="@string/userName"
                         android:gravity="center|start"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/txtEmail"/>
-                    <TextView
-                        android:id="@+id/txtEmail"
+                        app:layout_constraintEnd_toStartOf="@+id/edtEmail"/>
+                    <EditText
+                        android:id="@+id/edtEmail"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/email"
+                        android:hint="@string/userName"
                         android:gravity="center|end"
+                        android:background="@color/white"
                         android:drawableRight="@drawable/ic_arrow_right_dark"
                         android:drawableEnd="@drawable/ic_arrow_right_dark"
                         app:layout_constraintTop_toTopOf="parent"
@@ -233,6 +237,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/birth_day"
                         android:gravity="center|end"
+                        android:inputType="date"
+                        android:background="@color/white"
                         android:drawableRight="@drawable/ic_arrow_right_dark"
                         android:drawableEnd="@drawable/ic_arrow_right_dark"
                         app:layout_constraintTop_toTopOf="parent"
@@ -434,14 +440,16 @@
                         app:layout_constraintTop_toBottomOf="@id/lbAddress2"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
-                    <TextView
-                        android:id="@+id/txtAddress"
+                    <EditText
+                        android:id="@+id/edtAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/specific_address"
+                        android:hint="@string/specific_address"
                         android:gravity="center|start"
                         android:layout_marginTop="@dimen/margin"
                         android:layout_marginBottom="@dimen/margin"
+                        android:background="@color/white"
                         android:drawableRight="@drawable/ic_arrow_right_dark"
                         app:layout_constraintTop_toBottomOf="@id/lbAddressNote"
                         app:layout_constraintStart_toStartOf="parent"
@@ -522,5 +530,14 @@
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_selector_none_radius"
+        android:text="@string/update"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </LinearLayout>

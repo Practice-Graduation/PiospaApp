@@ -10,7 +10,7 @@ public class Province  implements Serializable{
 
     @SerializedName("provinceid")
     @Expose
-    private int provinceid;
+    private int provinceId;
 
     @SerializedName("name")
     @Expose
@@ -23,12 +23,12 @@ public class Province  implements Serializable{
     public Province() {
     }
 
-    public int getProvinceid() {
-        return provinceid;
+    public int getProvinceId() {
+        return provinceId;
     }
 
-    public void setProvinceid(int provinceid) {
-        this.provinceid = provinceid;
+    public void setProvinceId(int provinceId) {
+        this.provinceId = provinceId;
     }
 
     public String getName() {
@@ -50,5 +50,11 @@ public class Province  implements Serializable{
     @Override
     public String toString() {
         return type + AppConstants.SPACE_SYMBOL + name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Province province = (Province) obj;
+        return provinceId == province.getProvinceId();
     }
 }

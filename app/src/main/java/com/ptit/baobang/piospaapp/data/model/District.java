@@ -10,7 +10,7 @@ public class District  implements Serializable{
 
     @SerializedName("districtid")
     @Expose
-    private int districtid;
+    private int districtId;
     @SerializedName("name")
     @Expose
     private String name;
@@ -26,12 +26,12 @@ public class District  implements Serializable{
     public District() {
     }
 
-    public int getDistrictid() {
-        return districtid;
+    public int getDistrictId() {
+        return districtId;
     }
 
-    public void setDistrictid(int districtid) {
-        this.districtid = districtid;
+    public void setDistrictId(int districtId) {
+        this.districtId = districtId;
     }
 
     public String getName() {
@@ -61,5 +61,11 @@ public class District  implements Serializable{
     @Override
     public String toString() {
         return type + AppConstants.SPACE_SYMBOL + name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        District district = (District) obj;
+        return districtId == district.getDistrictId();
     }
 }

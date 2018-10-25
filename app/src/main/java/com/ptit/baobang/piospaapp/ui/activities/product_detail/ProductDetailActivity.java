@@ -28,8 +28,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * ProductDetailActivity activity
+ * Màn hình chi tiết sản phẩm
  *
+ * @version 1.0.1
  * @author BangNB
  */
 public class ProductDetailActivity extends BaseActivity<ProductDetailPresenter>

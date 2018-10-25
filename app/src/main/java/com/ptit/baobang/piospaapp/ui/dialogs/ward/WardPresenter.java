@@ -32,7 +32,7 @@ public class WardPresenter extends BasePresenter implements IWardPresenter {
 
         mView.showLoading(mContext.getString(R.string.loading));
         getCompositeDisposable().add(
-                mApiService.getWardtByDistrictId(district.getDistrictid())
+                mApiService.getWardtByDistrictId(district.getDistrictId())
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())

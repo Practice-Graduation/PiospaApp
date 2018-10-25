@@ -40,11 +40,12 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     private SweetAlertDialog mSweetAlertDialog;
     protected T mPresenter;
     private String COLOR = "#A5DC86";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if(checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
         }
@@ -143,9 +144,55 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     @Override
+    public void showMessage(String message) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(
+                this,
+                SweetAlertDialog.NORMAL_TYPE);
+        sweetAlertDialog.setTitleText(getString(R.string.message));
+        sweetAlertDialog.setContentText(message);
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
+    }
+
+    @Override
+    public void showMessage(int message) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(
+                this,
+                SweetAlertDialog.NORMAL_TYPE);
+        sweetAlertDialog.setTitleText(getString(R.string.message));
+        sweetAlertDialog.setContentText(getString(message));
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
+    }
+
+    @Override
     public void showMessage(String title, Error error, int messageType) {
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, messageType);
         sweetAlertDialog.setTitleText(title);
+        sweetAlertDialog.setContentText(error.toString());
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
+    }
+
+    @Override
+    public void showWarningMessage(Error error) {
+        SweetAlertDialog sweetAlertDialog =
+                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+        sweetAlertDialog.setTitleText(getString(R.string.message));
+        sweetAlertDialog.setContentText(error.toString());
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
+    }
+
+    @Override
+    public void showErrorMessage(Error error) {
+        SweetAlertDialog sweetAlertDialog =
+                new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
+        sweetAlertDialog.setTitleText(getString(R.string.message));
         sweetAlertDialog.setContentText(error.toString());
         sweetAlertDialog.setConfirmText(getString(R.string.ok));
         sweetAlertDialog.setCanceledOnTouchOutside(true);
@@ -242,6 +289,27 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                 sweetAlertDialog.dismissWithAnimation();
                 callback.DiaglogNegative();
             }
+        });
+        sweetAlertDialog.setCanceledOnTouchOutside(false);
+        sweetAlertDialog.show();
+    }
+
+    @Override
+    public void showConfirm(String message, CallBackConfirmDialog callback) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(
+                this,
+                SweetAlertDialog.NORMAL_TYPE);
+        sweetAlertDialog.setTitleText(getString(R.string.message));
+        sweetAlertDialog.setContentText(message);
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setConfirmClickListener(sweetAlertDialog1 -> {
+            sweetAlertDialog1.dismissWithAnimation();
+            callback.DiaglogPositive();
+        });
+        sweetAlertDialog.setCancelText(getString(R.string.cancel));
+        sweetAlertDialog.setCancelClickListener(sweetAlertDialog12 -> {
+            sweetAlertDialog12.dismissWithAnimation();
+            callback.DiaglogNegative();
         });
         sweetAlertDialog.setCanceledOnTouchOutside(false);
         sweetAlertDialog.show();

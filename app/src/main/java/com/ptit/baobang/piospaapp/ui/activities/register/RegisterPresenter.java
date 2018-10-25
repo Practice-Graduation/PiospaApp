@@ -3,74 +3,54 @@ package com.ptit.baobang.piospaapp.ui.activities.register;
 import android.content.Context;
 
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.data.dto.RegisterDTO;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
+import com.ptit.baobang.piospaapp.error.Error;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
-import com.ptit.baobang.piospaapp.error.Error;
 import com.ptit.baobang.piospaapp.utils.InputUtils;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class RegisterPresenter extends BasePresenter implements IRegisterPresenter {
+/**
+ * Presenter màn hình đăng kí
+ *
+ * @version 1.0.1
+ * @author BaoBang
+ */
+public class RegisterPresenter extends BasePresenter
+        implements IRegisterPresenter {
 
     private IRegisterView mView;
     private Context mContext;
 
-    public RegisterPresenter(Context mContext, IRegisterView mView) {
+    RegisterPresenter(Context mContext, IRegisterView mView) {
 
         this.mContext = mContext;
         this.mView = mView;
     }
 
+    /**
+     * 2. Xử lý đăng kí
+     *      2. Xử lý check
+     *          a. Check hạng mục
+     *      3. Gửi yêu cầu đăng kí tài khoản
+     * @param registerDTO
+     */
     @Override
-    public void clickBackLogin() {
-
-    }
-
-    @Override
-    public void clickRegister(String fullName, String email, String password, String retypePassword) {
-        if (fullName.trim().length() == 0) {
-            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_NAME_EMPTY, SweetAlertDialog.WARNING_TYPE);
-            return;
-        }
-        if (email.trim().length() == 0) {
-            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_USR_EMPTY, SweetAlertDialog.WARNING_TYPE);
-            return;
-        }
-
-        if (!InputUtils.isValidUsername(email)) {
-            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_USR_INVALID, SweetAlertDialog.WARNING_TYPE);
-            return;
-        }
-
-        if (password.trim().length() == 0) {
-            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_PWD_EMPTY, SweetAlertDialog.WARNING_TYPE);
-            return;
-        }
-
-        if (!InputUtils.isValidPassword(password.trim())) {
-            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_PWD_INVALID, SweetAlertDialog.WARNING_TYPE);
-            return;
-        }
-
-        if (retypePassword.trim().length() == 0) {
-            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_PWD_COMFIRM_EMPTY, SweetAlertDialog.WARNING_TYPE);
-            return;
-        }
-        if (!password.trim().equalsIgnoreCase(retypePassword.trim())) {
-            mView.showMessage(mContext.getString(R.string.message), Error.ERROR_REGISTER_PWD_COMFIRM_NOT_SAME, SweetAlertDialog.WARNING_TYPE);
-            return;
-        }
+    public void clickRegister(RegisterDTO registerDTO) {
+        //2. Xử lý check
+        //  a. Check hạng mục
+        if (!isInputValid(registerDTO)) return;
         Customer customer = new Customer();
-        customer.setAccount(email);
-        customer.setPassword(password);
-        customer.setFullName(fullName);
+        customer.setAccount(registerDTO.getUserName());
+        customer.setPassword(registerDTO.getPassword());
+        customer.setFullName(registerDTO.getPassword());
 
         mView.showLoading(mContext.getString(R.string.register));
-
+        // 3. Gửi yêu cầu đăng kí tài khoản
         getCompositeDisposable().add(
                 mApiService.register(customer)
                         .subscribeOn(Schedulers.computation())
@@ -80,10 +60,61 @@ public class RegisterPresenter extends BasePresenter implements IRegisterPresent
         );
     }
 
-    private void handleError(Throwable throwable) {
-        mView.hideLoading(throwable.getMessage(), false);
+    /**
+     * Kiểm tra xem input có rỗng hay không
+     * Nếu rỗng thì hiện thị thông báo
+     *
+     * @param input String
+     * @param error Error
+     * @return boolean
+     */
+    private boolean isInputEmpty(String input, Error error) {
+        if (input.trim().length() == 0) {
+            mView.showErrorMessage(error);
+            return true;
+        }
+        return false;
     }
 
+    /**
+     * Kiểm tra hợp lệ các input nhập vào
+     * @param registerDTO
+     * @return
+     */
+    private boolean isInputValid(RegisterDTO registerDTO) {
+        if (isInputEmpty(registerDTO.getFullName(), Error.ERROR_REGISTER_NAME_EMPTY)) {
+            return false;
+        }
+        if (InputUtils.isUsernameValid(registerDTO.getUserName())) {
+            mView.showWarningMessage( Error.ERROR_REGISTER_USR_INVALID);
+            return false;
+        }
+        if (InputUtils.isPasswordValid(registerDTO.getPassword().trim())) {
+            mView.showWarningMessage(Error.ERROR_REGISTER_PWD_INVALID);
+            return false;
+        }
+        if (!registerDTO.getPassword().trim()
+                .equalsIgnoreCase(registerDTO.getRetypePassword().trim())) {
+            mView.showWarningMessage(Error.ERROR_REGISTER_PWD_COMFIRM_NOT_SAME);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 4. Check response
+     *      1. Response error
+     * @param throwable Throwable
+     */
+    private void handleError(Throwable throwable) {
+        mView.hideLoading(Error.ERROR_REGISTER_FAILED, false);
+    }
+
+    /**
+     * 4. Check response
+     *      2. Response succeeded
+     * @param customerEndPoint EndPoint
+     */
     private void handleResponse(EndPoint<Customer> customerEndPoint) {
         if (customerEndPoint.getStatusCode() == AppConstants.SUCCESS_CODE) {
             mView.hideLoading();

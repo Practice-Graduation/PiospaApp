@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.ImageView;
@@ -73,7 +76,11 @@ public class CommonUtils {
     }
 
     public static String formatDateAndMonth(int number) {
-        return String.format("%02d", number);
+        return String.format(locale, "%02d", number);
+    }
+
+    public static String formatDate(int day, int month, int year) {
+        return String.format(locale, "%02d/%02d/%d", day, month, year);
     }
 
     public static String formatToCurrency(int number) {
@@ -126,5 +133,71 @@ public class CommonUtils {
                 .load(url)
                 .apply(options)
                 .into(imageView);
+    }
+
+    public static void loadAvatar(ImageView imageView, String url) {
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.drawable.paceholder)
+                .error(R.drawable.user);
+        Glide.with(imageView.getContext())
+                .load(url)
+                .apply(options)
+                .into(imageView);
+    }
+
+    public static void loadAvatar(ImageView imageView, Bitmap bitmap) {
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.drawable.paceholder)
+                .error(R.drawable.user);
+        Glide.with(imageView.getContext())
+                .load(bitmap)
+                .apply(options)
+                .into(imageView);
+    }
+
+    public static void loadRoundAvatar(ImageView imageView, String url) {
+        Bitmap error = BitmapFactory.decodeResource(
+                imageView.getResources(),
+                R.drawable.user);
+
+        RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory
+                .create(imageView.getResources(), error);
+        circularBitmapDrawable.setCircular(true);
+        Glide.with(imageView.getContext())
+                .load(url)
+                .apply(RequestOptions
+                        .centerCropTransform()
+                        .circleCrop()
+                        .error(circularBitmapDrawable))
+                .into(imageView);
+    }
+
+    public static void loadRoundAvatar(ImageView imageView, Bitmap bitmap) {
+        Bitmap error = BitmapFactory.decodeResource(
+                imageView.getResources(),
+                R.drawable.user);
+
+        RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory
+                .create(imageView.getResources(), error);
+        circularBitmapDrawable.setCircular(true);
+        Glide.with(imageView.getContext())
+                .load(bitmap)
+                .apply(RequestOptions
+                        .centerCropTransform()
+                        .circleCrop()
+                        .error(circularBitmapDrawable))
+                .into(imageView);
+    }
+
+    public static String getGenderText(Context context, String gender) {
+        return gender.equals(context.getString(R.string.male)) ?
+                context.getString(R.string.text_male) :
+                context.getString(R.string.text_female);
+    }
+
+    public static String getGenderCode(Context context, String gender) {
+        return gender.equalsIgnoreCase(context.getString(R.string.text_male)) ?
+                context.getString(R.string.male) :
+                context.getString(R.string.female);
     }
 }

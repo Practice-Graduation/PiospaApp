@@ -1,6 +1,7 @@
 package com.ptit.baobang.piospaapp.ui.activities.register;
 
+import com.ptit.baobang.piospaapp.data.dto.RegisterDTO;
+
 public interface IRegisterPresenter{
-    void clickBackLogin();
-    void clickRegister(String fullName, String email, String password, String retypePassword);
+    void clickRegister(RegisterDTO registerDTO);
 }

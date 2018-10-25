@@ -10,7 +10,7 @@ public class Ward  implements Serializable{
 
     @SerializedName("wardid")
     @Expose
-    private int wardid;
+    private int wardId;
 
     @SerializedName("name")
     @Expose
@@ -27,12 +27,12 @@ public class Ward  implements Serializable{
     public Ward() {
     }
 
-    public int getWardid() {
-        return wardid;
+    public int getWardId() {
+        return wardId;
     }
 
-    public void setWardid(int wardid) {
-        this.wardid = wardid;
+    public void setWardId(int wardId) {
+        this.wardId = wardId;
     }
 
     public String getName() {
@@ -62,5 +62,11 @@ public class Ward  implements Serializable{
     @Override
     public String toString() {
         return type + AppConstants.SPACE_SYMBOL + name;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        Ward ward = (Ward) object;
+        return wardId == ward.getWardId();
     }
 }

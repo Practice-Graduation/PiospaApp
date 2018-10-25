@@ -51,8 +51,8 @@ public class ProfilePresenter extends BasePresenter implements IProfilePresenter
                 (customer.getEmail() == null || customer.getEmail().trim().length() == 0) ? "" : customer.getEmail(),
                 birday,
                 gender,
-                customer.getWard().getDistrict().getProvince(),
-                customer.getWard().getDistrict(),
+                customer.getWard() == null ? null : customer.getWard().getDistrict().getProvince(),
+                customer.getWard() == null ? null : customer.getWard().getDistrict(),
                 customer.getWard(),
                 (customer.getAddress() == null || customer.getAddress().trim().length() == 0) ? "" : customer.getAddress());
     }

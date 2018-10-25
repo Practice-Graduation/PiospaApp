@@ -105,7 +105,12 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     }
 
     @Override
-    public void showConfirm(String title, String message, String text_pos, String text_neg, int msgType, CallBackConfirmDialog callback) {
+    public void showConfirm(String title,
+                            String message,
+                            String text_pos,
+                            String text_neg,
+                            int msgType,
+                            CallBackConfirmDialog callback) {
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(), msgType);
         sweetAlertDialog.setTitleText(title);
         sweetAlertDialog.setContentText(message);
@@ -124,6 +129,27 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
                 sweetAlertDialog.dismissWithAnimation();
                 callback.DiaglogNegative();
             }
+        });
+        sweetAlertDialog.setCanceledOnTouchOutside(false);
+        sweetAlertDialog.show();
+    }
+
+    @Override
+    public void showConfirm(String message, CallBackConfirmDialog callback) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(
+                getBaseContext(),
+                SweetAlertDialog.NORMAL_TYPE);
+        sweetAlertDialog.setTitleText(getString(R.string.message));
+        sweetAlertDialog.setContentText(message);
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setConfirmClickListener(sweetAlertDialog1 -> {
+            sweetAlertDialog1.dismissWithAnimation();
+            callback.DiaglogPositive();
+        });
+        sweetAlertDialog.setCancelText(getString(R.string.cancel));
+        sweetAlertDialog.setCancelClickListener(sweetAlertDialog12 -> {
+            sweetAlertDialog12.dismissWithAnimation();
+            callback.DiaglogNegative();
         });
         sweetAlertDialog.setCanceledOnTouchOutside(false);
         sweetAlertDialog.show();
@@ -159,6 +185,30 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     }
 
     @Override
+    public void showMessage(String message) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(
+                getBaseContext(),
+                SweetAlertDialog.NORMAL_TYPE);
+        sweetAlertDialog.setTitleText(getString(R.string.message));
+        sweetAlertDialog.setContentText(message);
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
+    }
+
+    @Override
+    public void showMessage(int message) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(
+                getBaseContext(),
+                SweetAlertDialog.NORMAL_TYPE);
+        sweetAlertDialog.setTitleText(getString(R.string.message));
+        sweetAlertDialog.setContentText(getString(message));
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
+    }
+
+    @Override
     public void showMessage(String title, Error error, int messageType) {
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getBaseContext(), messageType);
         sweetAlertDialog.setTitleText(title);
@@ -167,7 +217,27 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         sweetAlertDialog.setCanceledOnTouchOutside(true);
         sweetAlertDialog.show();
     }
+    @Override
+    public void showWarningMessage(Error error) {
+        SweetAlertDialog sweetAlertDialog =
+                new SweetAlertDialog(getBaseContext(), SweetAlertDialog.WARNING_TYPE);
+        sweetAlertDialog.setTitleText(getString(R.string.message));
+        sweetAlertDialog.setContentText(error.toString());
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
+    }
 
+    @Override
+    public void showErrorMessage(Error error) {
+        SweetAlertDialog sweetAlertDialog =
+                new SweetAlertDialog(getBaseContext(), SweetAlertDialog.ERROR_TYPE);
+        sweetAlertDialog.setTitleText(getString(R.string.message));
+        sweetAlertDialog.setContentText(error.toString());
+        sweetAlertDialog.setConfirmText(getString(R.string.ok));
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.show();
+    }
     @Override
     public boolean isNetworkConnected() {
 

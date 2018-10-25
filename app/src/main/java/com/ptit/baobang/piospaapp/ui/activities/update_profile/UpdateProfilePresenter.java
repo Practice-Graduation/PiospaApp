@@ -1,21 +1,18 @@
 package com.ptit.baobang.piospaapp.ui.activities.update_profile;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.ptit.baobang.piospaapp.R;
+import com.ptit.baobang.piospaapp.data.dto.CustomerProfileDTO;
 import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.model.District;
 import com.ptit.baobang.piospaapp.data.model.Province;
 import com.ptit.baobang.piospaapp.data.model.Ward;
 import com.ptit.baobang.piospaapp.data.network.api.APIService;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
+import com.ptit.baobang.piospaapp.error.Error;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackChoosePhoto;
 import com.ptit.baobang.piospaapp.ui.listener.CallBackConfirmDialog;
@@ -23,7 +20,6 @@ import com.ptit.baobang.piospaapp.utils.AppConstants;
 import com.ptit.baobang.piospaapp.utils.CommonUtils;
 import com.ptit.baobang.piospaapp.utils.DateTimeUtils;
 import com.ptit.baobang.piospaapp.utils.InputUtils;
-import com.ptit.baobang.piospaapp.utils.RequestCodeConstant;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -34,20 +30,27 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class UpdateProfilePresenter extends BasePresenter implements IUpdateProfilePresenter {
+/**
+ * Presenter màn hình cập nhật thông tin người dùng
+ *
+ * @version 1.0.1
+ * @author BaoBang
+ */
+public class UpdateProfilePresenter extends BasePresenter
+        implements IUpdateProfilePresenter {
 
+    private static final String TAG = "UpdateProfilePresenter";
     private Context mContext;
     private IUpdateProfileView mView;
     private Customer mCustomer;
 
-    public UpdateProfilePresenter(Context mContext, IUpdateProfileView mView) {
+    UpdateProfilePresenter(Context mContext, IUpdateProfileView mView) {
         this.mView = mView;
         this.mContext = mContext;
     }
@@ -55,140 +58,108 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
     @Override
     public void loadData(Context baseContext) {
         Customer customer = SharedPreferenceUtils.getUser(baseContext);
-
-        String gender = customer.getGender();
-        String birday = (customer.getBirthday() == null || customer.getBirthday().trim().length() == 0) ? "" : customer.getBirthday();
-        if (gender == null || gender.trim().length() == 0) {
-            gender = "";
-        } else {
-            gender = gender.equalsIgnoreCase(mContext.getString(R.string.male)) ? mContext.getString(R.string.text_male) : mContext.getString(R.string.text_female);
-        }
-
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ, DateTimeUtils.getLocale());
-        try {
-            calendar.setTime(sdf.parse(birday));
-            birday = DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            birday = "";
-        }
-
-        mView.loadData(
-                (customer.getCustomerAvatar() == null || customer.getCustomerAvatar().trim().length() == 0) ? "" : customer.getCustomerAvatar(),
-                customer.getFullName(),
-                (customer.getPhone() == null || customer.getPhone().trim().length() == 0) ? "" : customer.getPhone(),
-                (customer.getEmail() == null || customer.getEmail().trim().length() == 0) ? "" : customer.getEmail(),
-                birday,
-                gender,
-                customer.getWard().getDistrict().getProvince(),
-                customer.getWard().getDistrict(),
-                customer.getWard(),
-                (customer.getAddress() == null || customer.getAddress().trim().length() == 0) ? "" : customer.getAddress());
+        mView.loadData(customer);
     }
 
-    @Override
-    public void logOut() {
-        mView.logOut();
-    }
 
+    /**
+     * 6. Tỉnh/Thành phố
+     *      2. Thực hiện chuyển sang màn hình Tỉnh/Thành phố
+     * @param mProvince Tỉnh/Thành phố hiện tại được chọn
+     */
     @Override
-    public void clickProvine(Province mProvince) {
+    public void clickProvince(Province mProvince) {
         mView.onClickProvince(mProvince);
     }
 
+    /**
+     * 7. Quận/Huyện
+     *      2.Check hạng mục
+     *      3. Thực hiện chuyển sang màn hình Quận/Huyện
+     * @param mProvince Tỉnh/Thành phố hiện tại được chọn
+     * @param mDistrict Quận/Huyện hiện tại được chọn
+     */
     @Override
     public void clickDistrict(Province mProvince, District mDistrict) {
-        if(mProvince == null){
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_province_empty, SweetAlertDialog.ERROR_TYPE);
+        if (mProvince == null) {
+            mView.showWarningMessage(Error.ERROR_UPDATE_PROFILE_NOT_CHOOSE_PROVINCE);
             return;
         }
         mView.onClickDistrict(mDistrict);
     }
 
-    @Override
-    public void clickAddress(String s) {
-        mView.onClickAddress(s);
-    }
-
-    @Override
-    public void clickFullName(String s) {
-        mView.onClickFullName(s);
-    }
-
-    @Override
-    public void clickEmil(String s) {
-        mView.onClickEmail(s);
-    }
-
+    /**
+     * 8. Phường/Xã
+     *      2.Check hạng mục
+     *      3. Thực hiện chuyển sang màn hình Phường/Xã
+     * @param mDistrict Quận/Huyện hiện tại được chọn
+     * @param mWard Phường/Xã hiện tại được chon
+     */
     @Override
     public void clickWard(District mDistrict, Ward mWard) {
-        if(mDistrict == null){
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_district_empty, SweetAlertDialog.ERROR_TYPE);
+        if (mDistrict == null) {
+            mView.showWarningMessage(Error.ERROR_UPDATE_PROFILE_NOT_CHOOSE_DISTRICT);
             return;
         }
         mView.onClickWard(mWard);
     }
 
+
+    /**
+     * 4. Ngày sinh
+     *      a. Người dùng nhấn [Ngày sinh], hiển thị DatePickerDialog
+     * @param birthday Ngày sinh hiện tại
+     */
     @Override
-    public void clickPhone(String s) {
-        mView.onClickPhone(s);
+    public void clickBirthday(String birthday) {
+        mView.onClickBirthday(birthday);
     }
 
+    /**
+     * 5. Giới tính
+     * @param gender giới tính hiện tại được chọn
+     */
     @Override
-    public void clickBirthday(String s) {
-        mView.onClickBirthday(s);
+    public void clickGender(String gender) {
+        mView.onClickGender(gender);
     }
 
+    /**
+     * 3. Xử lý cập nhật thông tin người dùng
+     *      2. Xử lý check
+     *         a. Check dữ liệu thay đổi
+     *         b. Check hạng mục
+     * @param customerProfileDTO DTO
+     */
     @Override
-    public void clickGender(String s) {
-        mView.onClickGender(s);
-    }
-
-    @Override
-    public void clickDone(Bitmap avatar, String fullName, String phone, String email, String birthday, String gender,
-                          Province mProvince, District mDistrict, Ward mWard, String address) {
+    public void clickDone(CustomerProfileDTO customerProfileDTO) {
         Customer customer = SharedPreferenceUtils.getUser(mContext);
-        if (!checkDataChange(avatar, customer, fullName, phone, email, birthday, gender, mProvince, mDistrict, mWard, address)) {
-            mView.showMessage(mContext.getString(R.string.message), R.string.message_data_not_change, SweetAlertDialog.NORMAL_TYPE);
+        // a. Check dữ liệu thay đổi
+        if (!checkDataChange(customer, customerProfileDTO)) {
+            mView.showMessage(R.string.message_data_not_change);
             return;
         }
-
-        if (phone.trim().length() > 0 && !InputUtils.isValidPhone(phone)) {
-            mView.showMessage(mContext.getString(R.string.message), mContext.getString(R.string.phone) + " " + phone + " " + mContext.getString(R.string.wrong), SweetAlertDialog.WARNING_TYPE);
+        // b. Check hạng mục
+        if(customerProfileDTO.getFullName().trim().equals("")){
+            mView.showErrorMessage(Error.ERROR_UPDATE_PROFILE_NAME_EMPTY);
             return;
         }
-        if (email.trim().length() > 0 && !InputUtils.isValidEmail(email)) {
-            mView.showMessage(mContext.getString(R.string.message), mContext.getString(R.string.email) + " " + email + " " +  mContext.getString(R.string.wrong), SweetAlertDialog.WARNING_TYPE);
+        if (InputUtils.isPhoneValid(customerProfileDTO.getPhone())) {
+            mView.showErrorMessage(Error.ERROR_UPDATE_PROFILE_PHONE_INVALID);
             return;
         }
-
-        mView.showConfirm(mContext.getString(R.string.message), mContext.getString(R.string.save_change), mContext.getString(R.string.ok), mContext.getString(R.string.cancel), SweetAlertDialog.NORMAL_TYPE, new CallBackConfirmDialog() {
+        if (!InputUtils.isValidEmail(customerProfileDTO.getEmail())) {
+            mView.showErrorMessage(Error.ERROR_EMAIL_INVALID);
+            return;
+        }
+        if (!checkAddressValid(customerProfileDTO))
+            return;
+        mView.showConfirm(mContext.getString(R.string.save_change),
+                new CallBackConfirmDialog() {
             @Override
             public void DiaglogPositive() {
-                customer.setFullName(fullName);
-                customer.setPhone(phone);
-                customer.setEmail(email);
-
-                Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat(DateTimeUtils.DATE_PATTERN_DDMMYY, DateTimeUtils.getLocale());
-                try {
-                    calendar.setTime(sdf.parse(birthday));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                mView.showLoading(mContext.getString(R.string.uploading));
-                customer.setBirthday(DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ));
-                customer.setGender(gender.equalsIgnoreCase(mContext.getString(R.string.text_male)) ? mContext.getString(R.string.male) : mContext.getString(R.string.female));
-                customer.setWard(mWard);
-                customer.setAddress(address);
-                if (avatar == null) {
-                    uploadWithoutAvatar(customer);
-                } else {
-                    uploadWithAvatar(customer, avatar);
-                }
+                updateData(customer, customerProfileDTO);
             }
-
             @Override
             public void DiaglogNegative() {
 
@@ -196,6 +167,76 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
         });
     }
 
+    /**
+     * 3. Xử lý cập nhật thông tin người dùng
+     *      2. Xử lý check
+     *         b. Check hạng mục
+     *              4. Quận/Huyện
+     *              5. Phường/Xã
+     *              6. Địa chỉ cụ thể
+     * @param customerProfileDTO Thông tin người dùng thay đổi
+     * @return boolean
+     */
+    private boolean checkAddressValid(CustomerProfileDTO customerProfileDTO) {
+        if(customerProfileDTO.getProvince() != null){
+            if(customerProfileDTO.getDistrict() == null){
+                mView.showErrorMessage(Error.ERROR_DISTRICT_EMPTY);
+                return false;
+            }
+            if(customerProfileDTO.getWard() == null){
+                mView.showErrorMessage(Error.ERROR_WARD_EMPTY);
+                return false;
+            }
+            if(customerProfileDTO.getAddress().isEmpty()){
+                mView.showErrorMessage(Error.ERROR_ADDRESS_EMPTY);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 3. Gửi yêu cầu cập nhật tài khoản
+     *      TH1: Trường hợp người dùng thay đổi avatar, gọi api upload ảnh sau đó gọi api cập nhật thông tin
+     *      Th2: Trường hợp người dùng không thay đổi avatar, thì chỉ gọi api cập nhật thông tin
+     * @param customer Thông tin người dùng hiện tại
+     * @param customerProfileDTO Thông tin người dùng thay đổi
+     */
+    private void updateData(Customer customer, CustomerProfileDTO customerProfileDTO) {
+        customer.setFullName(customerProfileDTO.getFullName());
+        customer.setPhone(customerProfileDTO.getPhone());
+        customer.setEmail(customerProfileDTO.getEmail());
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(
+                DateTimeUtils.DATE_PATTERN_DDMMYY,
+                DateTimeUtils.getLocale());
+        try {
+            calendar.setTime(sdf.parse(customerProfileDTO.getBirthday()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        mView.showLoading(mContext.getString(R.string.uploading));
+        String birthDay = DateTimeUtils.formatDate(
+                calendar.getTime(),
+                DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSZ);
+        customer.setBirthday(birthDay);
+        customer.setGender(CommonUtils.getGenderCode(mContext, customerProfileDTO.getGender()));
+        customer.setWard(customerProfileDTO.getWard());
+        customer.setAddress(customerProfileDTO.getAddress());
+        if (customerProfileDTO.getAvatar() == null) {
+            // Th2: Trường hợp người dùng không thay đổi avatar, thì chỉ gọi api cập nhật thông tin
+            uploadWithoutAvatar(customer);
+        } else {
+            // TH1: Trường hợp người dùng thay đổi avatar, gọi api upload ảnh sau đó gọi api cập nhật thông tin
+            uploadWithAvatar(customer, customerProfileDTO.getAvatar());
+        }
+    }
+
+    /**
+     * 3. Gửi yêu cầu cập nhật tài khoản
+     *      Th2: Trường hợp người dùng không thay đổi avatar, thì chỉ gọi api cập nhật thông tin
+     * @param customer Thông tin người dùng
+     */
     private void uploadWithoutAvatar(Customer customer) {
         getCompositeDisposable().add(mApiService.updateCustomer(customer.getCustomerId(), customer)
                 .subscribeOn(Schedulers.computation())
@@ -204,72 +245,79 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
                 .subscribe(this::handleUploadSuccess, this::handleUploadError));
     }
 
+    /**
+     * 3. Gửi yêu cầu cập nhật tài khoản
+     *      // TH1: Trường hợp người dùng thay đổi avatar, gọi api upload ảnh sau đó gọi api cập nhật thông tin
+     * @param customer Thông tin người dùng
+     * @param avatar Hình đại diện
+     */
     private void uploadWithAvatar(Customer customer, Bitmap avatar) {
         mCustomer = customer;
         try {
-
             //create a file to write bitmap data
             File file = new File(mContext.getCacheDir(), AppConstants.DEFAULT_FILE_NAME);
-            file.createNewFile();
-
-            //Convert bitmap to byte array
-            Bitmap bitmap = CommonUtils.resizeImage(avatar);;
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-            byte[] bitmapdata = bos.toByteArray();
-
-            //write the bytes in file
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(bitmapdata);
-            fos.flush();
-            fos.close();
-
-
-
-            RequestBody requestFile =
-                    RequestBody.create(
-                            MediaType.parse(APIService.MULTIPART_FORM_DATA),
-                            file
-                    );
-            RequestBody data = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart(APIService.PARAM_UPLOAD_AVATAR, file.getName(), requestFile)
-                    .build();
-
-            getCompositeDisposable().add(mApiService.uploadImage(data)
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .unsubscribeOn(Schedulers.io())
-                    .subscribe(this::handleResponseUpload, this::handleUploadError));
-
-
+           if(file.createNewFile()){
+               Bitmap bitmap = CommonUtils.resizeImage(avatar);//Convert bitmap to byte array
+               ByteArrayOutputStream bos = new ByteArrayOutputStream();
+               bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+               byte[] bitmapdata = bos.toByteArray();
+               FileOutputStream fos = new FileOutputStream(file);  //write the bytes in file
+               fos.write(bitmapdata);
+               fos.flush();
+               fos.close();
+               RequestBody requestFile =
+                       RequestBody.create(MediaType.parse(APIService.MULTIPART_FORM_DATA), file);
+               RequestBody data = new MultipartBody.Builder()
+                       .setType(MultipartBody.FORM)
+                       .addFormDataPart(APIService.PARAM_UPLOAD_AVATAR, file.getName(), requestFile)
+                       .build();
+               getCompositeDisposable().add(mApiService.uploadImage(data)// c. Api upload ảnh
+                       .subscribeOn(Schedulers.computation())
+                       .observeOn(AndroidSchedulers.mainThread())
+                       .unsubscribeOn(Schedulers.io())
+                       .subscribe(this::handleResponseUpload, this::handleUploadError));
+           }
         } catch (IOException e) {
-            e.printStackTrace();
             mView.hideLoading(e.getMessage(), false);
         }
-
     }
 
+    /**
+     * d. Check response api upload ảnh
+     *  2. Response succeeded
+     * @param stringEndPoint EndPoint
+     */
     private void handleResponseUpload(EndPoint<String> stringEndPoint) {
         if (stringEndPoint.getStatusCode() == AppConstants.SUCCESS_CODE) {
             mCustomer.setCustomerAvatar(stringEndPoint.getData());
-            getCompositeDisposable().add(mApiService.updateCustomer(mCustomer.getCustomerId(), mCustomer)
+            getCompositeDisposable()
+                    .add(mApiService.updateCustomer(mCustomer.getCustomerId(), mCustomer)
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .unsubscribeOn(Schedulers.io())
-                    .subscribe(UpdateProfilePresenter.this::handleUploadSuccess, UpdateProfilePresenter.this::handleUploadError));
+                    .subscribe(
+                            UpdateProfilePresenter.this::handleUploadSuccess,
+                            UpdateProfilePresenter.this::handleUploadError));
         } else {
             mView.hideLoading(stringEndPoint.getMessage(), false);
         }
     }
 
 
+    /**
+     * b. Check response api cập nhật thông tin tài khoản
+     *       2. Response succeeded
+     *  4. Lưu thông tin người dùng vào Sharepreferences
+     * @param customerEndPoint EndPoint
+     */
     private void handleUploadSuccess(EndPoint<Customer> customerEndPoint) {
-
+        // 2. Response succeeded
         if (customerEndPoint.getStatusCode() == AppConstants.SUCCESS_CODE) {
+            // 4. Lưu thông tin người dùng vào Sharepreferences
             SharedPreferenceUtils.saveUser(mContext, customerEndPoint.getData());
             mView.setNullAvatar();
             mView.loadAvatar(customerEndPoint.getData().getCustomerAvatar());
+            // 5. Thông báo cập nhật thành công
             mView.hideLoading(mContext.getString(R.string.save_successed), true);
         } else {
             mView.hideLoading(customerEndPoint.getMessage(), false);
@@ -277,114 +325,98 @@ public class UpdateProfilePresenter extends BasePresenter implements IUpdateProf
 
     }
 
+    /**
+     *
+     *  b. Check response api cập nhật thông tin tài khoản
+     *      1. Response error
+     *  d. Check response api upload ảnh
+     *     1. Response error
+     * @param throwable Throwable
+     */
     private void handleUploadError(Throwable throwable) {
-        mView.hideLoading(mContext.getString(R.string.upload_failed), false);
+        Log.e(TAG, throwable.getMessage());
+        mView.hideLoading(Error.ERROR_UPDATE_PROFILE_FAILED, false);
     }
 
+    /**
+     * 2. Cập nhật thông tin người dùng
+     *      2. Hình lớn + 3. Hình nhỏ
+     *          1. Hiển thị ban đầu
+     *          2. Xử lý chọn máy ảnh
+     *          3. Xử lý chọn bộ sưu tập
+     * @param updateProfileActivity Màn hình cập nhật thông tin
+     */
     @Override
     public void clickUpdateAvatar(UpdateProfileActivity updateProfileActivity) {
 
         CommonUtils.openDialogChooseImage(updateProfileActivity, new CallBackChoosePhoto() {
             @Override
             public void onCamera() {
-                if (checkCamPermission(updateProfileActivity))
-                    cameraIntent(updateProfileActivity);
+                if (mView.checkCamPermission())
+                    mView.cameraIntent();
             }
 
             @Override
             public void onGallery() {
-                if (checkGaleryPermission(updateProfileActivity))
-                    galleryIntent(updateProfileActivity);
+                if (mView.checkGalleryPermission())
+                    mView.galleryIntent();
             }
         });
     }
 
-
-    public void cameraIntent(Activity activity) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        activity.startActivityForResult(intent, RequestCodeConstant.REQUEST_CAMERA_PIC);
+    /**
+     * Kiểm tra hai chuỗi có giống nhau hay không
+     * @param text1 chuỗi thứ nhất
+     * @param text2 chuỗi thứ hai
+     * @return boolean
+     */
+    private boolean isTextEqual(String text1, String text2) {
+        text1 = text1.trim();
+        text2 = text2.trim();
+        return !text1.equalsIgnoreCase(text2);
     }
 
-    public void galleryIntent(Activity activity) {
-        Intent intent = new Intent();
-        intent.setType(AppConstants.IMAGE_PATH);
-        intent.setAction(Intent.ACTION_GET_CONTENT);//
-        activity.startActivityForResult(Intent.createChooser(intent, activity.getString(R.string.select_avatar)), RequestCodeConstant.REQUEST_SELECT_FILE);
+    /**
+     *   3. Xử lý cập nhật thông tin người dùng
+     *      2. Xử lý check
+     *         a. Check dữ liệu thay đổi
+     * @param customer Customer
+     * @param customerProfileDTO CustomerProfileDTO
+     * @return boolean
+     */
+    private boolean checkDataChange(Customer customer, CustomerProfileDTO customerProfileDTO) {
+        String customerGender = CommonUtils.getGenderText(mContext, customer.getGender());
+        String customerBirthday = DateTimeUtils.getBirthday(customer.getBirthday());
+        return customerProfileDTO.getAvatar() != null || // Hình đại diện
+                isTextEqual(customer.getFullName(), customerProfileDTO.getFullName()) || // Họ và tên
+                isTextEqual(customer.getPhone(), customerProfileDTO.getPhone()) || // Số điện thoại
+                isTextEqual(customer.getEmail(), customerProfileDTO.getEmail()) || // Email
+                isTextEqual(customerBirthday, customerProfileDTO.getBirthday()) || // Ngày sinh
+                isTextEqual(customerGender, customerProfileDTO.getGender()) || // giới tính
+                checkAddressChange(customer, customerProfileDTO) || // Địa chỉ
+                isTextEqual(customer.getAddress(), customerProfileDTO.getAddress()); // địa chỉ cụ thể
+
     }
 
-    private boolean checkCamPermission(Activity activity) {
-        if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.CAMERA}, RequestCodeConstant.REQUEST_CAMERA_PIC);
-            return false;
-        } else {
-            return true;
+    /**
+     * 3. Xử lý cập nhật thông tin người dùng
+     *      2. Xử lý check
+     *       a. Check dữ liệu thay đổi
+     * @param customer Thông tin người dùng
+     * @param customerProfileDTO Thông tin người dùng thay đổi
+     * @return boolean
+     */
+    private boolean checkAddressChange(Customer customer, CustomerProfileDTO customerProfileDTO) {
+        if(customer.getWard() == null) {
+            return customerProfileDTO.getProvince() != null ||
+                    customerProfileDTO.getDistrict() != null ||
+                    customer.getWard() != null;
+        }else {
+            Ward customerWard = customer.getWard();
+            District customerDistrict = customerWard.getDistrict();
+            return !customerDistrict.getProvince().equals(customerProfileDTO.getProvince()) ||
+                    !customerDistrict.equals(customerProfileDTO.getDistrict()) ||
+                    !customerWard.equals(customerProfileDTO.getWard());
         }
-    }
-
-    private boolean checkGaleryPermission(Activity activity) {
-        if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, RequestCodeConstant.REQUEST_SELECT_FILE);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean checkDataChange(Bitmap avatar, Customer customer, String fullName, String phone, String email, String birthday, String gender, Province mProvince, District mDistrict, Ward mWard, String address) {
-
-        if (avatar != null) {
-            return true;
-        }
-
-        if (!customer.getFullName().trim().equalsIgnoreCase(fullName.trim())) {
-            return true;
-        }
-
-        if (!customer.getPhone().trim().equalsIgnoreCase(phone.trim())) {
-            return true;
-        }
-        if (!customer.getEmail().trim().equalsIgnoreCase(email.trim())) {
-            return true;
-        }
-
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSX, DateTimeUtils.getLocale());
-        String cusBirth = "";
-        try {
-            calendar.setTime(sdf.parse(customer.getBirthday()));
-            cusBirth = DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            sdf = new SimpleDateFormat(DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSX, DateTimeUtils.getLocale());
-            try {
-                calendar.setTime(sdf.parse(customer.getBirthday()));
-                cusBirth = DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY);
-            } catch (ParseException e1) {
-                e1.printStackTrace();
-                cusBirth = "";
-            }
-        }
-        if (!cusBirth.trim().equalsIgnoreCase(birthday.trim())) {
-            return true;
-        }
-        String cusGender = customer.getGender().equals(mContext.getString(R.string.male)) ? mContext.getString(R.string.text_male) : mContext.getString(R.string.text_female);
-        if (!cusGender.trim().equalsIgnoreCase(gender.trim())) {
-            return true;
-        }
-
-        if (customer.getWard() == null) {
-            if (mWard != null) {
-                return true;
-            }
-        } else {
-            if (customer.getWard().getWardid() != mWard.getWardid()) {
-                return true;
-            }
-        }
-
-        return !customer.getAddress().trim().equalsIgnoreCase(address.trim());
-
     }
 }

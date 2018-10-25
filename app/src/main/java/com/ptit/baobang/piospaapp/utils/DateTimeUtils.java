@@ -55,4 +55,25 @@ public class DateTimeUtils {
         Calendar calendar = Calendar.getInstance();
         return getDateFormat(DATE_PATTERN_DDMMYYTHHMMSS).format(calendar.getTime());
     }
+
+    public static String getBirthday(String birthday){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSX, DateTimeUtils.getLocale());
+        String cusBirth = "";
+        try {
+            calendar.setTime(sdf.parse(birthday));
+            cusBirth = DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            sdf = new SimpleDateFormat(DateTimeUtils.DATE_PATTERN_DDMMYYTHHMMSSSSSX, DateTimeUtils.getLocale());
+            try {
+                calendar.setTime(sdf.parse(birthday));
+                cusBirth = DateTimeUtils.formatDate(calendar.getTime(), DateTimeUtils.DATE_PATTERN_DDMMYY);
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+                cusBirth = "";
+            }
+        }
+        return cusBirth.trim();
+    }
 }

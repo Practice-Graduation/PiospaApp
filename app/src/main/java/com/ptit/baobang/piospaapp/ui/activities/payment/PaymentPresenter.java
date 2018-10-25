@@ -214,7 +214,7 @@ public class PaymentPresenter extends BasePresenter implements IPaymentPresenter
             mView.showMessage(mContext.getString(R.string.message), R.string.message_phone_empty, SweetAlertDialog.WARNING_TYPE);
             return false;
         }
-        if (!InputUtils.isValidPhone(customerInfoDTO.getPhone())) {
+        if (InputUtils.isPhoneValid(customerInfoDTO.getPhone())) {
             String message = mContext.getString(R.string.phone)
                     + AppConstants.SPACE_SYMBOL + customerInfoDTO.getPhone()
                     + AppConstants.SPACE_SYMBOL + mContext.getString(R.string.wrong);

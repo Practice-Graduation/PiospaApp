@@ -48,7 +48,7 @@ public class WardAdapter extends RecyclerView.Adapter<WardAdapter.WardHolder> im
     public void onBindViewHolder(@NonNull WardHolder holder, int position) {
             holder.bindView(mFilterItems.get(position));
             if(mWardSelected != null &&
-                    mWardSelected.getWardid() == mFilterItems.get(position).getWardid()){
+                    mWardSelected.getWardId() == mFilterItems.get(position).getWardId()){
                 holder.setChecked(true);
             }else{
                 holder.setChecked(false);

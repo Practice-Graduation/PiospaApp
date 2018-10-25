@@ -19,8 +19,9 @@ import com.ptit.baobang.piospaapp.utils.KeyBundleConstant;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
- * ProductDetailPresenter class
+ * Presenter màn hình chi tiết sản phẩm
  *
+ * @version 1.0.1
  * @author BangNB
  */
 public class ProductDetailPresenter extends BasePresenter implements IProductDetailPresenter {

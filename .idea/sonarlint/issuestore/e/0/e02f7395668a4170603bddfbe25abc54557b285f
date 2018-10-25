@@ -1,0 +1,34 @@
+
+zsquid:S00116."]Rename this field "LOG_CLICK_ADD_CART" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¼æÁÀþÿÿÿÿ
+jsquid:MaximumInheritanceDepth#"<This class has 8 parents which is greater than 5 authorized.(«’Ïûÿÿÿÿ
+V"squid:SwitchLastCaseIsDefaultCheckû""Add a default case to this switch.(øå´¡ÿÿÿÿÿ
+=squid:S11702"!Make this final field static too.(Ì‘ Ùùÿÿÿÿ
+qsquid:S001164"YRename this field "LOG_CLICK_HOME" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(–òžà
+=squid:S1170-"!Make this final field static too.(ýÚèíøÿÿÿÿ
+usquid:S00116'"XRename this field "LOG_ON_CREATE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ôÕéñøÿÿÿÿ
+8squid:S11705"!Make this final field static too.(»È‹¢
+qsquid:S001165"YRename this field "LOG_SET_AMOUNT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(»È‹¢
+8squid:S1170,"!Make this final field static too.(ÿÖà–
+=squid:S1170."!Make this final field static too.(¼æÁÀþÿÿÿÿ
+psquid:S00116+"XRename this field "LOG_ON_RESUME" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(”€‹¢
+=squid:S1170'"!Make this final field static too.(ôÕéñøÿÿÿÿ
+8squid:S11704"!Make this final field static too.(–òžà
+tsquid:S00116("WRename this field "LOG_ON_START" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(· “¸ûÿÿÿÿ
+usquid:S001160"]Rename this field "LOG_CLICK_POSITIVE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡£ƒä
+Q"squid:SwitchLastCaseIsDefaultCheck™""Add a default case to this switch.(ŽºÖ
+8squid:S11706"!Make this final field static too.(ÔÈÔ³
+ssquid:S00116-"VRename this field "LOG_ON_STOP" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ýÚèíøÿÿÿÿ
+qsquid:S001166"YRename this field "LOG_ON_DESTROY" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÔÈÔ³
+hsquid:S1301û"KReplace this "switch" statement by "if" statements to increase readability.(øå´¡ÿÿÿÿÿ
+8squid:S1170/"!Make this final field static too.(ùé¥
+=squid:S11703"!Make this final field static too.(°¾‘½úÿÿÿÿ
+=squid:S11701"!Make this final field static too.(˜ªŸþÿÿÿÿ
+8squid:S1170+"!Make this final field static too.(”€‹¢
+wsquid:S00116/"_Rename this field "LOG_CLICK_GO_TO_CART" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ùé¥
+~squid:S001163"aRename this field "LOG_OPEN_FRAGMENT_CART" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(°¾‘½úÿÿÿÿ
+osquid:S00116,"WRename this field "LOG_ON_PAUSE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿÖà–
+zsquid:S001161"]Rename this field "LOG_CLICK_NEGATIVE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(˜ªŸþÿÿÿÿ
+8squid:S11700"!Make this final field static too.(‡£ƒä
+fsquid:S00116&"NRename this field "TAG" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(áÎèú
+squid:S001162"bRename this field "LOG_SHOW_PRODUCT_DETAIL" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ì‘ Ùùÿÿÿÿ
+8squid:S1170&"!Make this final field static too.(áÎèú

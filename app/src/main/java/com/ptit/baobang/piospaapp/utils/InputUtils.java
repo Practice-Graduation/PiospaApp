@@ -3,23 +3,23 @@ package com.ptit.baobang.piospaapp.utils;
 import android.text.TextUtils;
 
 public class InputUtils {
+
     public static boolean isValidEmail(String target) {
-        String EMAIL = "[a-zA-Z0-9_\\.]+@[a-zA-Z]+\\.[a-zA-Z]+(\\.[a-zA-Z]+)*";
-        return (!TextUtils.isEmpty(target) && target.matches(EMAIL));
+        return target.isEmpty() ||
+                target.matches("[a-zA-Z0-9_\\.]+@[a-zA-Z]+\\.[a-zA-Z]+(\\.[a-zA-Z]+)*");
     }
 
-    public static boolean isValidPhone(String target) {
-        String PHONE = "(\\+84|0)\\d{9,10}";
-        return (!TextUtils.isEmpty(target) && target.matches(PHONE));
+    public static boolean isPhoneValid(String target) {
+        return !target.isEmpty() && !target.matches("(\\+84|0)\\d{9}");
     }
 
-    public static boolean isValidUsername(String target){
-        String USERNAME = "[a-zA-Z0-9\\._\\-]{5,}";
-        return (!TextUtils.isEmpty(target) && target.matches(USERNAME));
+    public static boolean isUsernameValid(String target) {
+        return (TextUtils.isEmpty(target)
+                || !target.matches("[a-zA-Z0-9\\._\\-]{5,32}"));
     }
 
-    public static boolean isValidPassword(String target){
-        String PASSWORD = ".{5,}";
-        return (!TextUtils.isEmpty(target) && target.matches(PASSWORD));
+    public static boolean isPasswordValid(String target) {
+        return (TextUtils.isEmpty(target)
+                || !target.matches(".{5,64}"));
     }
 }

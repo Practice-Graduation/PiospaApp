@@ -8,17 +8,23 @@ import com.ptit.baobang.piospaapp.data.model.Customer;
 import com.ptit.baobang.piospaapp.data.network.api.EndPoint;
 import com.ptit.baobang.piospaapp.data.network.model_request.LoginRequest;
 import com.ptit.baobang.piospaapp.error.Error;
-import com.ptit.baobang.piospaapp.services.FCMUtils;
 import com.ptit.baobang.piospaapp.ui.base.BasePresenter;
 import com.ptit.baobang.piospaapp.utils.AppConstants;
+import com.ptit.baobang.piospaapp.utils.InputUtils;
 import com.ptit.baobang.piospaapp.utils.SharedPreferenceUtils;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginPresenter extends BasePresenter implements ILoginPresenter {
+/**
+ * Presenter màn hình đăng nhập
+ *
+ * @version 1.0.1
+ * @author BaoBang
+ */
+public class LoginPresenter extends BasePresenter
+        implements ILoginPresenter {
 
     private ILoginView mILoginView;
     private Context mContext;
@@ -26,8 +32,8 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
     /**
      * The contructor
      *
-     * @param mContext
-     * @param mILoginView
+     * @param mContext Context
+     * @param mILoginView ILoginVie
      * */
     LoginPresenter(Context mContext, ILoginView mILoginView) {
         super();
@@ -36,49 +42,53 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
     }
 
     /**
-     *
+     * 3. Xử lý đăng nhập
+     *      1. Nhấn nút đăng nhập thì thực hiện xử lý.
+     *      2. Xử lý check
      * Method was executed when user clicked button Login
      *      - Check the username and the password are valid
      *      - Send a quest to server to check login information
      *
-     * @param username
-     * @param password
+     * @param username String
+     * @param password String
      * */
 
     @Override
     public void onClickLogin(String username, String password) {
-
-        if (username.trim().length() == 0) {
-            mILoginView.showMessage(
-                    mContext.getString(R.string.message),
-                    Error.ERROR_LOGIN_USR_EMPTY,
-                    SweetAlertDialog.WARNING_TYPE);
+        // a. Check hạng mục
+        //      1. Tên đăng nhập
+        if (InputUtils.isUsernameValid(username)) {
+            mILoginView.showWarningMessage(Error.ERROR_LOGIN_USR_NOT_VALID);
             return;
         }
-        if (password.trim().length() == 0) {
-            mILoginView.showMessage(
-                    mContext.getString(R.string.message),
-                    Error.ERROR_LOGIN_PWD_EMPTY,
-                    SweetAlertDialog.WARNING_TYPE);
+        // a. Check hạng mục
+        //      2. Mật khẩu
+        if (InputUtils.isPasswordValid(password)) {
+            mILoginView.showWarningMessage(Error.ERROR_LOGIN_PWD_NOT_VALID);
             return;
         }
-
         LoginRequest request = new LoginRequest(username, password);
         mILoginView.showLoading(mContext.getString(R.string.login));
+        // b. Gửi yêu cầu đăng nhập
         mApiService.login(request).enqueue(new Callback<EndPoint<Customer>>() {
             @Override
-            public void onResponse(@NonNull Call<EndPoint<Customer>> call, @NonNull Response<EndPoint<Customer>> response) {
+            public void onResponse(
+                    @NonNull Call<EndPoint<Customer>> call,
+                    @NonNull Response<EndPoint<Customer>> response) {
                 doResponse(response);
             }
-
             @Override
-            public void onFailure(@NonNull Call<EndPoint<Customer>> call, @NonNull Throwable t) {
+            public void onFailure(
+                    @NonNull Call<EndPoint<Customer>> call,
+                    @NonNull Throwable t) {
                 doLoginFailed();
             }
         });
     }
 
     /**
+     * 4. Check response
+     *      1. Response error
      * The method was executed when the response of the request was sent by user is failed
      */
     private void doLoginFailed() {
@@ -86,6 +96,8 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
     }
 
     /**
+     * 4. Check response
+     *      2. Response succeeded
      * Method was executed
      *
      * @param response data which client was received when the request is success
@@ -96,41 +108,20 @@ public class LoginPresenter extends BasePresenter implements ILoginPresenter {
                 mILoginView.hideLoading();
                 Customer customer = response.body().getData();
                 saveUserInfo(customer);
-                registerNotify(customer);
                 mILoginView.openMainActivity();
             } else {
-                doLoginFailed();
+                mILoginView.hideLoading(response.body().getMessage(), false);
             }
         }
     }
-
     /**
-     * Method regist receice notify from firebase cloud message
-     * The message will send by topic is customer's account
-     *
-     * @param customer
-     */
-    private void registerNotify(Customer customer) {
-        FCMUtils.subscribeTopicFCM(mContext, customer.getAccount());
-    }
-
-    /**
+     * 5. Lưu thông tin đăng nhập vào SharedPreferences  và di chuyển sang màn hình chính
      * Method will save customer infomation to local(SharedPreference)
      *
-     * @param customer
+     * @param customer Customer
      */
     private void saveUserInfo(Customer customer) {
         SharedPreferenceUtils.saveUser(mContext, customer);
         SharedPreferenceUtils.saveIsLogin(mContext, true);
-    }
-
-
-    /**
-     * Method was executed when user click button register
-     * Open Register activity to regist new account
-     */
-    @Override
-    public void onClickRegister() {
-        mILoginView.openRegisterActivity();
     }
 }

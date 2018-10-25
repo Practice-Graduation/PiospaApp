@@ -1,0 +1,16 @@
+
+?squid:S1148I"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+@squid:S1148ç"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+jsquid:S3776Ï"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(¸¼¾
+@squid:S1148í"#Use a logger to log this exception.(Âşÿâûÿÿÿÿ
+Gsquid:EmptyStatementUsageCheckØ"Remove this empty statement.(àÙ‚»
+nsquid:S37768"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(Ùôúÿÿÿÿ
+Hsquid:S1172˜"0Remove this unused method parameter "throwable".(ğ‚Çâ
+^
+squid:S899Õ"BDo something with the "boolean" value returned by "createNewFile".(Ğ’Íùÿÿÿÿ
+@squid:S1148÷"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+fsquid:S2095Ş"NUse try-with-resources or close this "FileOutputStream" in a "finally" clause.(ŠÀø¯
+Vsquid:S00107Ï"=Method has 11 parameters, which is greater than 7 authorized.(¸¼¾
+@squid:S1148²"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+>squid:S1172Ï"&Remove these unused method parameters.(¸¼¾
+squid:S1186Á"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¸‚²¢şÿÿÿÿ

@@ -40,7 +40,7 @@ public class ChangePasswordPresenter extends BasePresenter implements IChangePas
             return;
         }
 
-        if (!InputUtils.isValidPassword(newPassword.trim())) {
+        if (InputUtils.isPasswordValid(newPassword.trim())) {
             mView.showMessage(mContext.getString(R.string.message), Error.ERROR_CHANGE_PWD_INVALID, SweetAlertDialog.WARNING_TYPE);
             return;
         }

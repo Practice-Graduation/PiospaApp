@@ -49,7 +49,7 @@ public class ProvinceAdapter extends RecyclerView.Adapter<ProvinceAdapter.Provin
     public void onBindViewHolder(@NonNull ProvinceHolder holder, int position) {
             holder.bindView(mFilterItems.get(position));
             if(mProvinceSelected != null &&
-                    mProvinceSelected.getProvinceid() == mFilterItems.get(position).getProvinceid()){
+                    mProvinceSelected.getProvinceId() == mFilterItems.get(position).getProvinceId()){
                 holder.setChecked(true);
             }else{
                 holder.setChecked(false);

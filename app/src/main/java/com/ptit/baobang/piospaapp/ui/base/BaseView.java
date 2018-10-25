@@ -18,6 +18,10 @@ public interface BaseView {
 
     void showMessage(String title, @StringRes int message, int messageType);
 
+    void showMessage(String message);
+
+    void showMessage(@StringRes int message);
+
     void showMessage(String title, String message, int messageType);
 
     boolean isNetworkConnected();
@@ -28,7 +32,19 @@ public interface BaseView {
 
     Context getBaseContext();
 
-    void showConfirm(String title, String message, String text_pos, String text_neg, int msgType, CallBackConfirmDialog callback);
+    void showConfirm(String title,
+                     String message,
+                     String text_pos,
+                     String text_neg,
+                     int msgType,
+                     CallBackConfirmDialog callback);
+
+    void showConfirm(String message,
+                     CallBackConfirmDialog callback);
 
     void showMessage(String string, Error error, int warningType);
+
+    void showWarningMessage(Error error);
+
+    void showErrorMessage(Error error);
 }

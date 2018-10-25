@@ -31,7 +31,7 @@ public class DistrictPresenter extends BasePresenter implements IDistrictPresent
     public void loadData(Province province) {
         mView.showLoading(mContext.getString(R.string.loading));
         getCompositeDisposable().add(
-                mApiService.getDistrictByProvinceId(province.getProvinceid())
+                mApiService.getDistrictByProvinceId(province.getProvinceId())
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())

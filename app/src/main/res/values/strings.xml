@@ -35,7 +35,7 @@
     <string name="check_out">Đặt hàng</string>
     <string name="change_password">Đổi mật khẩu</string>
     <!--===========================BOOKING=====================================-->
-    <string name="email">Email</string>
+    <string name="userName">Email</string>
     <string name="note">Ghi chú</string>
     <string name="booking">Đặt hẹn</string>
     <string name="comfirm">Xác nhận</string>
@@ -127,7 +127,7 @@
     <string name="female">female</string>
     <string name="update_profile">Cập nhật thông tin</string>
     <string name="enter_fullname">Nhập họ và tên</string>
-    <string name="enter_email">Nhập địa chỉ email</string>
+    <string name="enter_email">Nhập địa chỉ userName</string>
     <string name="choose_gender">Chọn giới tính</string>
     <string name="text_male">Nam</string>
     <string name="text_female">Nữ</string>

@@ -49,7 +49,7 @@ public class DistrictAdapter extends RecyclerView.Adapter<DistrictAdapter.Distri
     public void onBindViewHolder(@NonNull DistrictHolder holder, int position) {
             holder.bindView(mFilterItems.get(position));
             if(mDistrictSelected != null &&
-                    mDistrictSelected.getDistrictid() == mFilterItems.get(position).getDistrictid()){
+                    mDistrictSelected.getDistrictId() == mFilterItems.get(position).getDistrictId()){
                 holder.setChecked(true);
             }else{
                 holder.setChecked(false);
